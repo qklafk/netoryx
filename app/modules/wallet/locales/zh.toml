@@ -1,0 +1,51 @@
+# Balance, top-ups and the operations history.
+
+[wallet]
+topup_button = "➕ 充值"
+history_button = "📜 交易记录"
+partner_button = "💼 合作伙伴余额"
+cards_button = "💳 已保存的卡"
+
+[wallet.balance]
+title = "💰 <b>您的余额：{balance}</b>"
+partner = "💼 合作伙伴余额：<b>{balance}</b>"
+hint = "余额可用于支付订阅或为朋友购买礼品。开启自动续费后，只要余额充足，订阅就会自动续费。"
+
+[wallet.topup]
+text = "➕ <b>充值余额</b>\n\n选择金额或输入自定义金额——{min} 至 {max} 👇"
+custom = "✏️ 其他金额"
+ask = "✏️ 请输入充值金额（卢布）——{min} 至 {max}。\n\n例如：<code>500</code>"
+invalid = "无法识别该金额 🤔 请发送 {min} 至 {max} 之间的整数卢布金额，例如 <code>500</code>。"
+unavailable = "😔 充值暂不可用。请稍后再来——或联系客服。"
+
+[wallet.history]
+title = "📜 <b>交易记录</b>"
+item = "<b>{amount}</b> · {label}\n<i>{date}</i>"
+empty = "📜 暂无交易。充值、购买和奖励将显示在这里。"
+end = "📜 没有更多交易了。"
+older = "更早 ▶️"
+newest = "◀️ 最新"
+
+[wallet.tx]
+payment = "💳 充值"
+purchase = "🛒 订阅付款"
+gift_purchase = "🎁 购买礼品"
+referral_invitee = "🤝 受邀注册奖励"
+referral_inviter = "🤝 邀请好友奖励"
+welcome_bonus = "👋 新人奖励"
+promo = "🎟 优惠码"
+admin_adjust = "🛠 管理员调整"
+refund = "↩️ 退款"
+referral_commission = "💼 合作伙伴奖励"
+referral_transfer = "🔁 从合作伙伴余额转入"
+withdrawal = "📤 提现"
+partner_account = "（合作伙伴余额）"
+
+[wallet.cards]
+title = "💳 <b>已保存的卡</b>"
+item = "• {title}——保存于 {date}"
+hint = "如果续费时余额不足，差额将从最近使用的卡扣除。已删除的卡绝不会被扣款。"
+remove = "🗑 删除 {title}"
+removed = "卡已删除"
+empty = "💳 暂无已保存的卡。\n\n如需添加，请用银行卡支付订阅或充值，并选择「保存银行卡用于自动续费」。"
+off = "💳 本店目前不使用已保存的卡。"

@@ -1,0 +1,64 @@
+# Number, money, date and period formats; plural forms (one / few / many).
+
+[fmt]
+money = "{amount} ₽"
+stars = "{amount} ⭐️"
+date = "{day} {month} {year}"
+datetime = "{date}, {time}"
+unlimited = "без ограничений"
+forever = "бессрочно"
+never = "никогда"
+
+[fmt.month]
+1 = "января"
+2 = "февраля"
+3 = "марта"
+4 = "апреля"
+5 = "мая"
+6 = "июня"
+7 = "июля"
+8 = "августа"
+9 = "сентября"
+10 = "октября"
+11 = "ноября"
+12 = "декабря"
+
+[plural.days]
+one = "{n} день"
+few = "{n} дня"
+many = "{n} дней"
+
+[plural.months]
+one = "{n} месяц"
+few = "{n} месяца"
+many = "{n} месяцев"
+
+[plural.years]
+one = "{n} год"
+few = "{n} года"
+many = "{n} лет"
+
+[plural.hours]
+one = "{n} час"
+few = "{n} часа"
+many = "{n} часов"
+
+[plural.minutes]
+one = "{n} минута"
+few = "{n} минуты"
+many = "{n} минут"
+
+[plural.devices]
+one = "{n} устройство"
+few = "{n} устройства"
+many = "{n} устройств"
+
+[plural.gb]
+one = "{n} ГБ"
+few = "{n} ГБ"
+many = "{n} ГБ"
+
+[plural.users]
+one = "{n} пользователь"
+few = "{n} пользователя"
+many = "{n} пользователей"

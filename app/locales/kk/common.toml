@@ -1,0 +1,52 @@
+# Navigation, main menu and common buttons.
+
+[nav]
+back = "◀️ Артқа"
+cancel = "✖️ Бас тарту"
+menu = "🏠 Басты мәзір"
+close = "✖️ Жабу"
+refresh = "🔄 Жаңарту"
+retry = "🔁 Қайталау"
+prev = "◀️"
+next = "▶️"
+page = "{pages} беттің {page}-беті"
+
+[menu]
+title = "<b>{brand}</b>\n\nҚалай көмектесейін? Бөлімді таңдаңыз 👇"
+my_subscription = "🔐 Менің жазылымым"
+buy = "🛒 Сатып алу / ұзарту"
+connect = "📲 Қосылу"
+balance = "💰 Баланс"
+referral = "🤝 Досты шақыру"
+gift = "🎁 Сыйлық / промокод"
+support = "🆘 Қолдау"
+language = "🌐 Тіл"
+instructions = "📖 Нұсқаулықтар"
+trial = "🎉 Тегін байқап көру"
+tg_proxy = "🛡 Telegram проксиі"
+mini_app = "📱 Жеке кабинет"
+admin = "⚙️ Әкімші панелі"
+
+[common]
+yes = "✅ Иә"
+no = "❌ Жоқ"
+confirm = "✅ Растау"
+copy = "📋 Көшіру"
+open = "🔗 Ашу"
+on = "🟢 Қосулы"
+off = "⚪️ Өшірулі"
+saved = "✅ Сақталды"
+done = "Дайын ✅"
+loading = "⏳ Бір сәт…"
+canceled = "Бас тартылды 👌"
+
+[lang]
+title = "🌐 Бот тілін таңдаңыз:"
+ru = "🇷🇺 Русский"
+en = "🇬🇧 English"
+uk = "🇺🇦 Українська"
+kk = "🇰🇿 Қазақша"
+uz = "🇺🇿 Oʻzbekcha"
+fa = "🇮🇷 فارسی"
+zh = "🇨🇳 简体中文"
+changed = "Дайын! Енді мен қазақша сөйлеймін 🇰🇿"

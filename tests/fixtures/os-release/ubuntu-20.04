@@ -1,0 +1,5 @@
+NAME="Ubuntu"
+VERSION_ID="20.04"
+VERSION_CODENAME=focal
+ID=ubuntu
+ID_LIKE=debian

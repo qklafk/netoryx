@@ -1,0 +1,4 @@
+# Outgoing webhooks: admin notices.
+
+[webhooks]
+disabled = "⚠️ Webhook 端点 #{id}（{host}）已停用：连续 {count} 次投递失败。请检查接收方，并在网页后台重新启用该端点。"

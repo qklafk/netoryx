@@ -1,0 +1,24 @@
+# Messages about payments and rewards, and notifications for administrators.
+
+[paid]
+topped_up = "✅ Баланс пополнен на <b>{amount}</b>.\nТекущий баланс: <b>{balance}</b>."
+plan_activated = "🎉 Спасибо за оплату! Подписка <b>{plan}</b> активна до <b>{expires}</b>.\n\nСсылка для подключения — в главном меню."
+gift_ready = "🎁 Подарок готов: <b>{plan}</b>.\n\nОтправьте получателю эту ссылку:\n{link}\n\nИли код: <code>{code}</code>"
+donation_thanks = "💜 Спасибо за поддержку! Мы получили <b>{amount}</b>."
+plan_failed = "✅ Оплата <b>{amount}</b> зачислена на баланс (сейчас <b>{balance}</b>), но оформить подписку <b>{plan}</b> автоматически не получилось.\n\nКупите её с баланса в меню или напишите в поддержку."
+partial = "⚠️ Получено <b>{amount}</b> вместо <b>{expected}</b>. Сумма зачислена на баланс, сейчас на нём <b>{balance}</b>."
+
+[reward]
+money = "💸 Реферальное вознаграждение: <b>+{amount}</b> на баланс (уровень {level})."
+partner = "💼 Партнёрское вознаграждение: <b>+{amount}</b> на партнёрский баланс (уровень {level})."
+days = "🎁 Реферальный бонус: <b>+{days}</b> к подписке (уровень {level})."
+
+[admin_notify]
+payment = "💰 <b>{amount}</b> через {provider}\nПользователь: <code>{user_id}</code> {username}\n{what}"
+what_topup = "Пополнение баланса"
+what_plan = "Покупка: {plan}"
+what_gift = "Подарок: {plan}"
+what_donation = "Донат"
+plan_failed = "⚠️ Подписка не оформлена: {reason}"
+channel_check_failed = "⚠️ Не удаётся проверить подписку на канал <code>{channel_id}</code>. Убедитесь, что бот — администратор канала. Пока проверка не работает, пользователи проходят без неё."
+error = "🔥 <b>Ошибка</b> <code>{signature}</code>\nupdate {update_id} ({update_type}), пользователь <code>{user_id}</code>\n<code>{error}</code>\n<pre>{trace}</pre>"

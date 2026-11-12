@@ -1,0 +1,147 @@
+# Production stack: the application, PostgreSQL and Caddy (automatic HTTPS).
+#
+#   cp .env.example .env    # fill in BOT_TOKEN, ADMIN_IDS, DOMAIN, SECRET_KEY, POSTGRES_PASSWORD
+#   docker compose up -d --build
+#
+# Optional 3x-ui panel on the same server (host network). Keep its panel port closed in the firewall except for the
+# Docker networks (e.g. `ufw allow from 172.16.0.0/12 to any port 2053`); open only the VPN inbound ports:
+#   docker compose --profile xui up -d
+#
+# Other panels (Remnawave, Marzban, PasarGuard, Marzneshin) are separate compose files in deploy/panels/<name>/ that the
+# installer selects with COMPOSE_FILE in .env (docker-compose.yml:deploy/panels/<name>/compose.yml). They run in this
+# project's network and are never published on public ports.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+# Bind mounts carry the "z" option so the stack also works on hosts with SELinux enforcing (AlmaLinux, Rocky);
+# elsewhere it is ignored.
+services:
+  app:
+    # `docker compose up -d` pulls the published image (NETORYX_VERSION, default: beta) when it is not present locally
+    # and builds from source if it cannot be pulled; `docker compose up -d --build` always builds from this checkout.
+    image: ghcr.io/qklafk/netoryx:${NETORYX_VERSION:-beta}
+    pull_policy: missing
+    build: .
+    logging: *logging
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://netoryx:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@db:5432/netoryx
+      PUBLIC_BASE_URL: https://${DOMAIN:?set DOMAIN in .env}
+      WEB_HOST: 0.0.0.0
+      WEB_PORT: "8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    extra_hosts:
+      # Lets the bot reach a panel running on this server (for example the optional 3x-ui) as host.docker.internal.
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    volumes:
+      - app-data:/app/data
+
+  db:
+    image: postgres:17-alpine
+    logging: *logging
+    environment:
+      POSTGRES_USER: netoryx
+      POSTGRES_DB: netoryx
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U netoryx -d netoryx"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  caddy:
+    image: caddy:2-alpine
+    logging: *logging
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    ports:
+      - "80:80"
+      # The site a Reality inbound on this host borrows (vpn.<domain>), reachable from the host only.
+      - "127.0.0.1:8444:8444"
+    depends_on:
+      - app
+    restart: unless-stopped
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro,z
+      - ./deploy/caddy-sites:/etc/caddy/sites:ro,z
+      - caddy-data:/data
+      - caddy-config:/config
+
+  # Public port 443: routes TLS by server name to Caddy, the VPN (Reality) or the Telegram proxy (deploy/haproxy).
+  edge:
+    image: haproxy:3.2-alpine
+    logging: *logging
+    ports:
+      - "443:443"
+    depends_on:
+      - caddy
+    environment:
+      REALITY_PORT: ${REALITY_PORT:-8443}
+      # An address, not host.docker.internal: HAProxy re-resolves names through Docker's DNS, which only knows
+      # containers (the installer writes the host's bridge address or the panel's container name here).
+      REALITY_HOST: ${REALITY_HOST:-172.17.0.1}
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    volumes:
+      - ./deploy/haproxy:/usr/local/etc/haproxy:ro,z
+
+  xui:
+    profiles: ["xui"]
+    logging: *logging
+    image: ghcr.io/mhsanaei/3x-ui:latest
+    network_mode: host
+    environment:
+      XRAY_VMESS_AEAD_FORCED: "false"
+    restart: unless-stopped
+    volumes:
+      - xui-db:/etc/x-ui
+      - xui-cert:/root/cert
+
+  # Optional MTProto proxy for Telegram (telemt). It is not published: clients reach it on 443 through the edge
+  # (its tls_domain must be listed in deploy/haproxy/sni.map as "tgproxy"; telemt listens on 993 inside the network and
+  # its links use public_port 443). Its control API stays inside the Docker network too; add it in the admin as a
+  # "telemt" server with URL http://telemt:9091 and the auth_header value as the API token.
+  #   docker compose --profile tgproxy up -d
+  telemt:
+    profiles: ["tgproxy"]
+    logging: *logging
+    image: ghcr.io/telemt/telemt:3.5.16
+    command: ["/etc/telemt/config.toml"]
+    # The image's own check reads /app/config.toml (no API key there -> 401); point it at our config.
+    healthcheck:
+      test: ["CMD", "/app/telemt", "healthcheck", "/etc/telemt/config.toml", "--mode", "liveness"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    working_dir: /run/telemt
+    tmpfs:
+      - /run/telemt:rw,mode=1777,size=4m
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: ["no-new-privileges:true"]
+    ulimits:
+      nofile: {soft: 65536, hard: 262144}
+    restart: unless-stopped
+    volumes:
+      - ./deploy/telemt:/etc/telemt:rw,z
+
+volumes:
+  app-data:
+  db-data:
+  caddy-data:
+  caddy-config:
+  xui-db:
+  xui-cert:

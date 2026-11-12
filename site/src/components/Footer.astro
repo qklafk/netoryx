@@ -1,0 +1,60 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import { footer } from '~/data/i18n';
+import { GITHUB, TELEGRAM, langOf } from '~/data/site';
+
+const t = footer[langOf(Astro.locals.starlightRoute.locale)];
+---
+
+<Default><slot /></Default>
+<div class="nx-footer not-content">
+  <span class="brand">NETORYX</span>
+  <span class="text">{t.text}</span>
+  <nav>
+    <a href={`${GITHUB}/blob/main/LICENSE`} rel="noopener">{t.license}</a>
+    <a href={t.legalUrl} rel="noopener">{t.legal}</a>
+    <a href={`${GITHUB}/blob/main/CODE_OF_CONDUCT.md`} rel="noopener">{t.coc}</a>
+    <a href={TELEGRAM} rel="noopener">{t.telegram}</a>
+    <a href={GITHUB} rel="noopener">GitHub</a>
+  </nav>
+</div>
+
+<style>
+  .nx-footer {
+    margin-top: 2rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--nx-line);
+    display: grid;
+    gap: 0.75rem 2rem;
+    grid-template-columns: auto 1fr;
+    font-family: var(--nx-mono);
+    font-size: 0.75rem;
+    color: var(--nx-dim);
+  }
+  :global([data-has-hero]) .nx-footer {
+    margin-top: 0;
+    padding-inline: var(--nx-gutter);
+    max-width: var(--nx-max);
+    margin-inline: auto;
+    border-top: 0;
+  }
+  .brand {
+    color: var(--nx-ink);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+  nav {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+  a {
+    color: var(--nx-dim);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  a:hover {
+    color: var(--nx-ink);
+  }
+</style>

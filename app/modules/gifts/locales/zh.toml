@@ -1,0 +1,43 @@
+# Gift subscriptions and the "Gift / promo code" section.
+
+[gifts]
+unlimited_devices = "设备不限"
+share = "📤 发送礼品"
+copy_link = "📋 复制链接"
+share_text = "🎁 送你一份 {brand} 订阅，时长 {period}——这是我的礼物！打开链接即可激活："
+ready = "🎉 <b>您的礼品已准备好！</b>\n\n「{plan}」订阅，时长 {period}。\n\n请将此链接发送给收礼人——一键即可激活礼品：\n{link}\n\n或使用兑换码 <code>{code}</code>——可在「🎁 礼品 / 优惠码」中输入。"
+
+[gifts.hub]
+text = "🎁 <b>礼品与优惠码</b>\n\n送朋友一份 {brand} 订阅：您将获得一个链接和一个兑换码——发送给收礼人，一键即可激活订阅。\n\n如果有人送了您礼品，或您有优惠码，请在下方输入 👇"
+give = "🎁 赠送订阅"
+enter_code = "🎟 我有兑换码"
+mine = "📦 我的礼品"
+
+[gifts.plans]
+text = "🎁 <b>送什么？</b>\n\n选择一个套餐——收礼人激活礼品后订阅开始计时。"
+item = "{plan} — {price}"
+empty = "😔 目前没有可作为礼品的套餐。请稍后再来！"
+
+[gifts.plan]
+text = "🎁 <b>礼品：「{plan}」</b>\n{period} · {devices} · <b>{price}</b>"
+balance = "您的余额：{balance}。"
+missing = "还差 <b>{amount}</b>——用任意方式付款，付款后立即收到兑换码。"
+pay_balance = "💰 用余额支付 · {price}"
+pay = "💳 支付礼品"
+no_payments = "请充值余额以支付礼品。"
+unavailable = "该套餐目前无法作为礼品——请选择其他套餐。"
+
+[gifts.mine]
+title = "📦 <b>我的礼品</b>"
+item = "🎁「{plan}」— <code>{code}</code>\n{status}"
+redeemed = "✅ 已激活"
+waiting = "⏳ 等待收礼人"
+share = "📤 发送 {code}"
+empty = "📦 您还没有送出过订阅。正是让朋友开心的好时机！"
+
+[gifts.code]
+ask = "🎟 请用一条消息发送礼品码或优惠码："
+not_found = "😕 没有这个代码。请检查拼写后重新发送——或点击「取消」。"
+
+[gifts.error]
+funds = "余额不足——请充值或选择银行卡支付。"

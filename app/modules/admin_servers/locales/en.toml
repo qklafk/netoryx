@@ -1,0 +1,229 @@
+# Servers: panels, inbounds, locations, endpoints
+
+[admin_servers]
+title = "Servers"
+home = "🖥 <b>Servers</b> ({count})\n\n🟢 works · 🟡 had failures · 🔴 down · ⏸ disabled\n\nPick a server or add a new one."
+home_empty = "🖥 <b>Servers</b>\n\nNo servers yet. Connect a 3x-ui or Remnawave panel - I'll test the connection and pull its settings."
+not_found = "Not found 🤷"
+owner_only = "Only the owner can add servers and change a panel's address, credentials or TLS checking"
+expired = "This wizard has expired - please start again."
+saved = "✅ Saved"
+deleted = "🗑 Deleted"
+enabled = "▶️ Server enabled - user accounts appear on it with the next sync."
+disabled = "⏸ Server disabled - user accounts are removed from it with the next sync."
+edit = "✏️ <b>What should we change?</b>"
+no_location = "no location"
+pick_location = "📍 Choose a location:"
+presets = "🔗 <b>New endpoint</b>\n\n🎯 <b>Direct</b> - the server's own address.\n🔀 <b>Relay L4</b> - through a forwarding server (e.g. in Russia for mobile networks): only address and port change.\n☁️ <b>CDN XHTTP</b> - through a Russian CDN (packet-up, GET), for XHTTP inbounds.\n🇷🇺 <b>Reality with an RU SNI</b> - for mobile allowlists: a relay plus an SNI from the inbound's serverNames."
+card = "🖥 <b>{name}</b> · {kind}\n<code>{url}</code>\n\nVersion: {version}\nState: {status}\nCertificate check: {tls}"
+card_inbounds = "🧩 Inbounds: {active} of {total} enabled"
+card_location = "📍 Location: {location}"
+saved_inbounds = "✅ Server added. Inbounds found: {count} - enable the ones you need under \"Inbounds\" and users will start getting them."
+inbound_on = "🟢 enabled"
+inbound_off = "⏸ disabled"
+inbound_port = "same as the inbound"
+inbound_no_endpoints = "⚠️ This inbound has no endpoints - users get no links for it."
+inbounds = "🧩 <b>Inbounds</b>\n\nUsers only get the enabled ones 🟢. Tap one to configure it."
+inbounds_empty = "🧩 <b>No inbounds yet</b>\n\nRefresh the list from the panel or create a VLESS-Reality inbound right here."
+inbound = "🧩 <b>{name}</b> (id {remote_id})\n\nPort: {port}\nTransport: {transport}\nFlow: {flow}\nLocation: {location}\nState: {state}\nEndpoints: {endpoints}"
+locations = "📍 <b>Locations</b>\n\nThis is how users see countries and cities in their apps. The order here is the order in the subscription."
+locations_empty = "📍 <b>No locations yet</b>\n\nAdd the first one, e.g. \"🇩🇪 Germany\"."
+location = "📍 <b>{title}</b>\n\nState: {state}\nInbounds: {inbounds}\nEndpoints: {endpoints}\nPosition: {order}"
+location_on = "🟢 shown"
+location_off = "⏸ hidden"
+location_delete = "🗑 Delete this location? Inbounds and endpoints stay, without a location."
+endpoints = "🔗 <b>Endpoints</b> · {inbound}\n\n🎯 direct · 🔀 relay · ☁️ CDN · 🟢 works · 🙈 hidden after failures · ⏸ disabled"
+endpoints_empty = "🔗 <b>Endpoints</b> · {inbound}\n\nNone yet - add one, otherwise users get no link."
+endpoint = "🔗 <b>Endpoint</b>\n\nType: {kind}\nProfile: {profile}\nAddress: <code>{address}</code>\nPort: {port}\nName: {remark}\nState: {state}\nError: {error}\n\nOverrides:\n<code>{overrides}</code>"
+endpoint_hidden = "🙈 hidden (not responding)"
+endpoint_delete = "🗑 Delete this endpoint? Users stop getting this link."
+link_preview = "👀 This is the link users get:\n<code>{link}</code>"
+link_error = "⚠️ Cannot build the link: {error}"
+preset_cdn_needs_xhttp = "The CDN preset only works with XHTTP inbounds"
+preset_needs_reality = "This preset is for Reality inbounds"
+
+[admin_servers.state]
+disabled = "⏸ disabled"
+down = "🔴 down\n<code>{error}</code>"
+flaky = "🟡 failures in a row: {count}\n<code>{error}</code>"
+ok = "🟢 online (checked {when})"
+unknown = "⚪️ not checked yet"
+
+[admin_servers.ping]
+ok = "🔌 Connected: version {version}"
+failed = "🔌 Could not connect:\n<code>{error}</code>"
+
+[admin_servers.sync]
+started = "🔄 Sync started: accounts to update - {count}."
+queued = "🔄 Accounts to update: {count}. The sync runs within {minutes} min."
+
+[admin_servers.refresh]
+done = "📥 List refreshed: new {created}, changed {updated}, disabled {deactivated}.\nNew inbounds are added disabled."
+failed = "⚠️ The panel did not answer:\n<code>{error}</code>"
+
+[admin_servers.add]
+kind = "➕ <b>New server</b>\n\nWhich panel does it run?"
+name = "✏️ What should we call this {kind} server? E.g. \"Germany-1\". Only admins see the name."
+
+[admin_servers.add.url]
+marzban = "🌐 Send the Marzban address:\n<code>https://panel.example.com</code> or <code>http://marzban:8000</code>."
+xui = "🌐 Send the full 3x-ui panel address - as in the browser, including the secret path:\n<code>https://1.2.3.4:2053/secretpath</code>"
+remnawave = "🌐 Send the Remnawave address:\n<code>https://panel.example.com</code> or <code>http://remnawave:3000</code> (inside Docker)"
+hiddify = "🌐 Send the Hiddify address including its administrator proxy path:\n<code>https://panel.example.com/admin-path</code>"
+pasarguard = "🌐 Send the PasarGuard address:\n<code>https://panel.example.com</code> or <code>http://pasarguard:8000</code>."
+marzneshin = "🌐 Send the Marzneshin address:\n<code>https://panel.example.com</code>."
+telemt = "🌐 Send the telemt Control API address:\n<code>http://telemt:9091</code>"
+
+[admin_servers.add.creds]
+marzban = "🔑 Send a login and password separated by a space, or a Marzban API token.\n\nI delete the message immediately and store credentials encrypted."
+xui = "🔑 Send the login and password separated by a space (<code>admin s3cret</code>) - or an API token (3x-ui 3.1+).\n\nI'll delete the message right away; credentials are stored encrypted."
+remnawave = "🔑 Send a Remnawave API token (Settings → API tokens).\n\nI'll delete the message right away; the token is stored encrypted."
+hiddify = "🔑 Send the Hiddify API key from Settings → API.\n\nI'll delete the message right away; the key is stored encrypted."
+pasarguard = "🔑 Send a PasarGuard API key with user and system read permissions.\n\nI'll delete the message right away; the key is stored encrypted."
+marzneshin = "🔑 Send the Marzneshin username and password separated by a space.\n\nI'll delete the message right away; credentials are stored encrypted."
+telemt = "🔑 Send the auth_header value from the telemt config (or \"-\" if authorization is off).\n\nI'll delete the message right away."
+
+[admin_servers.ask]
+name = "✏️ New name for this {kind} server:"
+location = "📍 Send a flag and a name, e.g. <code>🇩🇪 Germany</code> or <code>🇳🇱 Amsterdam</code>."
+endpoint_sni = "🇷🇺 Send the SNI - a Russian domain from this Reality inbound's serverNames list (otherwise the server refuses the connection)."
+endpoint_remark = "✏️ Name of this entry in apps (up to 64 characters), e.g. <code>🇩🇪 Germany · LTE</code>. Empty - the name is built automatically."
+endpoint_overrides = "🧩 Send link parameter overrides as a JSON object, e.g.:\n<code>{{\"sni\": \"cdn.example.ru\", \"fp\": \"chrome\"}}</code>\n\nA <code>null</code> value removes a parameter."
+
+[admin_servers.ask.endpoint_address]
+direct = "🎯 Send the address clients use to reach the server: an IP or a domain, with a port if needed (<code>1.2.3.4</code>, <code>de.example.com:443</code>)."
+relay = "🔀 Send the forwarding server's address and port: <code>5.6.7.8:443</code>. Without a port - the inbound's one."
+cdn = "☁️ Send the CDN domain, e.g. <code>cdn.example.ru</code> (port - the inbound's one, or <code>cdn.example.ru:443</code>)."
+ru_sni = "🔀 Now the address and port of the relay server with a Russian IP: <code>5.6.7.8:443</code>."
+edit = "✏️ New address (and port): <code>1.2.3.4</code> or <code>relay.example.ru:8443</code>."
+
+[admin_servers.test]
+running = "⏳ Testing the connection…"
+title = "🔌 <b>Connection test</b>\n\n{name} · {kind}\n<code>{url}</code>\n\n{result}"
+ok = "✅ Connection works. Panel version: <b>{version}</b>"
+inbounds = "🧩 Inbounds on the panel: {count}"
+failed = "❌ Could not connect:\n<code>{error}</code>\n\nCheck the address and credentials. For a self-signed certificate turn the TLS check off."
+
+[admin_servers.error]
+name = "The name must be 1 to {limit} characters long."
+url = "That doesn't look like an address 🤔 Expected something like <code>https://1.2.3.4:2053/path</code>."
+location = "I didn't get it 🤔 Example: <code>🇩🇪 Germany</code> (name up to {limit} characters)."
+address = "I didn't get the address 🤔 Example: <code>1.2.3.4</code> or <code>relay.example.ru:8443</code>."
+overrides = "Could not apply the overrides:\n<code>{error}</code>"
+
+[admin_servers.error.creds]
+marzban = "Send a login and password separated by a space, or one API token."
+xui = "Send a login and password separated by a space, or a single API token. Please try again."
+remnawave = "Send the API token as one line. Please try again."
+hiddify = "Send the API key as one line. Please try again."
+pasarguard = "Send the API key as one line. Please try again."
+marzneshin = "Send the username and password separated by a space. Please try again."
+telemt = "Send the auth_header value as one line, or \"-\". Please try again."
+
+[admin_servers.delete]
+ask = "🗑 <b>Delete server \"{name}\"?</b>\n\nAccounts the bot created on it: {count}.\n\nYou can remove them from the panel (users lose access to this server immediately) or leave them on the panel as they are."
+confirm_cleanup = "⚠️ Really delete the server and remove all our clients from the panel? This cannot be undone."
+confirm_keep = "⚠️ Really delete the server from the bot? Clients stay on the panel, but the bot stops managing them."
+done = "🗑 The server was deleted from the bot."
+done_cleanup = "🗑 Server deleted. Accounts removed from the panel: {removed}, failed: {failed}."
+
+[admin_servers.reality]
+port = "➕ <b>New VLESS-Reality inbound</b>\n\nWhich port? Usually 443 - the traffic stands out less. Send a port number or tap the button."
+bad_port = "A port is a number from 1 to 65535."
+port_taken = "Port {port} is already used by another inbound on this panel. Choose another one."
+sni = "🎭 <b>Camouflage site (SNI)</b>\n\nReality looks like a connection to a real website. It needs TLS 1.3 and HTTP/2 - I just checked this list (from the bot's server).\n\nPrefer a site geographically close to the server."
+checking = "Checking sites…"
+custom_sni = "✏️ Enter my own site"
+ask_sni = "✏️ Send the site's domain, e.g. <code>www.microsoft.com</code>. I'll check that it fits."
+bad_sni = "Send just the domain, e.g. <code>www.microsoft.com</code>."
+sni_unfit = "⚠️ {host} won't work: {problem}. Try another site."
+location = "📍 SNI: <code>{sni}</code>\n\nWhich location does the new inbound belong to?"
+confirm = "➕ <b>Creating the inbound</b>\n\nVLESS + Reality + Vision\nPort: {port}\nSNI: <code>{sni}</code>\nAddress for clients: <code>{address}</code>\n\nI'll generate the x25519 keys and short id. Users get the inbound right away - make sure the address is public (not an internal one and not the panel domain behind a proxy or CDN)."
+created = "✅ Inbound created and enabled - users get it with the next sync."
+failed = "❌ The panel did not create the inbound:\n<code>{error}</code>"
+ask_address = "🎯 Send the address clients will connect to for this inbound: an IP or a domain without a port (<code>1.2.3.4</code>, <code>de.example.com</code>). The domain must not be behind a CDN - Reality does not work through it."
+bad_address = "I didn't get the address 🤔 Send an IP or a domain without a port, e.g. <code>de.example.com</code>."
+
+[admin_servers.reality.problem]
+unreachable = "not responding"
+tls13 = "no TLS 1.3"
+h2 = "no HTTP/2"
+
+[admin_servers.reality.group]
+global = "🌍 International sites"
+ru = "🇷🇺 Russian sites"
+
+[admin_servers.health]
+title = "🩺 <b>Server health</b>\n\n{panels}\n\n🙈 <b>Hidden endpoints</b> (not responding):\n{endpoints}"
+failing = "failures in a row: {count} - <code>{error}</code>"
+ok_since = "online, {when}"
+never = "not checked yet"
+no_panels = "No servers yet."
+no_hidden = "none - everything responds 👍"
+checking = "Checking…"
+checked = "✅ Check finished. State changes: {changes}."
+
+[admin_servers.probe]
+ok = "📡 The address accepts connections ✅"
+failed = "📡 The address does not respond:\n<code>{error}</code>"
+
+[admin_servers.kind]
+direct = "🎯 direct"
+relay = "🔀 relay"
+cdn = "☁️ CDN"
+
+[admin_servers.profile]
+standard = "regular"
+whitelist = "LTE (mobile allowlists)"
+
+[admin_servers.preset]
+direct = "🎯 Direct connection"
+relay = "🔀 Relay L4"
+cdn = "☁️ Yandex-CDN XHTTP (packet-up, GET)"
+ru_sni = "🇷🇺 Reality with an RU SNI"
+
+[admin_servers.btn]
+add = "➕ Add a server"
+add_endpoint = "➕ Add an endpoint"
+add_location = "➕ Add a location"
+check_now = "🩺 Check now"
+clear = "🧹 Clear"
+copy_link = "📋 Copy link"
+create = "✅ Create"
+delete = "🗑 Delete"
+delete_cleanup = "🧹 Delete and remove clients ({count})"
+delete_keep = "📦 Delete, keep clients"
+delete_yes = "🗑 Yes, delete"
+disable = "⏸ Disable"
+enable = "▶️ Enable"
+edit = "✏️ Edit"
+edit_address = "✏️ Address"
+edit_creds = "🔑 Credentials"
+edit_name = "✏️ Name"
+edit_remark = "🏷 Name"
+edit_tls = "🔒 TLS check"
+edit_url = "🌐 Address"
+endpoints = "🔗 Endpoints ({count})"
+health = "🩺 Health"
+hide = "⏸ Hide"
+show = "▶️ Show"
+inbound_off = "⏸ Disable for users"
+inbound_on = "▶️ Enable for users"
+inbounds = "🧩 Inbounds"
+location = "📍 Location"
+locations = "📍 Locations"
+make_lte = "📶 Make it LTE"
+make_regular = "🌐 Make it regular"
+overrides = "🧩 Overrides"
+ping = "🔌 Test connection"
+probe = "📡 Probe"
+reality_address = "🎯 Change address"
+reality = "➕ Create VLESS-Reality"
+refresh = "📥 Refresh list"
+rename = "✏️ Rename"
+retest = "🔁 Test again"
+save = "💾 Save"
+save_anyway = "💾 Save anyway"
+sync = "🔄 Sync now"
+tls_on = "🔒 TLS: verify"
+tls_off = "🔓 TLS: don't verify"

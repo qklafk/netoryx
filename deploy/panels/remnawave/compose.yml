@@ -1,0 +1,77 @@
+# Remnawave panel (backend + PostgreSQL + Valkey) and its node, in the Netoryx project network.
+# Images and settings follow the official docker-compose-prod.yml of remnawave/backend. Nothing is published on a
+# public port: the bot reaches the panel as http://remnawave:3000, the panel reaches the node as remnanode:2222 and
+# the edge reaches the node's Reality inbound as remnanode:${REALITY_PORT}. The panel UI listens on 127.0.0.1:3000
+# (SSH tunnel) or can be published with deploy/caddy-sites/panel.caddy.example.
+# The node starts after the installer has stored its key (profile "panelnode").
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  remnawave:
+    image: remnawave/backend:3.4.10
+    hostname: remnawave
+    logging: *logging
+    env_file: ./deploy/panels/remnawave/panel.env
+    depends_on:
+      remnawave-db:
+        condition: service_healthy
+      remnawave-redis:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3000:3000"
+    ulimits:
+      nofile: {soft: 1048576, hard: 1048576}
+    volumes:
+      - remnawave-valkey-socket:/var/run/valkey
+    restart: unless-stopped
+
+  remnawave-db:
+    image: postgres:18.4
+    hostname: remnawave-db
+    logging: *logging
+    shm_size: 512mb
+    env_file: ./deploy/panels/remnawave/panel.env
+    environment:
+      TZ: UTC # the database time zone must stay UTC
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - remnawave-db-data:/var/lib/postgresql
+    restart: unless-stopped
+
+  remnawave-redis:
+    image: valkey/valkey:9-alpine
+    hostname: remnawave-redis
+    logging: *logging
+    command: >
+      valkey-server --save "" --appendonly no --maxmemory-policy noeviction --loglevel warning
+      --unixsocket /var/run/valkey/valkey.sock --unixsocketperm 777 --port 0
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-s", "/var/run/valkey/valkey.sock", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - remnawave-valkey-socket:/var/run/valkey
+    restart: unless-stopped
+
+  remnanode:
+    profiles: ["panelnode"]
+    image: remnawave/node:3.4.5
+    hostname: remnanode
+    logging: *logging
+    env_file: ./deploy/panels/remnawave/node.env
+    ulimits:
+      nofile: {soft: 1048576, hard: 1048576}
+    restart: unless-stopped
+
+volumes:
+  remnawave-db-data:
+  remnawave-valkey-socket:

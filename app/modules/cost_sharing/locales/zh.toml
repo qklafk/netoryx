@@ -1,0 +1,34 @@
+# Cost sharing: reminders to members and the owner's overview.
+
+[cost_sharing]
+menu = "分摊费用"
+month_year = "{year}年{month}"
+reminder = "💸 <b>{month}费用分摊</b>\n\n你好！该为我们的 VPN 服务器分摊费用了——您的份额为 <b>{share}</b>。\n\n转账后请点击下方按钮，让所有者知道 🙌"
+details = "转账信息：{details}"
+thanks = "🙏 谢谢！您 {month} 的付款已标记，已通知所有者。"
+unknown = "本轮分摊已结束 🙂"
+owner_paid = "💸 {name} 已标记 {month} 的付款：{share}。已付：{paid} / {total}。"
+owner_started = "💸 {month}费用分摊：已发送提醒（{count}）。每人份额 {share}，总计 {total}。"
+sent = "已发送提醒：{count}"
+not_configured = "💸 <b>分摊费用</b>\n\n此板块帮助您每月收取服务器费用：机器人会提醒成员各自的份额，并显示谁已付款。\n\n如需开启，请在设置中填写每月金额、提醒日期和收款信息。"
+not_started = "💸 <b>{month}费用分摊</b>\n\n提醒将在每月 {day} 日自动发送。总计 {total}。\n\n也可以现在立即发送。"
+overview = "💸 <b>{month}费用分摊</b>\n\n总计：{total} · 份额：{share}\n已付：{paid} / {count}"
+
+[cost_sharing.month]
+1 = "1月"
+2 = "2月"
+3 = "3月"
+4 = "4月"
+5 = "5月"
+6 = "6月"
+7 = "7月"
+8 = "8月"
+9 = "9月"
+10 = "10月"
+11 = "11月"
+12 = "12月"
+
+[cost_sharing.btn]
+paid = "✅ 我已付款"
+remind = "📣 提醒未付款的人"
+start = "📣 立即发送"

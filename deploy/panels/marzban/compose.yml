@@ -1,0 +1,64 @@
+# Marzban panel with its built-in Xray, in the Netoryx project network. The official compose file uses the host
+# network; here the panel runs in the project network so that nothing is published: the bot reaches it as
+# http://marzban:8880 and the edge reaches the Reality inbound as marzban:${REALITY_PORT}. The panel UI listens on
+# 127.0.0.1:8000 (SSH tunnel) or can be published with deploy/caddy-sites/panel.caddy.example.
+# Without TLS files Marzban binds 127.0.0.1 inside its container only, so a small relay that shares the panel's
+# network namespace exposes it on port 8880 to the project network.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  # Puts the sample Xray configuration into the data volume the first time, so the panel can save changes there.
+  marzban-init:
+    image: gozargah/marzban:v0.8.4
+    logging: *logging
+    entrypoint:
+      - sh
+      - -c
+      - "[ -f /var/lib/marzban/xray_config.json ] || cp /code/xray_config.json /var/lib/marzban/xray_config.json"
+    volumes:
+      - marzban-data:/var/lib/marzban
+    restart: "no"
+
+  # Marzban v0.8.4 ships Xray 24.12.31, whose Reality handshake current clients no longer complete. Docker copies the
+  # official Xray image's /usr/local/bin into this (versioned, initially empty) volume; the panel runs that binary.
+  marzban-xray:
+    image: ghcr.io/xtls/xray-core:26.10.31
+    logging: *logging
+    command: ["version"]
+    volumes:
+      - marzban-xray-26-10-31:/usr/local/bin
+    restart: "no"
+
+  marzban:
+    image: gozargah/marzban:v0.8.4
+    logging: *logging
+    env_file: ./deploy/panels/marzban/panel.env
+    environment:
+      XRAY_EXECUTABLE_PATH: /opt/xray/xray
+    depends_on:
+      marzban-init:
+        condition: service_completed_successfully
+      marzban-xray:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:8000:8880"
+    volumes:
+      - marzban-data:/var/lib/marzban
+      - marzban-xray-26-10-31:/opt/xray:ro
+    restart: unless-stopped
+
+  marzban-relay:
+    image: alpine/socat:1.8.0.3
+    logging: *logging
+    network_mode: "service:marzban"
+    command: ["TCP-LISTEN:8880,fork,reuseaddr", "TCP:127.0.0.1:8000"]
+    depends_on: [marzban]
+    restart: unless-stopped
+
+volumes:
+  marzban-data:
+  marzban-xray-26-10-31:

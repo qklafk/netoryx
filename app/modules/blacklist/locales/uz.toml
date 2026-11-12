@@ -1,0 +1,9 @@
+# Blacklist: notices to administrators.
+
+[blacklist]
+more = "…va yana {n} ta"
+
+[blacklist.notice]
+banned = "⛔️ <b>Qora roʻyxat:</b> bloklangan foydalanuvchilar — {n}"
+flagged = "⚠️ <b>Qora roʻyxat:</b> roʻyxatdagi foydalanuvchilar topildi — {n}"
+unbanned = "✅ <b>Qora roʻyxat:</b> blokdan chiqarilgan foydalanuvchilar (roʻyxatdan olib tashlangan) — {n}"

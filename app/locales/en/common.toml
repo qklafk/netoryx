@@ -1,0 +1,52 @@
+# Navigation, main menu and common buttons.
+
+[nav]
+back = "◀️ Back"
+cancel = "✖️ Cancel"
+menu = "🏠 Main menu"
+close = "✖️ Close"
+refresh = "🔄 Refresh"
+retry = "🔁 Try again"
+prev = "◀️"
+next = "▶️"
+page = "Page {page} of {pages}"
+
+[menu]
+title = "<b>{brand}</b>\n\nHow can I help? Pick a section 👇"
+my_subscription = "🔐 My subscription"
+buy = "🛒 Buy / renew"
+connect = "📲 Connect"
+balance = "💰 Balance"
+referral = "🤝 Invite a friend"
+gift = "🎁 Gift / promo code"
+support = "🆘 Support"
+language = "🌐 Language"
+instructions = "📖 How-to guides"
+trial = "🎉 Try for free"
+tg_proxy = "🛡 Telegram proxy"
+mini_app = "📱 My account"
+admin = "⚙️ Admin panel"
+
+[common]
+yes = "✅ Yes"
+no = "❌ No"
+confirm = "✅ Confirm"
+copy = "📋 Copy"
+open = "🔗 Open"
+on = "🟢 On"
+off = "⚪️ Off"
+saved = "✅ Saved"
+done = "Done ✅"
+loading = "⏳ Just a moment…"
+canceled = "Canceled 👌"
+
+[lang]
+title = "🌐 Choose the bot language:"
+ru = "🇷🇺 Русский"
+en = "🇬🇧 English"
+uk = "🇺🇦 Українська"
+kk = "🇰🇿 Қазақша"
+uz = "🇺🇿 Oʻzbekcha"
+fa = "🇮🇷 فارسی"
+zh = "🇨🇳 简体中文"
+changed = "Done! I'll speak English from now on 🇬🇧"

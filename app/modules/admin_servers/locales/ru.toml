@@ -1,0 +1,229 @@
+# Серверы: панели, inbound'ы, локации, точки подключения
+
+[admin_servers]
+title = "Серверы"
+home = "🖥 <b>Серверы</b> ({count})\n\n🟢 работает · 🟡 были сбои · 🔴 недоступен · ⏸ отключён\n\nВыберите сервер или добавьте новый."
+home_empty = "🖥 <b>Серверы</b>\n\nПока ни одного сервера. Подключите панель 3x-ui или Remnawave — я проверю соединение и подтяну настройки."
+not_found = "Не найдено 🤷"
+owner_only = "Добавлять серверы и менять адрес, доступы и проверку TLS панели может только владелец"
+expired = "Мастер устарел — начните заново."
+saved = "✅ Сохранено"
+deleted = "🗑 Удалено"
+enabled = "▶️ Сервер включён — аккаунты пользователей появятся на нём при ближайшей синхронизации."
+disabled = "⏸ Сервер отключён — аккаунты пользователей будут с него убраны при синхронизации."
+edit = "✏️ <b>Что изменить?</b>"
+no_location = "без локации"
+pick_location = "📍 Выберите локацию:"
+presets = "🔗 <b>Новая точка подключения</b>\n\n🎯 <b>Прямое</b> — адрес самого сервера.\n🔀 <b>Relay L4</b> — через пересылающий сервер (например, в РФ для мобильных сетей): меняются только адрес и порт.\n☁️ <b>CDN XHTTP</b> — через российский CDN (packet-up, GET), для inbound'ов на XHTTP.\n🇷🇺 <b>Reality с RU SNI</b> — для мобильных «белых списков»: relay + SNI из списка serverNames inbound'а."
+card = "🖥 <b>{name}</b> · {kind}\n<code>{url}</code>\n\nВерсия: {version}\nСостояние: {status}\nПроверка сертификата: {tls}"
+card_inbounds = "🧩 Inbound'ы: включено {active} из {total}"
+card_location = "📍 Локация: {location}"
+saved_inbounds = "✅ Сервер добавлен. Найдено inbound'ов: {count} — включите нужные в разделе «Inbound'ы», и пользователи начнут их получать."
+inbound_on = "🟢 включён"
+inbound_off = "⏸ выключен"
+inbound_port = "как у inbound"
+inbound_no_endpoints = "⚠️ У inbound'а нет ни одной точки подключения — пользователи не получат ссылок на него."
+inbounds = "🧩 <b>Inbound'ы</b>\n\nПользователи получают только включённые 🟢. Нажмите, чтобы настроить."
+inbounds_empty = "🧩 <b>Inbound'ов пока нет</b>\n\nОбновите список с панели или создайте VLESS-Reality прямо отсюда."
+inbound = "🧩 <b>{name}</b> (id {remote_id})\n\nПорт: {port}\nТранспорт: {transport}\nFlow: {flow}\nЛокация: {location}\nСостояние: {state}\nТочек подключения: {endpoints}"
+locations = "📍 <b>Локации</b>\n\nТак страны и города видят пользователи в приложениях. Порядок здесь = порядок в подписке."
+locations_empty = "📍 <b>Локаций пока нет</b>\n\nДобавьте первую, например «🇩🇪 Германия»."
+location = "📍 <b>{title}</b>\n\nСостояние: {state}\nInbound'ов: {inbounds}\nТочек подключения: {endpoints}\nПозиция: {order}"
+location_on = "🟢 показывается"
+location_off = "⏸ скрыта"
+location_delete = "🗑 Удалить локацию? Inbound'ы и точки подключения останутся, но без локации."
+endpoints = "🔗 <b>Точки подключения</b> · {inbound}\n\n🎯 прямое · 🔀 relay · ☁️ CDN · 🟢 работает · 🙈 скрыта после сбоев · ⏸ выключена"
+endpoints_empty = "🔗 <b>Точки подключения</b> · {inbound}\n\nПока ни одной — добавьте, иначе пользователи не получат ссылку."
+endpoint = "🔗 <b>Точка подключения</b>\n\nТип: {kind}\nПрофиль: {profile}\nАдрес: <code>{address}</code>\nПорт: {port}\nНазвание: {remark}\nСостояние: {state}\nОшибка: {error}\n\nПереопределения:\n<code>{overrides}</code>"
+endpoint_hidden = "🙈 скрыта (не отвечает)"
+endpoint_delete = "🗑 Удалить точку подключения? Пользователи перестанут получать эту ссылку."
+link_preview = "👀 Так ссылка выглядит у пользователя:\n<code>{link}</code>"
+link_error = "⚠️ Ссылку не собрать: {error}"
+preset_cdn_needs_xhttp = "CDN-пресет работает только с inbound'ами на XHTTP"
+preset_needs_reality = "Этот пресет — для inbound'ов с Reality"
+
+[admin_servers.state]
+disabled = "⏸ отключён"
+down = "🔴 недоступен\n<code>{error}</code>"
+flaky = "🟡 сбоев подряд: {count}\n<code>{error}</code>"
+ok = "🟢 на связи (проверено {when})"
+unknown = "⚪️ ещё не проверялся"
+
+[admin_servers.ping]
+ok = "🔌 Связь есть: версия {version}"
+failed = "🔌 Не удалось подключиться:\n<code>{error}</code>"
+
+[admin_servers.sync]
+started = "🔄 Синхронизация запущена: аккаунтов к обновлению — {count}."
+queued = "🔄 Аккаунтов к обновлению: {count}. Синхронизация пройдёт в течение {minutes} мин."
+
+[admin_servers.refresh]
+done = "📥 Список обновлён: новых {created}, изменённых {updated}, выключено {deactivated}.\nНовые inbound'ы добавляются выключенными."
+failed = "⚠️ Панель не ответила:\n<code>{error}</code>"
+
+[admin_servers.add]
+kind = "➕ <b>Новый сервер</b>\n\nКакая панель на нём стоит?"
+name = "✏️ Как назовём этот сервер {kind}? Например, «Германия-1». Название видят только администраторы."
+
+[admin_servers.add.url]
+marzban = "🌐 Пришлите адрес Marzban:\n<code>https://panel.example.com</code> или <code>http://marzban:8000</code>."
+xui = "🌐 Пришлите адрес панели 3x-ui целиком — как в браузере, вместе с секретным путём:\n<code>https://1.2.3.4:2053/secretpath</code>"
+remnawave = "🌐 Пришлите адрес Remnawave:\n<code>https://panel.example.com</code> или <code>http://remnawave:3000</code> (внутри Docker)"
+hiddify = "🌐 Пришлите адрес Hiddify вместе с путём администратора:\n<code>https://panel.example.com/admin-path</code>"
+pasarguard = "🌐 Пришлите адрес PasarGuard:\n<code>https://panel.example.com</code> или <code>http://pasarguard:8000</code>."
+marzneshin = "🌐 Пришлите адрес Marzneshin:\n<code>https://panel.example.com</code>."
+telemt = "🌐 Пришлите адрес Control API telemt:\n<code>http://telemt:9091</code>"
+
+[admin_servers.add.creds]
+marzban = "🔑 Пришлите логин и пароль через пробел или API-токен Marzban.\n\nСообщение я сразу удалю, доступы храню зашифрованными."
+xui = "🔑 Пришлите логин и пароль через пробел (<code>admin s3cret</code>) — или API-токен (3x-ui 3.1+).\n\nСообщение я сразу удалю, данные храню в зашифрованном виде."
+remnawave = "🔑 Пришлите API-токен Remnawave (Настройки → API-токены).\n\nСообщение я сразу удалю, токен храню в зашифрованном виде."
+hiddify = "🔑 Пришлите API-ключ Hiddify из Настройки → API.\n\nСообщение я сразу удалю, ключ храню в зашифрованном виде."
+pasarguard = "🔑 Пришлите API-ключ PasarGuard с правами на пользователей и чтение системы.\n\nСообщение я сразу удалю, ключ храню в зашифрованном виде."
+marzneshin = "🔑 Пришлите логин и пароль Marzneshin через пробел.\n\nСообщение я сразу удалю, доступы храню в зашифрованном виде."
+telemt = "🔑 Пришлите значение auth_header из конфигурации telemt (или «-», если авторизация выключена).\n\nСообщение я сразу удалю."
+
+[admin_servers.ask]
+name = "✏️ Новое название для сервера {kind}:"
+location = "📍 Пришлите флаг и название, например <code>🇩🇪 Германия</code> или <code>🇳🇱 Амстердам</code>."
+endpoint_sni = "🇷🇺 Пришлите SNI — российский домен из списка serverNames этого Reality-inbound'а (иначе сервер не примет подключение)."
+endpoint_remark = "✏️ Название точки в приложении (до 64 символов), например <code>🇩🇪 Германия · LTE</code>. Пусто — название сформируется автоматически."
+endpoint_overrides = "🧩 Пришлите переопределения параметров ссылки — JSON-объект, например:\n<code>{{\"sni\": \"cdn.example.ru\", \"fp\": \"chrome\"}}</code>\n\nЗначение <code>null</code> удаляет параметр."
+
+[admin_servers.ask.endpoint_address]
+direct = "🎯 Пришлите адрес, по которому клиенты подключаются к серверу: IP или домен, при необходимости с портом (<code>1.2.3.4</code>, <code>de.example.com:443</code>)."
+relay = "🔀 Пришлите адрес и порт пересылающего сервера: <code>5.6.7.8:443</code>. Без порта — как у inbound'а."
+cdn = "☁️ Пришлите домен CDN, например <code>cdn.example.ru</code> (порт — как у inbound'а, либо <code>cdn.example.ru:443</code>)."
+ru_sni = "🔀 Теперь адрес и порт relay-сервера с российским IP: <code>5.6.7.8:443</code>."
+edit = "✏️ Новый адрес (и порт): <code>1.2.3.4</code> или <code>relay.example.ru:8443</code>."
+
+[admin_servers.test]
+running = "⏳ Проверяю подключение…"
+title = "🔌 <b>Проверка подключения</b>\n\n{name} · {kind}\n<code>{url}</code>\n\n{result}"
+ok = "✅ Подключение работает. Версия панели: <b>{version}</b>"
+inbounds = "🧩 Inbound'ов на панели: {count}"
+failed = "❌ Не получилось подключиться:\n<code>{error}</code>\n\nПроверьте адрес и доступы. Для самоподписанного сертификата отключите проверку TLS."
+
+[admin_servers.error]
+name = "Название должно быть от 1 до {limit} символов."
+url = "Это не похоже на адрес 🤔 Нужно что-то вроде <code>https://1.2.3.4:2053/path</code>."
+location = "Не понял 🤔 Пример: <code>🇩🇪 Германия</code> (название до {limit} символов)."
+address = "Не понял адрес 🤔 Пример: <code>1.2.3.4</code> или <code>relay.example.ru:8443</code>."
+overrides = "Не получилось применить переопределения:\n<code>{error}</code>"
+
+[admin_servers.error.creds]
+marzban = "Пришлите логин и пароль через пробел или один API-токен."
+xui = "Нужны логин и пароль через пробел или один API-токен. Попробуйте ещё раз."
+remnawave = "Нужен API-токен одной строкой. Попробуйте ещё раз."
+hiddify = "Нужен API-ключ одной строкой. Попробуйте ещё раз."
+pasarguard = "Нужен API-ключ одной строкой. Попробуйте ещё раз."
+marzneshin = "Пришлите логин и пароль через пробел."
+telemt = "Нужно значение auth_header одной строкой или «-». Попробуйте ещё раз."
+
+[admin_servers.delete]
+ask = "🗑 <b>Удалить сервер «{name}»?</b>\n\nНа нём аккаунтов, созданных ботом: {count}.\n\nМожно убрать их с панели (пользователи сразу потеряют доступ к этому серверу) или оставить на панели как есть."
+confirm_cleanup = "⚠️ Точно удалить сервер и убрать с панели всех наших клиентов? Отменить это будет нельзя."
+confirm_keep = "⚠️ Точно удалить сервер из бота? Клиенты на панели останутся, но бот перестанет ими управлять."
+done = "🗑 Сервер удалён из бота."
+done_cleanup = "🗑 Сервер удалён. Убрано аккаунтов с панели: {removed}, не удалось: {failed}."
+
+[admin_servers.reality]
+port = "➕ <b>Новый VLESS-Reality inbound</b>\n\nНа каком порту? Обычно 443 — так трафик меньше выделяется. Пришлите номер порта или нажмите кнопку."
+bad_port = "Порт — число от 1 до 65535."
+port_taken = "Порт {port} уже занят другим inbound'ом на этой панели. Выберите другой."
+sni = "🎭 <b>Сайт для маскировки (SNI)</b>\n\nReality выдаёт себя за обращение к настоящему сайту. Подойдёт сайт с TLS 1.3 и HTTP/2 — я проверил список прямо сейчас (с сервера бота).\n\nЛучше выбирать сайт, близкий к серверу географически."
+checking = "Проверяю сайты…"
+custom_sni = "✏️ Указать свой сайт"
+ask_sni = "✏️ Пришлите домен сайта, например <code>www.microsoft.com</code>. Я проверю, что он подходит."
+bad_sni = "Пришлите только домен, например <code>www.microsoft.com</code>."
+sni_unfit = "⚠️ {host} не подходит: {problem}. Попробуйте другой сайт."
+location = "📍 SNI: <code>{sni}</code>\n\nК какой локации отнести новый inbound?"
+confirm = "➕ <b>Создаём inbound</b>\n\nVLESS + Reality + Vision\nПорт: {port}\nSNI: <code>{sni}</code>\nАдрес для клиентов: <code>{address}</code>\n\nКлючи x25519 и short id сгенерирую сам. Inbound сразу станет доступен пользователям — проверьте, что адрес публичный (не внутренний и не домен панели за прокси или CDN)."
+created = "✅ Inbound создан и включён — пользователи получат его при ближайшей синхронизации."
+failed = "❌ Панель не создала inbound:\n<code>{error}</code>"
+ask_address = "🎯 Пришлите адрес, по которому клиенты будут подключаться к этому inbound'у: IP или домен без порта (<code>1.2.3.4</code>, <code>de.example.com</code>). Домен не должен быть за CDN — Reality через него не работает."
+bad_address = "Не понял адрес 🤔 Нужен IP или домен без порта, например <code>de.example.com</code>."
+
+[admin_servers.reality.problem]
+unreachable = "не отвечает"
+tls13 = "нет TLS 1.3"
+h2 = "нет HTTP/2"
+
+[admin_servers.reality.group]
+global = "🌍 Зарубежные сайты"
+ru = "🇷🇺 Российские сайты"
+
+[admin_servers.health]
+title = "🩺 <b>Состояние серверов</b>\n\n{panels}\n\n🙈 <b>Скрытые точки подключения</b> (не отвечают):\n{endpoints}"
+failing = "сбоев подряд: {count} — <code>{error}</code>"
+ok_since = "на связи, {when}"
+never = "ещё не проверялся"
+no_panels = "Серверов пока нет."
+no_hidden = "нет — всё отвечает 👍"
+checking = "Проверяю…"
+checked = "✅ Проверка завершена. Изменений состояния: {changes}."
+
+[admin_servers.probe]
+ok = "📡 Адрес принимает подключения ✅"
+failed = "📡 Адрес не отвечает:\n<code>{error}</code>"
+
+[admin_servers.kind]
+direct = "🎯 прямое"
+relay = "🔀 relay"
+cdn = "☁️ CDN"
+
+[admin_servers.profile]
+standard = "обычный"
+whitelist = "LTE (мобильные «белые списки»)"
+
+[admin_servers.preset]
+direct = "🎯 Прямое подключение"
+relay = "🔀 Relay L4"
+cdn = "☁️ Yandex-CDN XHTTP (packet-up, GET)"
+ru_sni = "🇷🇺 Reality с RU SNI"
+
+[admin_servers.btn]
+add = "➕ Добавить сервер"
+add_endpoint = "➕ Добавить точку"
+add_location = "➕ Добавить локацию"
+check_now = "🩺 Проверить сейчас"
+clear = "🧹 Очистить"
+copy_link = "📋 Скопировать ссылку"
+create = "✅ Создать"
+delete = "🗑 Удалить"
+delete_cleanup = "🧹 Удалить и убрать клиентов ({count})"
+delete_keep = "📦 Удалить, клиентов оставить"
+delete_yes = "🗑 Да, удалить"
+disable = "⏸ Отключить"
+enable = "▶️ Включить"
+edit = "✏️ Изменить"
+edit_address = "✏️ Адрес"
+edit_creds = "🔑 Доступы"
+edit_name = "✏️ Название"
+edit_remark = "🏷 Название"
+edit_tls = "🔒 Проверка TLS"
+edit_url = "🌐 Адрес"
+endpoints = "🔗 Точки подключения ({count})"
+health = "🩺 Состояние"
+hide = "⏸ Скрыть"
+show = "▶️ Показывать"
+inbound_off = "⏸ Выключить для пользователей"
+inbound_on = "▶️ Включить для пользователей"
+inbounds = "🧩 Inbound'ы"
+location = "📍 Локация"
+locations = "📍 Локации"
+make_lte = "📶 Сделать LTE"
+make_regular = "🌐 Сделать обычной"
+overrides = "🧩 Переопределения"
+ping = "🔌 Проверить связь"
+probe = "📡 Проверить"
+reality_address = "🎯 Изменить адрес"
+reality = "➕ Создать VLESS-Reality"
+refresh = "📥 Обновить список"
+rename = "✏️ Переименовать"
+retest = "🔁 Проверить ещё раз"
+save = "💾 Сохранить"
+save_anyway = "💾 Всё равно сохранить"
+sync = "🔄 Синхронизировать"
+tls_on = "🔒 TLS: проверять"
+tls_off = "🔓 TLS: не проверять"

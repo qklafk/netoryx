@@ -1,0 +1,24 @@
+# Messages about payments and rewards, and notifications for administrators.
+
+[paid]
+topped_up = "✅ موجودی شما <b>{amount}</b> شارژ شد.\nموجودی فعلی: <b>{balance}</b>."
+plan_activated = "🎉 سپاسگزاریم! اشتراک <b>{plan}</b> شما تا <b>{expires}</b> فعال است.\n\nلینک اتصال در منوی اصلی است."
+gift_ready = "🎁 هدیهٔ شما آماده است: <b>{plan}</b>.\n\nاین لینک را برای گیرنده بفرستید:\n{link}\n\nیا کد: <code>{code}</code>"
+donation_thanks = "💜 از حمایت شما سپاسگزاریم! مبلغ <b>{amount}</b> دریافت شد."
+plan_failed = "✅ پرداخت <b>{amount}</b> شما به موجودی اضافه شد (اکنون <b>{balance}</b>)، اما اشتراک <b>{plan}</b> به‌صورت خودکار فعال نشد.\n\nآن را از منو با موجودی بخرید یا با پشتیبانی تماس بگیرید."
+partial = "⚠️ به جای <b>{expected}</b> مبلغ <b>{amount}</b> دریافت شد. این مبلغ به موجودی شما اضافه شد که اکنون <b>{balance}</b> است."
+
+[reward]
+money = "💸 پاداش معرفی: <b>+{amount}</b> به موجودی شما (سطح {level})."
+partner = "💼 پاداش همکاری: <b>+{amount}</b> به موجودی همکاری شما (سطح {level})."
+days = "🎁 جایزهٔ معرفی: <b>+{days}</b> به اشتراک شما اضافه شد (سطح {level})."
+
+[admin_notify]
+payment = "💰 <b>{amount}</b> از طریق {provider}\nکاربر: <code>{user_id}</code> {username}\n{what}"
+what_topup = "شارژ موجودی"
+what_plan = "خرید: {plan}"
+what_gift = "هدیه: {plan}"
+what_donation = "کمک مالی"
+plan_failed = "⚠️ اشتراک فعال نشد: {reason}"
+channel_check_failed = "⚠️ بررسی عضویت در کانال <code>{channel_id}</code> ممکن نیست. مطمئن شوید ربات در آنجا مدیر است. تا آن زمان کاربران بدون بررسی وارد می‌شوند."
+error = "🔥 <b>خطا</b> <code>{signature}</code>\nupdate {update_id} ({update_type})، کاربر <code>{user_id}</code>\n<code>{error}</code>\n<pre>{trace}</pre>"

@@ -1,0 +1,63 @@
+---
+import { labels, panelsRow } from '~/data/i18n';
+import { docUrl, type Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = panelsRow[lang];
+const l = labels[lang];
+const names = ['3x-ui', 'Remnawave', 'Marzban', 'Marzneshin', 'PasarGuard', 'Hiddify'];
+---
+
+<section class="nx-s not-content" id="panels">
+  <div class="nx-wrap">
+    <div class="nx-head">
+      <span class="nx-chip">{l.panels}</span>
+      <h2>{t.title}</h2>
+      <p class="nx-lead">{t.text}</p>
+    </div>
+    <div class="nx-grid row">
+      {names.map((n) => <div class="nx-cell name"><span>{n}</span></div>)}
+    </div>
+    <p class="more"><a href={docUrl(lang, 'panels')}>{t.more} &rarr;</a></p>
+  </div>
+</section>
+
+<style>
+  .row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .name {
+    display: grid;
+    place-items: center;
+    padding: clamp(1.5rem, 4vw, 2.6rem) 0.5rem;
+    font-family: var(--nx-mono);
+    font-weight: 700;
+    font-size: clamp(1rem, 2.6vw, 1.7rem);
+    letter-spacing: -0.04em;
+    color: var(--nx-ink);
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+  .name:hover {
+    background: var(--nx-ink);
+    color: var(--nx-bg);
+  }
+  .more {
+    margin-top: 1.25rem !important;
+    font-family: var(--nx-mono);
+    font-size: 0.8125rem;
+  }
+  .more a {
+    color: var(--nx-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @media (min-width: 52rem) {
+    .row {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+</style>

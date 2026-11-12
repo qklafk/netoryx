@@ -1,0 +1,56 @@
+# Number, money, date and period formats; plural forms (one / other).
+
+[fmt]
+money = "{amount} ₽"
+stars = "{amount} ⭐️"
+date = "{day} {month} {year}"
+datetime = "{date}، {time}"
+unlimited = "نامحدود"
+forever = "بدون تاریخ انقضا"
+never = "هرگز"
+
+[fmt.month]
+1 = "ژانویه"
+2 = "فوریه"
+3 = "مارس"
+4 = "آوریل"
+5 = "مه"
+6 = "ژوئن"
+7 = "ژوئیه"
+8 = "اوت"
+9 = "سپتامبر"
+10 = "اکتبر"
+11 = "نوامبر"
+12 = "دسامبر"
+
+[plural.days]
+one = "{n} روز"
+other = "{n} روز"
+
+[plural.months]
+one = "{n} ماه"
+other = "{n} ماه"
+
+[plural.years]
+one = "{n} سال"
+other = "{n} سال"
+
+[plural.hours]
+one = "{n} ساعت"
+other = "{n} ساعت"
+
+[plural.minutes]
+one = "{n} دقیقه"
+other = "{n} دقیقه"
+
+[plural.devices]
+one = "{n} دستگاه"
+other = "{n} دستگاه"
+
+[plural.gb]
+one = "{n} گیگابایت"
+other = "{n} گیگابایت"
+
+[plural.users]
+one = "{n} کاربر"
+other = "{n} کاربر"

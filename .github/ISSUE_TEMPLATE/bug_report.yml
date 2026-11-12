@@ -1,0 +1,63 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not paste bot tokens, API keys, passwords, `.env` contents, subscription links, panel addresses with secret paths, or any customer data (Telegram IDs, usernames, payment details).** Replace them with `***`. For security problems use the private route in SECURITY.md instead of an issue.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Netoryx version
+      description: Output of `netoryx status` or the release tag.
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installation
+      options:
+        - One-line installer (Docker)
+        - Docker Compose by hand
+        - From source
+    validations:
+      required: true
+  - type: input
+    id: panel
+    attributes:
+      label: Panel and version
+      description: For example 3x-ui 2.x, Remnawave 3.x, Marzban. Leave empty if not related.
+  - type: input
+    id: os
+    attributes:
+      label: Server OS and database
+      description: For example Ubuntu 24.04, PostgreSQL.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: From `netoryx logs`. Remove tokens, links and personal data first.
+      render: text
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: I removed tokens, keys, subscription links and customer data from everything I pasted
+          required: true
+        - label: I searched existing issues and the docs
+          required: true

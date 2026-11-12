@@ -1,0 +1,15 @@
+id = "proxy.mtproxy"
+version = 1
+title = "Telegram MTProxy"
+description = "Telegram proxy service with managed access controls."
+roles = ["all-in-one", "vpn-node"]
+profiles = ["personal", "commercial"]
+depends_on = ["core.node-runtime"]
+
+[[ports]]
+port = 443
+protocol = "tcp"
+
+[resources]
+ram_mb = 64
+disk_mb = 100

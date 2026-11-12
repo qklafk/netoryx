@@ -1,0 +1,75 @@
+# Invitations: admin screens and accepting an invitation.
+
+[invites]
+menu = "邀请"
+untitled = "邀请 {code}"
+uses_value = "{used} / {total}"
+created = "✅ 邀请已就绪"
+revoked = "🚫 邀请已撤销"
+share_text = "这是我们 VPN 的邀请——打开链接即可使用 🙌"
+revoke_confirm = "🚫 <b>撤销邀请「{title}」？</b>\n\n之后将无人能通过此链接加入。已加入的用户保留访问权限。"
+qr = "📷 <b>{title}</b>\n\n出示此码——用手机相机扫描即可打开带有邀请的机器人。"
+joined = "🎉 {name} 已接受您的邀请，现在和我们在一起了！"
+joined_note = "🎉 邀请「{note}」已生效：{name} 现在和我们在一起了！"
+welcome = "🎉 <b>欢迎！</b>\n\n您的 VPN 访问已开通——{until}。\n\n只差连接这一步：点击下方按钮，选择您的设备并按提示操作。只需几分钟 🙂"
+until_date = "至 {date}"
+until_forever = "永久有效"
+
+[invites.list]
+title = "✉️ <b>邀请</b>"
+intro = "邀请是一个链接，可让您的家人和朋友免费使用 VPN。创建后直接发送链接即可。"
+empty = "暂无邀请。\n\n创建第一个——选择访问时长和设备数量，然后把链接发给受邀人。"
+
+[invites.card]
+title = "✉️ <b>{title}</b>"
+period = "访问时长：{value}"
+devices = "设备：{value}"
+traffic = "流量：每月 {value}"
+uses = "已使用：{value}"
+valid_until = "链接有效期至：{value}"
+state = "状态：{value}"
+link = "链接：\n<code>{link}</code>"
+hint = "发给受邀人：对方只需打开链接并点击「Start」。"
+
+[invites.state]
+active = "有效"
+used = "已用完"
+expired = "链接已过期"
+revoked = "已撤销"
+
+[invites.new]
+days = "✉️ <b>新邀请</b>\n\n访问时长设为多久？"
+devices = "✉️ <b>新邀请</b>\n\n可以连接几台设备？"
+uses = "✉️ <b>新邀请</b>\n\n多少人可以使用此链接？"
+summary = "✉️ <b>新邀请</b>\n\n时长：{period}\n设备：{devices}\n人数：{uses}"
+note = "这是给谁的？写个名字——例如「妈妈」或「小明」——方便以后区分邀请。或点击「跳过」。"
+
+[invites.uses]
+unlimited = "不限人数"
+
+[invites.uses.people]
+other = "{n} 人"
+
+[invites.users]
+title = "👥 <b>通过「{title}」加入</b>"
+empty = "暂时还没有人。"
+
+[invites.outcome]
+not_found = "😕 没有这个邀请。请检查链接或索取新链接。"
+inactive = "😕 该邀请已被撤销。请向所有者索取新链接。"
+expired = "⌛️ 该邀请已过期。请向所有者索取新链接。"
+exhausted = "😕 该邀请已被用完。请向所有者索取新链接。"
+already_used = "🙂 您已接受过此邀请——访问权限有效。"
+banned = "🚫 机器人访问受限。"
+redeemed = "🎉 已接受邀请！"
+
+[invites.btn]
+new = "➕ 新邀请"
+share = "📤 发送邀请"
+copy = "📋 复制链接"
+qr = "📷 二维码"
+users = "👥 已加入（{count}）"
+revoke = "🚫 撤销"
+revoke_ok = "🚫 是，撤销"
+skip_note = "⏭ 跳过"
+connect = "📲 连接 VPN"

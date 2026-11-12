@@ -1,0 +1,14 @@
+# Backups and cleanup: captions and admin notices.
+
+[housekeeping.backup]
+caption = "💾 <b>{brand} сақтық көшірмесі</b>\n{when} · {size}"
+encrypted = "🔒 Файл баптаулардағы құпиясөзбен шифрланған."
+plain = "⚠️ Файл шифрланбаған — оны қауіпсіз жерде сақтаңыз немесе баптауларда сақтық көшірме құпиясөзін орнатыңыз."
+failed = "😔 Сақтық көшірме жасау мүмкін болмады: <code>{error}</code>"
+not_sent = "😔 <code>{name}</code> сақтық көшірмесі жасалды, бірақ чатқа жіберілмеді: <code>{error}</code>. Файл серверде сақталған."
+
+[housekeeping.unit]
+b = "{n} Б"
+kb = "{n} КБ"
+mb = "{n} МБ"
+gb = "{n} ГБ"

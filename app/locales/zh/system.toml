@@ -1,0 +1,36 @@
+# Errors and access notices shown by the bot itself.
+
+[error]
+generic = "😔 出了点问题。请稍后再试——我们正在处理。"
+alert = "😔 出了点问题，请重试。"
+expired_button = "此按钮已失效。请重新打开菜单 👇"
+unknown_message = "抱歉，我没看懂 🤔 您需要的一切都在下方菜单中。"
+not_allowed = "⛔️ 您没有执行此操作的权限。"
+not_found = "未找到任何内容 🤷"
+invalid_input = "无法识别该内容。请检查后重新发送。"
+unavailable = "此板块暂时不可用，请稍后再来 🙏"
+
+[access]
+banned = "🚫 您使用本机器人的权限已被限制。\n如果您认为这是误判，请联系客服。"
+throttled = "🐢 慢一点！请等几秒再试。"
+maintenance = "🛠 <b>系统维护中</b>\n\n我们很快回来。感谢您的耐心！"
+maintenance_eta = "🛠 <b>系统维护中</b>\n\n预计 {eta} 前恢复。感谢您的耐心！"
+maintenance_until = "预计 {eta} 前恢复。"
+maintenance_alert = "🛠 系统维护中——请稍后再来"
+invite_only = "🔒 这是私人机器人——仅限受邀用户使用。\n\n请向所有者索取邀请链接并打开。"
+invite_invalid = "😕 此邀请无效或已被使用。请向所有者索取新链接。"
+
+[access.channel]
+text = "📢 使用机器人前，请先加入我们的频道——新闻、优惠和服务器状态都会在那里发布。\n\n已加入？请点击「✅ 我已加入」。"
+subscribe = "📢 打开频道"
+check = "✅ 我已加入"
+not_yet = "暂时还没在频道里看到您 🤔 请加入后再点一次按钮。"
+thanks = "感谢加入！🙌"
+
+[consent]
+text = "📄 开始之前，请阅读我们的<b>服务条款</b>和<b>隐私政策</b>——链接在下方。\n\n点击「接受」即表示您同意这些条款。"
+terms = "📄 服务条款"
+privacy = "🔒 隐私政策"
+accept = "✅ 接受"
+accepted = "谢谢！欢迎使用 👋"
+required = "请接受条款以继续 🙏"

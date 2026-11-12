@@ -1,0 +1,14 @@
+manifest_schema = 1
+id = "system.demo"
+version = 1
+title = "Demo module"
+description = "Trusted built-in module used to verify the module lifecycle."
+roles = ["all-in-one", "control-plane", "vpn-node"]
+profiles = ["personal", "commercial"]
+sdk_compatibility = ">=1,<2"
+entrypoint = "app.core.plugins.builtin:DemoPlugin"
+permissions = ["storage.module", "events.publish"]
+
+[resources]
+ram_mb = 1
+disk_mb = 1

@@ -1,0 +1,50 @@
+[admin_plans]
+title = "Тарифы"
+list = "📦 <b>Тарифы</b>\n\nНажмите на тариф, чтобы изменить его. 🗄 — в архиве, 🙈 — скрыт (доступен только по ссылке)."
+list_empty = "📦 <b>Тарифы</b>\n\nТарифов пока нет — создайте первый."
+invalid = "Это значение не подходит. Попробуйте ещё раз."
+created = "✅ Тариф создан."
+
+[admin_plans.card]
+audience = "Аудитория: <code>{rule}</code> · allow-list: {users}"
+title = "📦 <b>{title}</b> · id {id}"
+duration = "⏱ Срок: {duration} ({days} дн.)"
+price = "💰 Цена: <b>{price}</b> (≈ {monthly} в месяц) · {stars}"
+stars_auto = "{stars} (по курсу)"
+limits = "📱 Устройства: {devices} · 📶 Трафик за период: {traffic}"
+flags = "Статус: {status} · скрыт: {hidden} · прокси для Telegram: {proxy} · порядок: {order}"
+active = "🟢 продаётся"
+archived = "🗄 в архиве"
+stats = "📊 Активных подписок: {active} · покупок: {purchases} · выручка: {revenue}"
+link = "🔗 Ссылка на скрытый тариф:\n<code>{link}</code>"
+
+[admin_plans.btn]
+availability_rule = "👥 Аудитория"
+allowed_user_ids = "📋 Allow-list"
+new = "➕ Новый тариф"
+back = "◀️ К тарифам"
+title = "✏️ Название"
+duration_days = "⏱ Срок"
+price_kop = "💰 Цена"
+price_stars = "⭐️ Цена в Stars"
+device_limit = "📱 Устройства"
+traffic_limit_gb = "📶 Трафик"
+is_hidden_on = "🙈 Скрыть"
+is_hidden_off = "👁 Показывать всем"
+includes_tg_proxy_on = "🛡 Включить прокси"
+includes_tg_proxy_off = "🛡 Без прокси"
+is_active_on = "♻️ Вернуть из архива"
+is_active_off = "🗄 В архив"
+
+[admin_plans.ask]
+availability_rule = "👥 Кто может купить: <code>all</code>, <code>new</code>, <code>existing</code>, <code>invited</code> или <code>allowlist</code>."
+allowed_user_ids = "📋 Telegram ID с доступом к покупке через пробел или запятую. Пустое сообщение очистит список."
+title = "✏️ Пришлите название тарифа (до 64 символов), например «1 месяц»."
+duration_days = "⏱ Сколько дней длится тариф? Например, <code>30</code>."
+price_kop = "💰 Цена в рублях, например <code>149</code> или <code>199,90</code>. <code>0</code> — бесплатно."
+price_stars = "⭐️ Цена в Telegram Stars. <code>0</code> — считать автоматически по курсу."
+device_limit = "📱 Сколько устройств можно подключить? <code>0</code> — без ограничений."
+traffic_limit_gb = "📶 Лимит трафика в ГБ за период. <code>0</code> — без ограничений."
+
+[admin_plans.create]
+step = "➕ <b>Новый тариф</b> · шаг {step} из {total}"

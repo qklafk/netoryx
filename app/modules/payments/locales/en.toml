@@ -1,0 +1,95 @@
+# Payment screens, invoices, Telegram Stars and donations.
+
+[payments]
+creating = "⏳ Creating your invoice…"
+pay_button = "💳 Pay {amount}"
+check_button = "🔄 I've paid — check"
+other_method = "🔁 Another payment method"
+new_payment = "💳 New payment"
+no_methods = "😔 No payment methods are available right now.\n\nPlease check back a bit later or contact support — we'll help."
+
+[payments.provider]
+stars = "⭐️ Telegram Stars"
+cryptobot = "🪙 Crypto (CryptoBot)"
+platega = "💳 Card / SBP"
+yookassa = "💳 Card / SBP (YooKassa)"
+yoomoney = "💳 YooMoney: card or wallet"
+freekassa = "💳 Card / SBP (FreeKassa)"
+test = "🧪 Test payment"
+ton = "💎 Toncoin (TON), direct"
+usdt_trc20 = "💵 USDT (TRC-20), direct"
+
+[payments.description]
+topup = "{brand} balance top-up"
+plan = "{brand} subscription: {plan}"
+gift = "{brand} gift subscription: {plan}"
+donation = "Support {brand}"
+
+[payments.methods]
+topup = "💳 <b>Top up your balance by {amount}</b>\n\nChoose a payment method 👇"
+plan = "🛒 <b>Subscription “{plan}”</b> — {period} for {price}"
+gift = "🎁 <b>Gift: “{plan}”</b> — {period} for {price}"
+missing = "You already have {balance} on your balance, so you only need to pay <b>{amount}</b>."
+choose = "Everything is set up automatically once you've paid. Choose a payment method 👇"
+donation = "💜 Support with <b>{stars} ⭐️</b>\n\nChoose a payment method 👇"
+
+[payments.method]
+stars = "{title} · {stars} ⭐️"
+stars_recurring = "🔁 Stars, renews monthly · {stars} ⭐️/mo"
+with_amount = "{title} · {amount}"
+save_card = "{title} · 💾 save card for auto-renewal"
+
+[payments.invoice]
+save_card_note = "💾 The card will be saved for auto-renewal: if your balance is short when the subscription renews, the missing amount is charged to it. You can remove the card any time under Balance → Saved cards."
+topup = "🧾 <b>Invoice for {amount}</b> — {provider}\n\nTap “Pay” to proceed. As soon as the payment goes through, the money appears on your balance — usually within a minute.\n\nThe invoice is valid for {hours}."
+plan = "🧾 <b>Invoice for {amount}</b> — {provider}\n\nTap “Pay” to proceed. As soon as the payment goes through, I'll set everything up and message you.\n\nThe invoice is valid for {hours}."
+
+[payments.check]
+paid = "✅ Payment of <b>{amount}</b> received. Thank you!"
+pending = "⏳ The payment hasn't arrived yet. If you've already paid, give it a minute — I'll message you as soon as it does."
+closed = "⌛️ This invoice is no longer valid. Create a new payment — it only takes a couple of seconds."
+
+[payments.error]
+amount = "This amount can't be accepted. Please choose another one 🙏"
+plan = "This plan isn't available right now. Please choose another one 🙏"
+unavailable = "😔 Payments are unavailable right now. Please try again a bit later."
+method_unavailable = "This payment method isn't available right now — please choose another one."
+provider = "😔 Couldn't create an invoice with {provider}. Please try again or choose another payment method."
+
+[payments.email]
+ask = "📧 The receipt needs your e-mail — the payment provider will send it there.\n\nPlease send your address in one message:"
+invalid = "That address doesn't look right 🤔 Please send an e-mail like name@example.com"
+saved = "✅ E-mail saved, creating your invoice…"
+
+[payments.stars]
+pay_button = "Pay {stars} ⭐️"
+title_topup = "Balance top-up"
+text_topup = "{brand} balance top-up of {amount}"
+title_plan = "{brand}: {plan}"
+text_plan = "{brand} subscription “{plan}” for {period}"
+text_plan_recurring = "{brand} subscription “{plan}” with auto-renewal: Telegram charges Stars once a month, cancel any time."
+title_gift = "Gift: {plan}"
+text_gift = "Gift code for the {brand} subscription “{plan}” ({period})"
+title_donation = "Support {brand}"
+text_donation = "A voluntary contribution to {brand}. Thank you for being with us!"
+subscription_text = "🔁 <b>Subscribe with Telegram Stars</b>\n\nEvery month Telegram will automatically charge <b>{stars} ⭐️</b> and renew your subscription. You can cancel any time in Telegram settings.\n\nTap the button below to subscribe 👇"
+declined = "This invoice is no longer valid. Please go back to the bot and create a new one."
+
+[payments.donate]
+text = "💜 <b>Support {brand}</b>\n\nIf you enjoy the service, you can support it with Telegram Stars. It's completely voluntary and changes nothing — it's simply a big thank-you 🙏"
+button = "⭐️ {stars}"
+unavailable = "Supporting the project with Stars isn't possible right now, but thank you for wanting to 💜"
+
+[payments.onchain]
+head = "🪙 <b>Pay {amount} {currency}</b> ({network}) — {rub}"
+address = "Address: <code>{address}</code>"
+amount = "Amount: <code>{amount}</code> {currency}"
+comment = "Comment: <code>{comment}</code>"
+hint_comment = "⚠️ Be sure to include the comment — that's how we find your payment. The amount must not be lower than shown."
+hint_amount = "⚠️ Send <b>exactly</b> this amount in a single transfer and only on the TRON (TRC-20) network — that's how we find your payment. Note that exchanges may deduct a fee from the amount sent."
+link = "Wallet link: <code>{link}</code>"
+footer = "The payment is credited automatically once the network confirms it — usually within a couple of minutes. The invoice is valid for {hours}."
+open_wallet = "👛 Open wallet"
+copy_address = "📋 Address"
+copy_amount = "📋 Amount"
+copy_comment = "📋 Comment"

@@ -1,0 +1,59 @@
+# Members of a private VPN: owner screens and notices to members.
+
+[members]
+menu = "Ishtirokchilar"
+until = "{date} gacha ({left} qoldi)"
+expired_on = "{date} da tugagan"
+gone = "Bu ishtirokchi endi roʻyxatda yoʻq"
+extended = "✅ Foydalanish uzaytirildi"
+paused = "⏸ Foydalanish toʻxtatildi"
+resumed = "▶️ Foydalanish tiklandi"
+rotated = "✅ Havola almashtirildi, ishtirokchiga xabar berildi"
+reset_done = "✅ Qurilmalar tiklandi"
+reset_nothing = "Tiklaydigan narsa yoʻq: ishtirokchida ulangan serverlar yoʻq"
+reset_failed = "😔 Qurilmalarni tiklab boʻlmadi — server javob bermadi. Keyinroq urinib koʻring."
+removed = "🗑 Ishtirokchi olib tashlandi"
+removed_pending = "🗑 Ishtirokchi olib tashlandi. Uning baʼzi serverlardagi hisoblari oʻsha serverlar mavjud boʻlishi bilan oʻchiriladi."
+extend = "➕ <b>Foydalanishni uzaytirish</b> · {name}\n\nHozir: {access}\n\nQanchaga uzaytiramiz?"
+limits = "📱 <b>Limitlar</b> · {name}\n\nBirinchi qator — nechta qurilma ulash mumkinligi, pastda — oylik trafik."
+rotate_confirm = "🔗 <b>{name} uchun yangi havola chiqarilsinmi?</b>\n\nEski obuna havolasi darhol ishlamay qoladi. Ishtirokchidan ilovani qayta ulashni soʻraymiz."
+remove_confirm = "🗑 <b>{name} olib tashlansinmi?</b>\n\nVPN ga ruxsat barcha serverlarda yopiladi va ishtirokchi botdan boshqa foydalana olmaydi. Uni yangi taklif bilan qaytarish mumkin."
+
+[members.list]
+title = "👥 <b>Ishtirokchilar</b> · {count}"
+intro = "VPN ingizga ruxsati bor barcha odamlar. Foydalanishni uzaytirish, toʻxtatish yoki limitlarni oʻzgartirish uchun ismga bosing."
+empty = "Bu yerda hozircha hech kim yoʻq.\n\nOila aʼzolari va doʻstlaringizga taklif yuboring — admin menyusidagi «✉️ Takliflar» ga qarang."
+
+[members.card]
+title = "👤 {user}"
+state = "Holat: {value}"
+access = "Foydalanish: {value}"
+devices = "Qurilmalar: {value}"
+traffic = "Oylik trafik: {value}"
+since = "Biz bilan {value} dan beri"
+
+[members.state]
+active = "faol"
+paused = "toʻxtatilgan"
+expired = "foydalanish tugagan"
+
+[members.btn]
+extend = "➕ Uzaytirish"
+pause = "⏸ Toʻxtatish"
+resume = "▶️ Davom ettirish"
+limits = "📱 Limitlar"
+reset = "🔄 Qurilmalarni tiklash"
+rotate = "🔗 Yangi havola"
+rotate_ok = "🔗 Ha, yangisini chiqarish"
+remove = "🗑 Olib tashlash"
+remove_ok = "🗑 Ha, olib tashlash"
+connect = "📲 Ulanish"
+
+[members.notice]
+until = "{date} gacha"
+forever = "muddatsiz"
+extended = "🎁 Xushxabar: VPN dan foydalanish muddatingiz uzaytirildi — {until}. Yoqimli foydalaning!"
+paused = "⏸ VPN dan foydalanishingiz toʻxtatildi. Agar bu kutilmagan boʻlsa, egasiga yozing."
+resumed = "▶️ VPN dan foydalanishingiz yana ishlayapti. Ulanishingiz mumkin!"
+rotated = "🔗 Obuna havolangiz oʻzgardi — eskisi endi ishlamaydi. Ulanish boʻlimini oching va yangi havolani ilovaga qoʻshing 👇"
+removed = "👋 Egasi VPN dan foydalanishingizni yopdi. Biz bilan boʻlganingiz uchun rahmat!"

@@ -1,0 +1,22 @@
+[admin_subscriptions]
+title = "Subscriptions"
+overview = "🗂 <b>Subscriptions</b>\n\n🟢 Active: <b>{active}</b> ({trial} trial, {complimentary} complimentary)\n⏳ Ending within 3 days: {d3} · within 7 days: {d7}\n🔴 Ended in the last 30 days: {expired}\n⏸ Blocked by an admin: {disabled}"
+expiring = "⏳ <b>Ending within {days}</b> · page {page}"
+expiring_empty = "No subscriptions end any time soon 🎉"
+ask_days = "🎁 <b>Compensation</b>\n\nHow many days should every active subscription get? For example after a server outage. Send a number."
+confirm_compensation = "🎁 Add <b>{days}</b> to every active subscription ({count} in total)?\n\nTrial and complimentary ones get the days too. There is no one-click undo."
+progress = "⏳ Adding days… {done} of {total}"
+compensated = "✅ Done: {days} added to {count} subscriptions. The servers will be updated within minutes."
+confirm_resync = "🔄 Push every account to the servers again? It is safe, but takes a while on large databases."
+resyncing = "⏳ Syncing the servers…"
+resynced = "✅ Marked for sync: {marked}. Updated now: {synced}, errors: {failed}, servers unreachable: {down}. Background sync takes care of the rest."
+already_running = "This is already running ⏳"
+failed = "😔 The operation could not be finished - see the logs for details."
+compensation_pending = "⚠️ A compensation is not finished: +{days}, {done} of {total} done. Press «Continue» - subscriptions that already got the days will not get them twice."
+compensation_resumed = "✅ Compensation finished: {count} subscriptions got the days. The servers will be updated within minutes."
+
+[admin_subscriptions.btn]
+expiring = "⏳ Ending soon"
+compensate = "🎁 Compensate all active"
+resync = "🔄 Re-sync everything"
+resume = "▶️ Continue compensation"

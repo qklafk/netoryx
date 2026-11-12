@@ -1,0 +1,76 @@
+# Invitations: admin screens and accepting an invitation.
+
+[invites]
+menu = "Invitations"
+untitled = "Invitation {code}"
+uses_value = "{used} of {total}"
+created = "✅ The invitation is ready"
+revoked = "🚫 Invitation revoked"
+share_text = "Here is an invitation to our VPN — open the link and you are all set 🙌"
+revoke_confirm = "🚫 <b>Revoke the invitation “{title}”?</b>\n\nNobody else will be able to join with this link. People who already joined keep their access."
+qr = "📷 <b>{title}</b>\n\nShow this code — scanning it with a phone camera opens the bot with the invitation."
+joined = "🎉 {name} accepted your invitation and is with us now!"
+joined_note = "🎉 The invitation “{note}” worked: {name} is with us now!"
+welcome = "🎉 <b>Welcome!</b>\n\nYour VPN access is open — {until}.\n\nAll that is left is to connect: tap the button below, pick your device and follow the tips. It takes a couple of minutes 🙂"
+until_date = "until {date}"
+until_forever = "with no end date"
+
+[invites.list]
+title = "✉️ <b>Invitations</b>"
+intro = "An invitation is a link that gives your family and friends free VPN access. Create one and just send the link."
+empty = "No invitations yet.\n\nCreate the first one — pick the access period and the number of devices, then send the link to the person you are inviting."
+
+[invites.card]
+title = "✉️ <b>{title}</b>"
+period = "Access period: {value}"
+devices = "Devices: {value}"
+traffic = "Traffic: {value} per month"
+uses = "Used: {value}"
+valid_until = "The link is valid until: {value}"
+state = "Status: {value}"
+link = "Link:\n<code>{link}</code>"
+hint = "Send it to the person you are inviting: they just open the link and tap “Start”."
+
+[invites.state]
+active = "active"
+used = "used up"
+expired = "link expired"
+revoked = "revoked"
+
+[invites.new]
+days = "✉️ <b>New invitation</b>\n\nHow long should the access last?"
+devices = "✉️ <b>New invitation</b>\n\nHow many devices can be connected?"
+uses = "✉️ <b>New invitation</b>\n\nHow many people can use the link?"
+summary = "✉️ <b>New invitation</b>\n\nPeriod: {period}\nDevices: {devices}\nFor: {uses}"
+note = "Who is it for? Type a name — e.g. “Mom” or “Dan” — so you can tell invitations apart later. Or tap “Skip”."
+
+[invites.uses]
+unlimited = "any number of people"
+
+[invites.uses.people]
+one = "{n} person"
+other = "{n} people"
+
+[invites.users]
+title = "👥 <b>Joined with “{title}”</b>"
+empty = "Nobody yet."
+
+[invites.outcome]
+not_found = "😕 There is no such invitation. Check the link or ask for a new one."
+inactive = "😕 This invitation was revoked. Ask the owner for a new link."
+expired = "⌛️ This invitation has expired. Ask the owner for a new link."
+exhausted = "😕 This invitation has already been used. Ask the owner for a new link."
+already_used = "🙂 You have already accepted this invitation — your access is active."
+banned = "🚫 Access to the bot is restricted."
+redeemed = "🎉 Invitation accepted!"
+
+[invites.btn]
+new = "➕ New invitation"
+share = "📤 Send the invitation"
+copy = "📋 Copy link"
+qr = "📷 QR code"
+users = "👥 Joined ({count})"
+revoke = "🚫 Revoke"
+revoke_ok = "🚫 Yes, revoke"
+skip_note = "⏭ Skip"
+connect = "📲 Connect the VPN"

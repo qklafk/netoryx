@@ -1,0 +1,4 @@
+# Outgoing webhooks: admin notices.
+
+[webhooks]
+disabled = "⚠️ Webhook endpoint #{id} ({host}) was switched off: {count} deliveries in a row could not be delivered. Check the receiver and turn the endpoint back on in the web admin."

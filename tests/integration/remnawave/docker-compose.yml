@@ -1,0 +1,40 @@
+# Throwaway Remnawave panel for tests/integration/remnawave/test_remnawave_live.py.
+# Started and removed (with volumes) by the test; see the test module docstring.
+name: vpnbot-remnawave-it
+
+services:
+  remnawave:
+    image: remnawave/backend:${REMNAWAVE_IMAGE_TAG:-3.4.8}
+    env_file: remnawave.env
+    environment:
+      # The test runs a webhook receiver on the host.
+      WEBHOOK_URL: http://host.docker.internal:${REMNAWAVE_IT_HOOK_PORT:-18199}/hook
+    ports:
+      - 127.0.0.1:${REMNAWAVE_IT_PORT:-13100}:3000
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      remnawave-db: {condition: service_healthy}
+      remnawave-redis: {condition: service_healthy}
+
+  remnawave-db:
+    image: postgres:18.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      TZ: UTC
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d postgres']
+      interval: 3s
+      timeout: 10s
+      retries: 20
+
+  remnawave-redis:
+    image: valkey/valkey:9-alpine
+    command: valkey-server --save "" --appendonly no --maxmemory-policy noeviction --port 6379
+    healthcheck:
+      test: ['CMD', 'valkey-cli', 'ping']
+      interval: 3s
+      timeout: 3s
+      retries: 20

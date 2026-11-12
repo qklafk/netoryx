@@ -1,0 +1,21 @@
+# Entering promo and gift codes.
+
+[promo]
+enter = "🎟 <b>优惠码或礼品码</b>\n\n请用一条消息发送代码，我会立即为您激活。"
+canceled = "好的，下次吧 👌"
+try_another = "🔁 输入其他代码"
+gift_redeemed_buyer = "🎁 您赠送的「{plan}」刚刚被激活！感谢您与亲友分享 {brand} 💜"
+
+[promo.ok]
+title = "🎉 <b>优惠码已激活！</b>"
+gift = "🎉 <b>礼品已激活！</b>「{plan}」订阅归您了。"
+days = "📅 已增加 +{days}——您的订阅现有效期至 <b>{date}</b>。"
+money = "💰 余额已增加 +{amount}（当前 {balance}）。"
+
+[promo.error]
+not_found = "😕 没有这个代码。请检查是否有拼写错误。"
+not_found_retry = "😕 没有这个代码。请检查拼写后重新发送——或点击「取消」。"
+expired = "⌛️ 该代码已过期。"
+exhausted = "😔 该代码已达到最大使用次数。"
+already_used = "您已激活过该代码 🙂"
+only_new = "该代码仅限尚未购买过的新用户使用 🙏"

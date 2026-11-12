@@ -1,0 +1,24 @@
+# Messages about payments and rewards, and notifications for administrators.
+
+[paid]
+topped_up = "✅ 您的余额已充值 <b>{amount}</b>。\n当前余额：<b>{balance}</b>。"
+plan_activated = "🎉 谢谢！您的 <b>{plan}</b> 订阅有效期至 <b>{expires}</b>。\n\n连接链接在主菜单中。"
+gift_ready = "🎁 您的礼品已准备好：<b>{plan}</b>。\n\n请将此链接发送给收礼人：\n{link}\n\n或使用兑换码：<code>{code}</code>"
+donation_thanks = "💜 感谢您的支持！我们已收到 <b>{amount}</b>。"
+plan_failed = "✅ 您支付的 <b>{amount}</b> 已存入余额（当前 <b>{balance}</b>），但 <b>{plan}</b> 订阅未能自动开通。\n\n请在菜单中用余额购买，或联系客服。"
+partial = "⚠️ 收到 <b>{amount}</b>，而非 <b>{expected}</b>。该金额已存入余额，当前余额 <b>{balance}</b>。"
+
+[reward]
+money = "💸 推荐奖励：余额 <b>+{amount}</b>（第 {level} 级）。"
+partner = "💼 合作伙伴奖励：合作伙伴余额 <b>+{amount}</b>（第 {level} 级）。"
+days = "🎁 推荐奖励：订阅已延长 <b>+{days}</b>（第 {level} 级）。"
+
+[admin_notify]
+payment = "💰 <b>{amount}</b>，通过 {provider}\n用户：<code>{user_id}</code> {username}\n{what}"
+what_topup = "余额充值"
+what_plan = "购买：{plan}"
+what_gift = "礼品：{plan}"
+what_donation = "捐赠"
+plan_failed = "⚠️ 订阅未开通：{reason}"
+channel_check_failed = "⚠️ 无法检查频道 <code>{channel_id}</code> 的成员身份。请确认机器人是该频道的管理员。在此之前，用户将跳过检查。"
+error = "🔥 <b>错误</b> <code>{signature}</code>\nupdate {update_id} ({update_type})，用户 <code>{user_id}</code>\n<code>{error}</code>\n<pre>{trace}</pre>"

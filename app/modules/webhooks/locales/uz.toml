@@ -1,0 +1,4 @@
+# Outgoing webhooks: admin notices.
+
+[webhooks]
+disabled = "⚠️ #{id} vebhuk endpointi ({host}) oʻchirildi: ketma-ket {count} ta yetkazish muvaffaqiyatsiz boʻldi. Qabul qiluvchini tekshiring va endpointni veb-adminda qayta yoqing."

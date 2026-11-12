@@ -1,0 +1,76 @@
+# Invitations: admin screens and accepting an invitation.
+
+[invites]
+menu = "Takliflar"
+untitled = "{code} taklifi"
+uses_value = "{total} dan {used}"
+created = "✅ Taklif tayyor"
+revoked = "🚫 Taklif bekor qilindi"
+share_text = "Mana bizning VPN ga taklif — havolani och, hammasi tayyor 🙌"
+revoke_confirm = "🚫 <b>«{title}» taklifi bekor qilinsinmi?</b>\n\nBu havola orqali boshqa hech kim qoʻshila olmaydi. Allaqachon qoʻshilganlar ruxsatini saqlab qoladi."
+qr = "📷 <b>{title}</b>\n\nBu kodni koʻrsating — telefon kamerasi bilan skanerlansa, taklifli bot ochiladi."
+joined = "🎉 {name} taklifingizni qabul qildi va endi biz bilan!"
+joined_note = "🎉 «{note}» taklifi ishladi: {name} endi biz bilan!"
+welcome = "🎉 <b>Xush kelibsiz!</b>\n\nVPN ga ruxsatingiz ochildi — {until}.\n\nUlanish qoldi xolos: quyidagi tugmani bosing, qurilmangizni tanlang va koʻrsatmalarga amal qiling. Bir necha daqiqa oladi 🙂"
+until_date = "{date} gacha"
+until_forever = "muddatsiz"
+
+[invites.list]
+title = "✉️ <b>Takliflar</b>"
+intro = "Taklif — oila aʼzolaringiz va doʻstlaringizga VPN dan bepul foydalanish imkonini beradigan havola. Uni yarating va havolani yuboring."
+empty = "Hozircha takliflar yoʻq.\n\nBirinchisini yarating — foydalanish muddati va qurilmalar sonini tanlang, soʻng havolani taklif qilayotgan odamga yuboring."
+
+[invites.card]
+title = "✉️ <b>{title}</b>"
+period = "Foydalanish muddati: {value}"
+devices = "Qurilmalar: {value}"
+traffic = "Trafik: oyiga {value}"
+uses = "Ishlatilgan: {value}"
+valid_until = "Havola amal qiladi: {value} gacha"
+state = "Holat: {value}"
+link = "Havola:\n<code>{link}</code>"
+hint = "Uni taklif qilayotgan odamga yuboring: havolani ochib, «Start» ni bossa kifoya."
+
+[invites.state]
+active = "faol"
+used = "tugagan"
+expired = "havola muddati tugagan"
+revoked = "bekor qilingan"
+
+[invites.new]
+days = "✉️ <b>Yangi taklif</b>\n\nFoydalanish qancha muddatga berilsin?"
+devices = "✉️ <b>Yangi taklif</b>\n\nNechta qurilma ulash mumkin?"
+uses = "✉️ <b>Yangi taklif</b>\n\nHavoladan necha kishi foydalana oladi?"
+summary = "✉️ <b>Yangi taklif</b>\n\nMuddat: {period}\nQurilmalar: {devices}\nKim uchun: {uses}"
+note = "Bu kim uchun? Keyinchalik takliflarni farqlash uchun ism yozing — masalan, «Onam» yoki «Doniyor». Yoki «Oʻtkazib yuborish» ni bosing."
+
+[invites.uses]
+unlimited = "istalgan miqdordagi odam"
+
+[invites.uses.people]
+one = "{n} kishi"
+other = "{n} kishi"
+
+[invites.users]
+title = "👥 <b>«{title}» orqali qoʻshilganlar</b>"
+empty = "Hozircha hech kim."
+
+[invites.outcome]
+not_found = "😕 Bunday taklif yoʻq. Havolani tekshiring yoki yangisini soʻrang."
+inactive = "😕 Bu taklif bekor qilingan. Egasidan yangi havola soʻrang."
+expired = "⌛️ Bu taklifning muddati tugagan. Egasidan yangi havola soʻrang."
+exhausted = "😕 Bu taklif allaqachon ishlatilgan. Egasidan yangi havola soʻrang."
+already_used = "🙂 Siz bu taklifni allaqachon qabul qilgansiz — ruxsatingiz faol."
+banned = "🚫 Botdan foydalanish cheklangan."
+redeemed = "🎉 Taklif qabul qilindi!"
+
+[invites.btn]
+new = "➕ Yangi taklif"
+share = "📤 Taklifni yuborish"
+copy = "📋 Havolani nusxalash"
+qr = "📷 QR-kod"
+users = "👥 Qoʻshilganlar ({count})"
+revoke = "🚫 Bekor qilish"
+revoke_ok = "🚫 Ha, bekor qilish"
+skip_note = "⏭ Oʻtkazib yuborish"
+connect = "📲 VPN ni ulash"

@@ -1,0 +1,36 @@
+# Errors and access notices shown by the bot itself.
+
+[error]
+generic = "😔 Nimadir xato ketdi. Birozdan soʻng qayta urinib koʻring — biz allaqachon hal qilyapmiz."
+alert = "😔 Nimadir xato ketdi. Qayta urinib koʻring."
+expired_button = "Bu tugmaning muddati tugagan. Menyuni qayta oching 👇"
+unknown_message = "Kechirasiz, tushunmadim 🤔 Kerakli hamma narsa quyidagi menyuda."
+not_allowed = "⛔️ Bu amal uchun ruxsatingiz yoʻq."
+not_found = "Hech narsa topilmadi 🤷"
+invalid_input = "Buni oʻqiy olmadim. Tekshirib, qayta yuboring."
+unavailable = "Bu boʻlim hozir mavjud emas. Keyinroq qarab koʻring 🙏"
+
+[access]
+banned = "🚫 Botdan foydalanishingiz cheklangan.\nAgar bu xato deb hisoblasangiz, yordam xizmatiga yozing."
+throttled = "🐢 Shoshilmang! Bir necha soniya kutib, qayta urinib koʻring."
+maintenance = "🛠 <b>Texnik ishlar olib borilmoqda</b>\n\nTez orada qaytamiz. Sabringiz uchun rahmat!"
+maintenance_eta = "🛠 <b>Texnik ishlar olib borilmoqda</b>\n\n{eta} gacha qaytishni rejalashtirganmiz. Sabringiz uchun rahmat!"
+maintenance_until = "{eta} gacha qaytishni rejalashtirganmiz."
+maintenance_alert = "🛠 Texnik ishlar olib borilmoqda — birozdan soʻng qaytib keling"
+invite_only = "🔒 Bu shaxsiy bot — kirish faqat taklif orqali.\n\nEgasidan taklif havolasini soʻrang va uni oching."
+invite_invalid = "😕 Bu taklif yaroqsiz yoki allaqachon ishlatilgan. Egasidan yangi havola soʻrang."
+
+[access.channel]
+text = "📢 Botdan foydalanish uchun kanalimizga obuna boʻling — u yerda yangiliklar, aksiyalar va serverlar holati eʼlon qilinadi.\n\nObuna boʻldingizmi? «✅ Obuna boʻldim» tugmasini bosing."
+subscribe = "📢 Kanalni ochish"
+check = "✅ Obuna boʻldim"
+not_yet = "Hozircha sizni kanalda koʻrmayapman 🤔 Obuna boʻlib, tugmani yana bosing."
+thanks = "Obuna boʻlganingiz uchun rahmat! 🙌"
+
+[consent]
+text = "📄 Boshlashdan oldin <b>Foydalanish shartlari</b> va <b>Maxfiylik siyosati</b> bilan tanishing — havolalar quyida.\n\n«Qabul qilish» tugmasini bosib, ularga rozilik bildirasiz."
+terms = "📄 Foydalanish shartlari"
+privacy = "🔒 Maxfiylik siyosati"
+accept = "✅ Qabul qilish"
+accepted = "Rahmat! Xush kelibsiz 👋"
+required = "Davom etish uchun shartlarni qabul qiling 🙏"

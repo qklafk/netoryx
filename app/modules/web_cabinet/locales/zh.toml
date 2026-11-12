@@ -1,0 +1,13 @@
+# Web cabinet: bot messages and e-mails.
+
+[web_cabinet]
+unavailable = "网页版个人中心暂时不可用。"
+link = "🌐 <b>网页版个人中心</b>\n\n此登录链接仅可使用一次，{minutes}后失效。请勿转发给他人。"
+open = "打开个人中心"
+button = "🌐 网页版个人中心"
+
+[web_cabinet.mail]
+login_subject = "{brand}：登录您的账户"
+login_body = "您好！\n\n请打开以下链接登录您的 {brand} 账户（仅可使用一次，{minutes} 分钟内有效）：\n{link}\n\n如果这不是您本人的操作，请忽略此邮件。"
+verify_subject = "{brand}：确认您的邮箱"
+verify_body = "您好！\n\n请打开以下链接，确认此邮箱用于登录您的 {brand} 账户（24 小时内有效）：\n{link}\n\n如果这不是您本人的操作，请忽略此邮件。"

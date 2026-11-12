@@ -1,0 +1,14 @@
+# Backups and cleanup: captions and admin notices.
+
+[housekeeping.backup]
+caption = "💾 <b>Резервна копія {brand}</b>\n{when} · {size}"
+encrypted = "🔒 Файл зашифровано паролем із налаштувань."
+plain = "⚠️ Файл не зашифровано — зберігайте його в надійному місці або задайте пароль резервних копій у налаштуваннях."
+failed = "😔 Не вдалося створити резервну копію: <code>{error}</code>"
+not_sent = "😔 Резервну копію <code>{name}</code> створено, але не вдалося надіслати в чат: <code>{error}</code>. Файл збережено на сервері."
+
+[housekeeping.unit]
+b = "{n} Б"
+kb = "{n} КБ"
+mb = "{n} МБ"
+gb = "{n} ГБ"

@@ -1,0 +1,31 @@
+# Редактор текстов бота
+
+[admin_texts]
+title = "Тексты бота"
+home = "📝 <b>Тексты бота</b>\n\nЛюбое сообщение бота можно переписать под себя — на русском и английском. Всего текстов: {total}.\n\nНайдите текст по словам из него или по ключу."
+modules = "📚 <b>Разделы</b>\n\nВыберите раздел, чтобы увидеть его тексты:"
+module = "📚 <b>{module}</b> · текстов: {count}"
+results = "🔎 Найдено: {count}"
+changed_list = "✏️ Изменённые тексты: {count}"
+nothing = "Ничего не нашлось по запросу «{query}» 🤷 Попробуйте другие слова."
+not_found = "Текст не найден 🤷"
+list_expired = "Список устарел — откройте его заново."
+key = "📝 <code>{key}</code>\n<i>Раздел: {module}</i>\n🔣 Подстановки: {placeholders}\n\n{texts}"
+lang_block = "<b>{lang}</b> · {marker}\n<pre>{text}</pre>"
+changed = "изменён"
+builtin = "стандартный"
+no_placeholders = "нет"
+ask_query = "🔎 Пришлите слово или фразу из текста (или часть ключа, например <code>menu.title</code>)."
+ask_value = "✏️ <b>Новый текст ({lang})</b> для <code>{key}</code>\n\nСейчас:\n<pre>{current}</pre>\n\nПришлите новый вариант. Можно использовать форматирование Telegram или HTML-теги (&lt;b&gt;, &lt;i&gt;, &lt;a href&gt;…). Подстановки в фигурных скобках оставьте как есть."
+invalid = "⚠️ Не сохранил: {error}\n\nИсправьте и пришлите ещё раз."
+saved = "✅ Текст ({lang}) сохранён — бот уже использует его."
+reset_done = "↩️ Вернул стандартный текст ({lang})."
+preview_failed = "Не получилось показать текст: {error}"
+
+[admin_texts.btn]
+search = "🔎 Найти текст"
+modules = "📚 По разделам"
+changed = "✏️ Изменённые ({count})"
+edit = "✏️ {lang}"
+preview = "👀 {lang}"
+reset = "↩️ Стандартный {lang}"

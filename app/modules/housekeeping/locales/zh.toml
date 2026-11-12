@@ -1,0 +1,14 @@
+# Backups and cleanup: captions and admin notices.
+
+[housekeeping.backup]
+caption = "💾 <b>{brand} 备份</b>\n{when} · {size}"
+encrypted = "🔒 文件已使用设置中的密码加密。"
+plain = "⚠️ 文件未加密——请妥善保管，或在设置中设置备份密码。"
+failed = "😔 无法创建备份：<code>{error}</code>"
+not_sent = "😔 备份 <code>{name}</code> 已创建，但无法发送到聊天：<code>{error}</code>。文件保存在服务器上。"
+
+[housekeeping.unit]
+b = "{n} B"
+kb = "{n} KB"
+mb = "{n} MB"
+gb = "{n} GB"

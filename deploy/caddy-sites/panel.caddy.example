@@ -1,0 +1,12 @@
+# Publish the panel UI over HTTPS as panel.<DOMAIN>. Copy to panel.caddy to enable (then: netoryx restart caddy).
+# The panel itself stays closed to the internet; keep its strong password and enable two-factor authentication.
+#
+# Pick the upstream of the panel you installed:
+#   3x-ui       host.docker.internal:2053   (open the random web base path shown by the installer)
+#   Remnawave   remnawave:3000
+#   Marzban     marzban:8880                (dashboard under /dashboard/)
+#   PasarGuard  pasarguard:8000             (dashboard under /dashboard/)
+#   Marzneshin  marzneshin:8000             (dashboard under /dashboard/)
+panel.{$DOMAIN} {
+	reverse_proxy host.docker.internal:2053
+}

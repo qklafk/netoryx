@@ -1,0 +1,106 @@
+# Referral program: invite link, terms, stats, partner balance and payouts.
+
+[referral]
+title = "🤝 <b>邀请好友</b>"
+link = "🔗 您的链接：\n<code>{link}</code>"
+legal = "<i>奖励仅针对您邀请的用户的真实购买发放。参与完全免费。</i>"
+share = "📤 分享链接"
+copy = "📋 复制"
+qr = "🔳 二维码"
+qr_caption = "🔳 把这个二维码给朋友看——扫码即可通过您的链接打开机器人。\n\n<code>{link}</code>"
+share_text = "我在用 {brand}——快速、可靠的 VPN。用我的链接试试吧："
+levels_button = "📊 分级统计"
+level_pct = "第 {level} 级——{pct}%"
+to_balance = "💰 打开余额"
+
+[referral.terms]
+after_payment = "（在对方首次付款后）"
+invitee_days = "🎁 好友通过您的链接注册即可免费获得 {days}。"
+inviter_days = "🎉 您将获得 {days}{after}。"
+invitee_money = "🎁 好友通过您的链接注册即可获得 {amount} 余额。"
+inviter_money = "🎉 您将获得 {amount} 余额{after}。"
+days_pct = "📅 另外还可获得其每次购买天数的 {pct}%。"
+days_levels = "📅 来自您邀请用户购买的天数：{levels}。"
+balance_pct = "💸 另外还可获得其每笔付款的 {pct}%，计入您的余额。"
+balance_levels = "💸 您邀请用户付款的分成，计入您的余额：{levels}。"
+partner_pct = "💼 您邀请用户每笔付款的 {pct}% 将计入您的合作伙伴余额。"
+partner_levels = "💼 您邀请用户付款的分成，计入合作伙伴余额：{levels}。"
+partner_transfer = "🔁 合作伙伴余额可转入主余额，用于购买订阅。"
+partner_withdraw = "🔁 合作伙伴余额可转入主余额或提现——最低 {min}。"
+
+[referral.stats]
+invited = "👥 已邀请：<b>{users}</b> · 已付款：<b>{paid}</b>"
+earned = "💰 已赚取：<b>{amount}</b>"
+earned_days = "🎁 已获得：<b>{days}</b>"
+partner_balance = "💼 合作伙伴余额：<b>{amount}</b>"
+pending = "⏳ 提现中：{amount}"
+
+[referral.levels]
+title = "📊 <b>分级统计</b>"
+item = "<b>第 {level} 级</b> · {pct}%\n👥 {users} · 已付款 {paid} · 已赚取 {earned}"
+
+[referral.transfer]
+button = "🔁 转入主余额"
+text = "🔁 <b>转入主余额</b>\n\n合作伙伴余额：<b>{balance}</b>。\n\n转入的资金可用于购买订阅或礼品，但无法转回合作伙伴余额。"
+all = "全部转入 · {amount}"
+custom = "✏️ 其他金额"
+ask = "✏️ 要转入多少？请发送卢布金额——不超过 {balance}。"
+invalid = "无法识别该金额 🤔 请发送不超过 {balance} 的整数卢布金额。"
+ask_confirm = "将 <b>{amount}</b> 从合作伙伴余额转入主余额？"
+confirm = "✅ 转入"
+done = "✅ 已转入 <b>{amount}</b>。\n\n💰 主余额：{main}\n💼 合作伙伴余额：{partner}"
+already = "✅ 此笔转账已完成。\n\n💰 主余额：{main}\n💼 合作伙伴余额：{partner}"
+empty = "您的合作伙伴余额暂时为空。"
+no_funds = "合作伙伴余额不足，无法完成此笔转账。"
+
+[referral.withdraw]
+button = "📤 提现"
+unavailable = "提现暂不可用。"
+text = "📤 <b>提现</b>\n\n可提现：<b>{balance}</b> · 最低 {min}。\n\n资金要转到哪里？"
+too_little = "📤 最低提现金额为 <b>{min}</b>，而您的合作伙伴余额目前为 {balance}。\n\n继续邀请好友——很快就能达到 💪"
+has_open = "⏳ 您已有一笔 {amount} 的申请 <b>#{id}</b>——{status}。\n\n处理完成后即可创建新申请。"
+all = "全部提现 · {amount}"
+ask_amount = "💰 您想提现多少？请发送卢布金额——{min} 至 {balance}。"
+bad_amount = "该金额无法提现 🤔 请发送 {min} 至 {balance} 之间的金额。"
+confirm = "📋 <b>请核对您的申请</b>\n\n金额：<b>{amount}</b>\n方式：{method}\n收款信息：<code>{details}</code>\n\n信息是否正确？"
+send = "✅ 提交申请"
+sent = "✅ 金额 {amount} 的申请 <b>#{id}</b> 已提交！\n\n该金额已从合作伙伴余额中扣除，若申请被拒将退回。处理完成后我会通知您。"
+
+[referral.withdraw.error]
+below_minimum = "金额低于最低提现额。"
+funds = "合作伙伴余额不足——可能部分资金已被转出。"
+pending = "您已有一笔申请正在处理中——请耐心等待。"
+details = "收款信息无效——请检查后重试。"
+
+[referral.details]
+card = "💳 请发送收款银行卡号："
+sbp = "📱 请发送用于 SBP 转账的手机号和银行名称："
+usdt_trc20 = "💵 请发送您在 TRC-20 网络上的 USDT 钱包地址："
+default = "✏️ 请发送收款信息（{method}）："
+
+[referral.method]
+card = "💳 银行卡"
+sbp = "📱 SBP（手机号）"
+usdt_trc20 = "💵 USDT（TRC-20）"
+
+[referral.withdrawals]
+button = "🧾 我的提现申请"
+title = "🧾 <b>提现申请</b>"
+item = "<b>#{id}</b> · {amount} · {method}\n{status} · <i>{date}</i>"
+empty = "🧾 暂无提现申请。"
+
+[referral.withdrawal.status]
+pending = "⏳ 审核中"
+approved = "🔄 已批准，打款中"
+paid = "✅ 已打款"
+rejected = "❌ 已拒绝"
+
+[referral.withdrawal.notify]
+pending = "⏳ 金额 {amount} 的提现申请 <b>#{id}</b> 已收到，正在等待审核。"
+approved = "🔄 金额 {amount} 的提现申请 <b>#{id}</b> 已批准——资金正在路上。"
+paid = "✅ 提现申请 <b>#{id}</b> 已打款：{amount} 已发送至您的收款账户。"
+rejected = "❌ 提现申请 <b>#{id}</b> 被拒绝。{amount} 已退回您的合作伙伴余额。"
+comment = "💬 备注：{comment}"
+
+[referral.admin]
+withdrawal = "📤 <b>提现申请 #{id}</b>\n合作伙伴：<code>{user_id}</code> {username}\n金额：<b>{amount}</b>\n方式：{method}\n收款信息：<code>{details}</code>"

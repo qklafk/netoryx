@@ -1,0 +1,13 @@
+FROM docker:29-cli
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 UV_NO_CACHE=1
+
+RUN apk add --no-cache python3 py3-pip curl \
+    && pip3 install --no-cache-dir --break-system-packages "uv>=0.5"
+
+WORKDIR /installer
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
+COPY installer ./installer
+
+ENTRYPOINT ["/installer/.venv/bin/python", "-m", "installer"]

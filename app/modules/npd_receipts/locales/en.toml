@@ -1,0 +1,7 @@
+# "Мой налог" receipts: the buyer's message and admin notices.
+
+[npd_receipts]
+menu = "NPD receipts"
+receipt = "🧾 Receipt for your payment of {amount}: <a href=\"{url}\">open the receipt</a>"
+auth_failed = "🧾 <b>Мой налог: not logged in.</b>\nReceipts are not registered until you log in again (web admin → NPD receipts) or fix the INN and password in the settings.\n<code>{error}</code>"
+gave_up = "🧾 <b>Мой налог:</b> {count} receipt(s) could not be registered. Retry them in the web admin (NPD receipts)."

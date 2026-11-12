@@ -1,0 +1,98 @@
+---
+import { labels, paths } from '~/data/i18n';
+import { docUrl, hasBeginners, type Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const data = paths(lang, hasBeginners);
+const l = labels[lang];
+---
+
+<section class="nx-s not-content" id="paths">
+  <div class="nx-wrap">
+    <div class="nx-head">
+      <span class="nx-chip">{l.paths}</span>
+      <h2>{data.title}</h2>
+    </div>
+    <div class="nx-grid cards">
+      {
+        data.cards.map((c, i) => (
+          <a class="nx-cell card" href={docUrl(lang, c.link)}>
+            <span class="idx">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+            <span class="more">{c.label} <i>&rarr;</i></span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.4rem 1.3rem 1.3rem;
+    text-decoration: none;
+    color: var(--sl-color-gray-2);
+    transition:
+      background 0.15s,
+      color 0.15s;
+  }
+  .card:hover {
+    background: var(--nx-ink);
+    color: var(--nx-bg);
+  }
+  .card:hover h3,
+  .card:hover .idx,
+  .card:hover p {
+    color: var(--nx-bg);
+  }
+  .idx {
+    font-family: var(--nx-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--nx-dim);
+  }
+  h3 {
+    font-size: 1.15rem;
+    line-height: 1.25;
+  }
+  p {
+    flex: 1;
+    font-size: 0.9375rem;
+    color: var(--nx-dim);
+  }
+  .more {
+    font-family: var(--nx-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .more i {
+    font-style: normal;
+    display: inline-block;
+    transition: transform 0.15s;
+  }
+  .card:hover .more i {
+    transform: translateX(4px);
+  }
+  @media (max-width: 64rem) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 36rem) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

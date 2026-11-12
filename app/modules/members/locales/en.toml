@@ -1,0 +1,59 @@
+# Members of a private VPN: owner screens and notices to members.
+
+[members]
+menu = "Members"
+until = "until {date} ({left} left)"
+expired_on = "ended on {date}"
+gone = "This member is no longer on the list"
+extended = "✅ Access extended"
+paused = "⏸ Access paused"
+resumed = "▶️ Access resumed"
+rotated = "✅ Link replaced, the member was notified"
+reset_done = "✅ Devices reset"
+reset_nothing = "Nothing to reset: the member has no servers connected"
+reset_failed = "😔 Could not reset the devices — the server did not answer. Please try again later."
+removed = "🗑 Member removed"
+removed_pending = "🗑 Member removed. Their accounts on some servers will be deleted as soon as those servers are reachable."
+extend = "➕ <b>Extend access</b> · {name}\n\nNow: {access}\n\nExtend by how much?"
+limits = "📱 <b>Limits</b> · {name}\n\nThe first row is how many devices can be connected, below is the monthly traffic."
+rotate_confirm = "🔗 <b>Issue a new link for {name}?</b>\n\nThe old subscription link stops working right away. We will tell the member to connect the app again."
+remove_confirm = "🗑 <b>Remove {name}?</b>\n\nVPN access will be closed on every server and the member will no longer be able to use the bot. You can bring them back with a new invitation."
+
+[members.list]
+title = "👥 <b>Members</b> · {count}"
+intro = "Everyone with access to your VPN. Tap a name to extend access, pause it or change limits."
+empty = "Nobody here yet.\n\nSend your family and friends an invitation — see “✉️ Invitations” in the admin menu."
+
+[members.card]
+title = "👤 {user}"
+state = "Status: {value}"
+access = "Access: {value}"
+devices = "Devices: {value}"
+traffic = "Monthly traffic: {value}"
+since = "With us since {value}"
+
+[members.state]
+active = "active"
+paused = "paused"
+expired = "access ended"
+
+[members.btn]
+extend = "➕ Extend"
+pause = "⏸ Pause"
+resume = "▶️ Resume"
+limits = "📱 Limits"
+reset = "🔄 Reset devices"
+rotate = "🔗 New link"
+rotate_ok = "🔗 Yes, issue a new one"
+remove = "🗑 Remove"
+remove_ok = "🗑 Yes, remove"
+connect = "📲 Connect"
+
+[members.notice]
+until = "until {date}"
+forever = "with no end date"
+extended = "🎁 Good news: your VPN access has been extended — {until}. Enjoy!"
+paused = "⏸ Your VPN access has been paused. If that is unexpected, please contact the owner."
+resumed = "▶️ Your VPN access works again. You can connect!"
+rotated = "🔗 Your subscription link has changed — the old one no longer works. Open the connection section and add the new link to your app 👇"
+removed = "👋 The owner has closed your VPN access. Thank you for being with us!"

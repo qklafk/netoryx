@@ -1,0 +1,40 @@
+---
+title: Choosing a VPS
+description: What server Netoryx needs and how to choose one.
+---
+
+import Providers from '~/components/Providers.astro';
+
+Netoryx runs on a single small Linux server. This page lists what it needs, so you can pick a plan from any provider.
+
+## Requirements
+
+| | Minimum | Comfortable |
+|---|---|---|
+| CPU | 2 vCPU | 2 vCPU or more |
+| RAM | 2 GB (a 2 GB swap file is created below 4 GB) | 4 GB |
+| Disk | 20 GB | 60 GB SSD |
+| Access | root, a public IP address | |
+| Ports | 80 and 443 open (one more only if you enable SOCKS5 or Shadowsocks) | |
+
+Supported systems, x86_64 and ARM64: Ubuntu 22.04, 24.04 and 26.04, Debian 12 and 13, AlmaLinux 9 and Rocky Linux 9.
+Ubuntu 24.04 is the system tested on a real server, so it is the safest choice. Details and installer flags:
+[Installation](/installation/).
+
+## What to pick
+
+- **System:** Ubuntu 24.04 LTS, a clean image with no control panel preinstalled.
+- **Bandwidth:** the VPN traffic usually needs more network capacity than CPU. Check the port speed and the monthly traffic allowance of the plan.
+- **Location:** put the VPN node in a country that suits your customers. The installer can also run in separate roles (control plane and VPN node) when you want the bot and the VPN exit in different places, see [Installation](/installation/).
+- **Mobile networks with restricted access:** foreign addresses are often unreachable there. Netoryx supports relay endpoints that you can point at a server inside the country, but access cannot be guaranteed, see [Panels](/panels/).
+- **IPv4:** make sure the plan includes a public IPv4 address.
+- **Price:** compare the monthly price together with the included traffic, not the headline price alone.
+- **Payment:** choose a provider whose payment methods you can use and whose terms allow VPN software.
+
+Once you have the server, follow the [installation guide](/installation/): one command, then answer a few questions.
+
+## Providers
+
+Listed alphabetically; this is not a ranking or a recommendation. Check the plan, locations and terms on the provider's site before paying.
+
+<Providers lang="en" />

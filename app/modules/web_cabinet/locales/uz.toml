@@ -1,0 +1,13 @@
+# Web cabinet: bot messages and e-mails.
+
+[web_cabinet]
+unavailable = "Veb-kabinet hozir mavjud emas."
+link = "🌐 <b>Veb-kabinet</b>\n\nBu kirish havolasi bir marta ishlaydi va {minutes} dan keyin eskiradi. Uni hech kimga bermang."
+open = "Kabinetni ochish"
+button = "🌐 Veb-kabinet"
+
+[web_cabinet.mail]
+login_subject = "{brand}: hisobga kirish"
+login_body = "Salom!\n\n{brand} hisobingizga kirish uchun bu havolani oching (bir martalik, {minutes} daqiqa amal qiladi):\n{link}\n\nAgar kirishni siz soʻramagan boʻlsangiz, bu xatni eʼtiborsiz qoldiring."
+verify_subject = "{brand}: e-mail manzilingizni tasdiqlang"
+verify_body = "Salom!\n\n{brand} hisobiga kirish uchun bu manzilni tasdiqlash maqsadida havolani oching (24 soat amal qiladi):\n{link}\n\nAgar buni siz soʻramagan boʻlsangiz, bu xatni eʼtiborsiz qoldiring."

@@ -1,0 +1,51 @@
+[admin]
+back_to_menu = "◀️ Admin menu"
+yes = "yes"
+no = "no"
+saved = "✅ Saved"
+working = "⏳ Working on it…"
+not_found = "Not found - it may have been deleted already."
+cancel = "✖️ Cancel"
+confirm = "✅ Confirm"
+skip = "⏭ Skip"
+invalid_number = "A whole number is expected. Try again or go back."
+invalid_amount = "An amount in rubles is expected, e.g. <code>150</code> or <code>-99.50</code>. Try again."
+
+[admin.menu]
+title = "⚙️ <b>{brand} admin panel</b>\nYour role: {role}\n\nPick a section 👇"
+empty = "There are no bot sections for your role yet - have a look at the web admin."
+
+[admin.role]
+owner = "👑 owner"
+admin = "🛡 administrator"
+support = "🎧 support"
+viewer = "👀 viewer"
+
+[admin.web]
+button = "🌐 Web admin"
+open = "🔐 Sign in to the web admin"
+link = "🌐 <b>Web admin sign-in</b>\n\nThe link works once and expires in {ttl}. Do not forward it to anyone - it signs in as you."
+relative = "🌐 <b>Web admin sign-in</b>\n\nPUBLIC_BASE_URL is not set, so here is the path - append it to your server address:\n<code>{path}</code>\n\nThe link works once and expires in {ttl}."
+disabled = "🌐 The web admin is turned off in the settings (WEB_ADMIN_ENABLED)."
+
+[admin.payment_status]
+created = "🆕 created"
+pending = "⏳ pending"
+succeeded = "✅ paid"
+canceled = "✖️ canceled"
+expired = "⌛️ expired"
+refunded = "↩️ refunded"
+
+[admin.tx]
+payment = "top-up"
+purchase = "subscription purchase"
+gift_purchase = "gift purchase"
+referral_invitee = "invitee bonus"
+referral_inviter = "referral bonus"
+welcome_bonus = "welcome bonus"
+promo = "promo code"
+admin_adjust = "admin adjustment"
+refund = "refund"
+referral_commission = "partner reward"
+referral_transfer = "partner balance transfer"
+withdrawal = "payout"

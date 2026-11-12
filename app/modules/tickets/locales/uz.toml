@@ -1,0 +1,72 @@
+# Support: user tickets and admin replies
+
+[tickets]
+title = "Yordam murojaatlari"
+home = "🆘 <b>{brand} yordam xizmati</b>\n\nNimadir ishlamayaptimi yoki savolingiz bormi? Tasvirlab yozing — shu yerda, botda javob beramiz. Skrinshotlar mamnuniyat bilan qabul qilinadi 📸\n\nOdatda bir necha soat ichida javob beramiz."
+list = "📂 <b>Murojaatlaringiz</b>\n\n🟡 bizni kutmoqda · 🟢 javob berilgan · ⚪️ yopilgan"
+list_empty = "Sizda hali murojaatlar yoʻq. Biror muammo boʻlsa, shunchaki yozing — yordam beramiz 🙌"
+not_found = "Murojaat topilmadi 🤷"
+view = "💬 <b>#{id} murojaat</b> · {status}\n<i>{subject}</i>\n\n{messages}"
+ask_new = "✍️ Muammoni bitta xabarda tasvirlang: nima boʻldi, qaysi qurilmada va qaysi ilovada. Skrinshot qoʻshishingiz mumkin.\n\nTafsilotlar qancha koʻp boʻlsa, shuncha tez yordam beramiz 🙏"
+created = "✅ <b>#{id}</b> murojaat yaratildi!\n\nShu yerda, botda javob beramiz — sizga bildirishnoma keladi."
+ask_reply = "✍️ #{id} murojaat uchun xabaringizni yozing (skrinshot ham boʻladi):"
+sent = "✅ Xabar yordam xizmatiga yuborildi."
+closed = "Murojaat yopildi"
+attachment = "📎 <i>ilova</i>"
+earlier = "<i>… oldingi xabarlar yashirilgan</i>"
+message = "<b>{author}</b> · <i>{time}</i>\n{text}"
+answer = "💬 <b>Yordam xizmati</b> #{id} murojaatga javob berdi:\n\n{text}"
+closed_by_support = "✅ #{id} murojaat yopildi. Hali yordam kerak boʻlsa, unga yana yozing — biz koʻramiz."
+
+[tickets.btn]
+new = "✍️ Yordam xizmatiga yozish"
+my = "📂 Murojaatlarim"
+my_unread = "📂 Murojaatlarim · 🔔 {count}"
+chat = "💬 Yordam xizmati bilan chat"
+open = "📂 Murojaatni ochish"
+reply = "✍️ Javob berish"
+write_again = "✍️ Yana yozish"
+close = "✅ Hal boʻldi, yopish"
+open_admin = "📂 Murojaatni ochish"
+
+[tickets.status]
+open = "🟡 yordamni kutmoqda"
+answered = "🟢 javob berilgan"
+closed = "⚪️ yopilgan"
+
+[tickets.author]
+support = "🛟 Yordam"
+user = "👤 Foydalanuvchi"
+you = "👤 Siz"
+
+[tickets.error]
+empty = "Xabar boʻsh — matn yozing yoki skrinshot qoʻshing."
+too_long = "Xabar juda uzun — iltimos, 4000 belgidan oshmasin."
+too_many_open = "Sizda allaqachon bir nechta ochiq murojaat bor. Javobni kuting yoki hal boʻlganlarini yoping 🙏"
+not_found = "Murojaat topilmadi 🤷"
+forbidden = "Murojaat topilmadi 🤷"
+unsupported = "Matn, rasm yoki fayl yuboring — ularni yordam xizmatiga yetkazaman."
+
+[tickets.notify]
+new = "🆘 <b>Yangi murojaat #{id}</b>\nKimdan: {user} (<code>{user_id}</code>)\n\n{text}"
+reply = "💬 <b>#{id} murojaatda yangi xabar</b>\nKimdan: {user} (<code>{user_id}</code>)\n\n{text}"
+
+[tickets.admin]
+inbox = "🆘 <b>Murojaatlar</b> · {filter}\n\nJavob kutmoqda: <b>{waiting}</b>\nEng uzoq kutganlar birinchi."
+inbox_empty = "🆘 <b>Murojaatlar</b> · {filter}\n\nJavob kutmoqda: <b>{waiting}</b>\n\nBu yer boʻsh ✨"
+view = "💬 <b>#{id} murojaat</b> · {status}\n<i>{subject}</i>\n👤 {user} (<code>{user_id}</code>) · ochilgan {created}\n\n{messages}"
+ask_reply = "✍️ #{id} murojaatga javob yozing. Rasm yoki fayl qoʻshish mumkin — foydalanuvchi uni darhol oladi."
+delivered = "✅ Javob yetkazildi."
+not_delivered = "⚠️ Javob saqlandi, lekin yetkazilmadi: foydalanuvchi botni bloklagan."
+start_private = "Bot bilan shaxsiy chatni oching (/start), murojaatni oʻsha yerga yuboraman."
+opened_private = "Murojaat shaxsiy chatingizga yuborildi"
+
+[tickets.admin.tab]
+open = "🟡 Kutmoqda"
+answered = "🟢 Javob berilgan"
+closed = "⚪️ Yopilgan"
+
+[tickets.admin.btn]
+files = "📎 Ilovalar ({count})"
+close = "✅ Murojaatni yopish"
+inbox = "🆘 Murojaatlarga qaytish"

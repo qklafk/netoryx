@@ -1,0 +1,37 @@
+# PasarGuard panel and node in the Netoryx project network (the official compose files use the host network).
+# The bot reaches the panel as http://pasarguard:8000, the panel reaches the node as pg-node:62050 and the edge
+# reaches the node's Reality inbound as pg-node:${REALITY_PORT}. Nothing is published except the panel UI on
+# 127.0.0.1:8000 (SSH tunnel, or deploy/caddy-sites/panel.caddy.example).
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  pasarguard:
+    image: pasarguard/panel:v5.6.0
+    logging: *logging
+    env_file: ./deploy/panels/pasarguard/panel.env
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - pasarguard-data:/var/lib/pasarguard
+    restart: unless-stopped
+
+  pg-node:
+    image: pasarguard/node:v0.5.7
+    logging: *logging
+    env_file: ./deploy/panels/pasarguard/node.env
+    volumes:
+      - pg-node-data:/var/lib/pg-node
+      - ./deploy/panels/pasarguard/certs:/etc/pg-node/certs:ro,z
+    networks:
+      default:
+        # PasarGuard only accepts an IP address or a dotted domain as the node address
+        aliases: [pg-node.internal]
+    restart: unless-stopped
+
+volumes:
+  pasarguard-data:
+  pg-node-data:

@@ -1,0 +1,9 @@
+{
+  "log": {"loglevel": "warning"},
+  "inbounds": [{
+    "tag": "VLESS TCP", "listen": "0.0.0.0", "port": 10808,
+    "protocol": "vless", "settings": {"clients": [], "decryption": "none"},
+    "streamSettings": {"network": "tcp", "security": "none"}
+  }],
+  "outbounds": [{"protocol": "freedom", "tag": "DIRECT"}, {"protocol": "blackhole", "tag": "BLOCK"}]
+}

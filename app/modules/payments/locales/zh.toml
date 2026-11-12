@@ -1,0 +1,95 @@
+# Payment screens, invoices, Telegram Stars and donations.
+
+[payments]
+creating = "⏳ 正在创建账单…"
+pay_button = "💳 支付 {amount}"
+check_button = "🔄 我已付款——检查"
+other_method = "🔁 其他支付方式"
+new_payment = "💳 新的付款"
+no_methods = "😔 目前没有可用的支付方式。\n\n请稍后再来或联系客服——我们会协助您。"
+
+[payments.provider]
+stars = "⭐️ Telegram Stars"
+cryptobot = "🪙 加密货币（CryptoBot）"
+platega = "💳 银行卡 / SBP"
+yookassa = "💳 银行卡 / SBP（YooKassa）"
+yoomoney = "💳 YooMoney：银行卡或钱包"
+freekassa = "💳 银行卡 / SBP（FreeKassa）"
+test = "🧪 测试支付"
+ton = "💎 Toncoin（TON），直接转账"
+usdt_trc20 = "💵 USDT（TRC-20），直接转账"
+
+[payments.description]
+topup = "{brand} 余额充值"
+plan = "{brand} 订阅：{plan}"
+gift = "{brand} 礼品订阅：{plan}"
+donation = "支持 {brand}"
+
+[payments.methods]
+topup = "💳 <b>充值余额 {amount}</b>\n\n请选择支付方式 👇"
+plan = "🛒 <b>订阅「{plan}」</b>——{period}，{price}"
+gift = "🎁 <b>礼品：「{plan}」</b>——{period}，{price}"
+missing = "您的余额中已有 {balance}，只需再支付 <b>{amount}</b>。"
+choose = "付款后一切将自动完成设置。请选择支付方式 👇"
+donation = "💜 支持 <b>{stars} ⭐️</b>\n\n请选择支付方式 👇"
+
+[payments.method]
+stars = "{title} · {stars} ⭐️"
+stars_recurring = "🔁 Stars，按月续费 · {stars} ⭐️/月"
+with_amount = "{title} · {amount}"
+save_card = "{title} · 💾 保存银行卡用于自动续费"
+
+[payments.invoice]
+save_card_note = "💾 该卡将被保存用于自动续费：如果续费时余额不足，差额将从该卡扣除。您可以随时在 余额 → 已保存的卡 中删除该卡。"
+topup = "🧾 <b>账单金额 {amount}</b>——{provider}\n\n点击「支付」继续。付款成功后，资金将存入您的余额——通常在一分钟内。\n\n账单有效期 {hours}。"
+plan = "🧾 <b>账单金额 {amount}</b>——{provider}\n\n点击「支付」继续。付款成功后，我会完成全部设置并通知您。\n\n账单有效期 {hours}。"
+
+[payments.check]
+paid = "✅ 已收到 <b>{amount}</b> 付款。谢谢！"
+pending = "⏳ 尚未收到付款。如果您已付款，请稍等一分钟——到账后我会立即通知您。"
+closed = "⌛️ 该账单已失效。请创建新的付款——只需几秒钟。"
+
+[payments.error]
+amount = "无法接受该金额。请选择其他金额 🙏"
+plan = "该套餐暂不可用。请选择其他套餐 🙏"
+unavailable = "😔 支付暂不可用。请稍后再试。"
+method_unavailable = "该支付方式暂不可用——请选择其他方式。"
+provider = "😔 无法通过 {provider} 创建账单。请重试或选择其他支付方式。"
+
+[payments.email]
+ask = "📧 开具收据需要您的电子邮箱——支付服务商会将收据发送到该邮箱。\n\n请用一条消息发送邮箱地址："
+invalid = "该地址似乎不正确 🤔 请发送类似 name@example.com 的邮箱"
+saved = "✅ 邮箱已保存，正在创建账单…"
+
+[payments.stars]
+pay_button = "支付 {stars} ⭐️"
+title_topup = "余额充值"
+text_topup = "{brand} 余额充值 {amount}"
+title_plan = "{brand}：{plan}"
+text_plan = "{brand} 订阅「{plan}」，时长 {period}"
+text_plan_recurring = "{brand} 订阅「{plan}」，自动续费：Telegram 每月扣除一次 Stars，可随时取消。"
+title_gift = "礼品：{plan}"
+text_gift = "{brand} 订阅「{plan}」的礼品码（{period}）"
+title_donation = "支持 {brand}"
+text_donation = "对 {brand} 的自愿支持。感谢您的陪伴！"
+subscription_text = "🔁 <b>通过 Telegram Stars 订阅</b>\n\nTelegram 每月将自动扣除 <b>{stars} ⭐️</b> 并为您续费订阅。您可以随时在 Telegram 设置中取消。\n\n点击下方按钮订阅 👇"
+declined = "该账单已失效。请返回机器人重新创建。"
+
+[payments.donate]
+text = "💜 <b>支持 {brand}</b>\n\n如果您喜欢这项服务，可以通过 Telegram Stars 支持我们。这完全是自愿的，不会改变任何内容——只是一份大大的感谢 🙏"
+button = "⭐️ {stars}"
+unavailable = "目前无法通过 Stars 支持本项目，但感谢您的心意 💜"
+
+[payments.onchain]
+head = "🪙 <b>支付 {amount} {currency}</b>（{network}）——{rub}"
+address = "地址：<code>{address}</code>"
+amount = "金额：<code>{amount}</code> {currency}"
+comment = "备注：<code>{comment}</code>"
+hint_comment = "⚠️ 务必填写备注——我们通过备注识别您的付款。金额不得低于所示金额。"
+hint_amount = "⚠️ 请<b>准确</b>地一次性转账该金额，且仅使用 TRON（TRC-20）网络——我们通过金额识别您的付款。注意：交易所可能会从转出金额中扣除手续费。"
+link = "钱包链接：<code>{link}</code>"
+footer = "网络确认后付款将自动入账——通常需要几分钟。账单有效期 {hours}。"
+open_wallet = "👛 打开钱包"
+copy_address = "📋 地址"
+copy_amount = "📋 金额"
+copy_comment = "📋 备注"

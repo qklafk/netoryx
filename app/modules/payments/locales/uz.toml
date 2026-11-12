@@ -1,0 +1,95 @@
+# Payment screens, invoices, Telegram Stars and donations.
+
+[payments]
+creating = "⏳ Hisob yaratilmoqda…"
+pay_button = "💳 {amount} toʻlash"
+check_button = "🔄 Toʻladim — tekshirish"
+other_method = "🔁 Boshqa toʻlov usuli"
+new_payment = "💳 Yangi toʻlov"
+no_methods = "😔 Hozir mavjud toʻlov usullari yoʻq.\n\nBirozdan soʻng qarab koʻring yoki yordam xizmatiga yozing — yordam beramiz."
+
+[payments.provider]
+stars = "⭐️ Telegram Stars"
+cryptobot = "🪙 Kriptovalyuta (CryptoBot)"
+platega = "💳 Karta / SBP"
+yookassa = "💳 Karta / SBP (YooKassa)"
+yoomoney = "💳 YooMoney: karta yoki hamyon"
+freekassa = "💳 Karta / SBP (FreeKassa)"
+test = "🧪 Sinov toʻlovi"
+ton = "💎 Toncoin (TON), toʻgʻridan-toʻgʻri"
+usdt_trc20 = "💵 USDT (TRC-20), toʻgʻridan-toʻgʻri"
+
+[payments.description]
+topup = "{brand} balansini toʻldirish"
+plan = "{brand} obunasi: {plan}"
+gift = "{brand} sovgʻa obunasi: {plan}"
+donation = "{brand} ni qoʻllab-quvvatlash"
+
+[payments.methods]
+topup = "💳 <b>Balansni {amount} ga toʻldirish</b>\n\nToʻlov usulini tanlang 👇"
+plan = "🛒 <b>«{plan}» obunasi</b> — {period}, {price}"
+gift = "🎁 <b>Sovgʻa: «{plan}»</b> — {period}, {price}"
+missing = "Balansingizda allaqachon {balance} bor, shuning uchun faqat <b>{amount}</b> toʻlash kerak."
+choose = "Toʻlovdan soʻng hammasi avtomatik sozlanadi. Toʻlov usulini tanlang 👇"
+donation = "💜 <b>{stars} ⭐️</b> bilan qoʻllab-quvvatlash\n\nToʻlov usulini tanlang 👇"
+
+[payments.method]
+stars = "{title} · {stars} ⭐️"
+stars_recurring = "🔁 Stars, har oy uzaytiriladi · {stars} ⭐️/oy"
+with_amount = "{title} · {amount}"
+save_card = "{title} · 💾 kartani avtouzaytirish uchun saqlash"
+
+[payments.invoice]
+save_card_note = "💾 Karta avtouzaytirish uchun saqlanadi: obuna uzaytirilayotganda balansda mablagʻ yetmasa, yetishmagan summa undan yechiladi. Kartani istalgan vaqtda Balans → Saqlangan kartalar boʻlimida olib tashlash mumkin."
+topup = "🧾 <b>{amount} miqdoridagi hisob</b> — {provider}\n\nDavom etish uchun «Toʻlash» tugmasini bosing. Toʻlov oʻtishi bilan pul balansingizda paydo boʻladi — odatda bir daqiqa ichida.\n\nHisob {hours} davomida amal qiladi."
+plan = "🧾 <b>{amount} miqdoridagi hisob</b> — {provider}\n\nDavom etish uchun «Toʻlash» tugmasini bosing. Toʻlov oʻtishi bilan hammasini sozlab, sizga yozaman.\n\nHisob {hours} davomida amal qiladi."
+
+[payments.check]
+paid = "✅ <b>{amount}</b> toʻlovi qabul qilindi. Rahmat!"
+pending = "⏳ Toʻlov hali kelmadi. Agar toʻlagan boʻlsangiz, bir daqiqa kuting — kelishi bilan yozaman."
+closed = "⌛️ Bu hisob endi amal qilmaydi. Yangi toʻlov yarating — bir necha soniya oladi."
+
+[payments.error]
+amount = "Bu summani qabul qilib boʻlmaydi. Boshqasini tanlang 🙏"
+plan = "Bu tarif hozir mavjud emas. Boshqasini tanlang 🙏"
+unavailable = "😔 Toʻlovlar hozir mavjud emas. Birozdan soʻng qayta urinib koʻring."
+method_unavailable = "Bu toʻlov usuli hozir mavjud emas — boshqasini tanlang."
+provider = "😔 {provider} orqali hisob yaratib boʻlmadi. Qayta urinib koʻring yoki boshqa toʻlov usulini tanlang."
+
+[payments.email]
+ask = "📧 Chek uchun e-mail manzilingiz kerak — toʻlov xizmati uni oʻsha yerga yuboradi.\n\nManzilni bitta xabarda yuboring:"
+invalid = "Manzil notoʻgʻri koʻrinadi 🤔 name@example.com kabi e-mail yuboring"
+saved = "✅ E-mail saqlandi, hisob yaratilmoqda…"
+
+[payments.stars]
+pay_button = "{stars} ⭐️ toʻlash"
+title_topup = "Balansni toʻldirish"
+text_topup = "{brand} balansini {amount} ga toʻldirish"
+title_plan = "{brand}: {plan}"
+text_plan = "{brand} «{plan}» obunasi, {period}"
+text_plan_recurring = "Avtouzaytirishli {brand} «{plan}» obunasi: Telegram oyiga bir marta Stars yechadi, istalgan vaqtda bekor qilish mumkin."
+title_gift = "Sovgʻa: {plan}"
+text_gift = "{brand} «{plan}» obunasi uchun sovgʻa kodi ({period})"
+title_donation = "{brand} ni qoʻllab-quvvatlash"
+text_donation = "{brand} uchun ixtiyoriy hissa. Biz bilan boʻlganingiz uchun rahmat!"
+subscription_text = "🔁 <b>Telegram Stars orqali obuna</b>\n\nHar oy Telegram avtomatik ravishda <b>{stars} ⭐️</b> yechib, obunangizni uzaytiradi. Istalgan vaqtda Telegram sozlamalarida bekor qilishingiz mumkin.\n\nObuna boʻlish uchun quyidagi tugmani bosing 👇"
+declined = "Bu hisob endi amal qilmaydi. Botga qaytib, yangisini yarating."
+
+[payments.donate]
+text = "💜 <b>{brand} ni qoʻllab-quvvatlang</b>\n\nXizmat yoqsa, uni Telegram Stars orqali qoʻllab-quvvatlashingiz mumkin. Bu butunlay ixtiyoriy va hech narsani oʻzgartirmaydi — shunchaki katta rahmat 🙏"
+button = "⭐️ {stars}"
+unavailable = "Loyihani Stars orqali qoʻllab-quvvatlash hozir imkonsiz, lekin niyatingiz uchun rahmat 💜"
+
+[payments.onchain]
+head = "🪙 <b>{amount} {currency} toʻlash</b> ({network}) — {rub}"
+address = "Manzil: <code>{address}</code>"
+amount = "Summa: <code>{amount}</code> {currency}"
+comment = "Izoh: <code>{comment}</code>"
+hint_comment = "⚠️ Izohni albatta koʻrsating — toʻlovingizni shu orqali topamiz. Summa koʻrsatilgandan kam boʻlmasligi kerak."
+hint_amount = "⚠️ Aynan <b>shu</b> summani bitta oʻtkazma bilan va faqat TRON (TRC-20) tarmogʻida yuboring — toʻlovingizni shu orqali topamiz. Birjalar yuborilgan summadan komissiya ushlashi mumkinligini hisobga oling."
+link = "Hamyon uchun havola: <code>{link}</code>"
+footer = "Toʻlov tarmoq tasdiqlagach avtomatik hisoblanadi — odatda bir necha daqiqada. Hisob {hours} davomida amal qiladi."
+open_wallet = "👛 Hamyonni ochish"
+copy_address = "📋 Manzil"
+copy_amount = "📋 Summa"
+copy_comment = "📋 Izoh"

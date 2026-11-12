@@ -1,0 +1,11 @@
+id = "core.platform"
+version = 1
+title = "Platform control plane"
+description = "Backend API, database integration and management services."
+roles = ["all-in-one", "control-plane"]
+profiles = ["personal", "commercial"]
+
+[resources]
+ram_mb = 350
+disk_mb = 500
+cpu_cores = 1

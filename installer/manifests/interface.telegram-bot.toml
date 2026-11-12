@@ -1,0 +1,11 @@
+id = "interface.telegram-bot"
+version = 1
+title = "Telegram bot"
+description = "Telegram interface for owners and customers."
+roles = ["all-in-one", "control-plane"]
+profiles = ["personal", "commercial"]
+depends_on = ["core.platform"]
+
+[resources]
+ram_mb = 80
+disk_mb = 30

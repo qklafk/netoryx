@@ -1,0 +1,67 @@
+[admin_payments]
+title = "Payments"
+list = "💳 <b>Payments</b> · {title} · page {page}"
+list_empty = "No payments."
+search_prompt = "🔎 Send a payment ID, the provider's ID or a user's Telegram ID."
+not_found_query = "🤷 No such payment."
+checked = "🔄 The provider answered, status: {status}"
+confirm_paid = "✅ <b>Mark the payment as paid?</b>\n\nUser <code>{user_id}</code> gets {amount} on the balance, then everything that follows a payment runs (plan purchase, gift, notifications).\n\nOnly do this if you are sure the money has arrived."
+confirm_refund = "↩️ <b>Refund {amount} to user <code>{user_id}</code>?</b>\n\nTelegram returns the Stars at once. You can also take the credited amount back from the balance (as much as is left)."
+refunded = "↩️ Stars refunded. Taken from the balance: {debited}."
+
+[admin_payments.filter]
+all = "All"
+ok = "✅ Paid"
+open = "⏳ Pending"
+fail = "✖️ Failed"
+ref = "↩️ Refunds"
+user = "user {user_id}"
+
+[admin_payments.btn]
+receipt = "🧾 View receipt"
+search = "🔎 Find"
+back = "◀️ Back to payments"
+check = "🔄 Check with the provider"
+mark_paid = "✅ Mark as paid"
+rerun = "🔁 Run processing again"
+refund = "↩️ Refund Stars"
+refund_debit = "↩️ Refund and take from balance"
+refund_keep = "↩️ Refund, keep the balance"
+user = "👤 User"
+user_payments = "💳 Their payments"
+
+[admin_payments.details]
+receipt = "Receipt attached: {kind}"
+title = "💳 <b>Payment</b> <code>{id}</code>"
+status = "Status: {status}"
+amount = "Amount: <b>{amount}</b> · at the provider: {provider_amount}"
+provider = "Provider: {provider} · ID: <code>{provider_id}</code>"
+user = "User: <code>{user_id}</code>"
+purpose = "Purpose: {purpose}"
+dates = "Created: {created} · credited: {credited}"
+
+[admin_payments.purpose]
+topup = "balance top-up"
+plan = "plan \"{plan}\""
+gift = "gift \"{plan}\""
+donation = "donation"
+recurring = "🔁 Stars subscription"
+
+[admin_payments.outcome]
+credited = "✅ The payment is credited."
+rerun = "🔁 Processing ran again."
+purchase = "📦 The plan is activated."
+purchase_before = "📦 The plan was activated before."
+gift = "🎁 Gift code: <code>{code}</code>"
+error = "⚠️ The plan was not activated ({reason}) - the money stays on the balance."
+notified = "✉️ Notifications sent: {count}"
+
+[admin_payments.error]
+not_found = "🤷 Payment not found."
+not_creditable = "This payment is already credited or cannot be credited."
+not_succeeded = "Processing can only be repeated for a paid payment."
+no_polling = "This provider cannot be asked for the status - wait for its notification."
+provider_error = "😔 The provider did not answer."
+not_refundable = "Only a paid Telegram Stars payment can be refunded."
+refund_failed = "😔 Telegram did not accept the refund."
+failed = "😔 That did not work - see the logs for details."

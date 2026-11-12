@@ -1,0 +1,50 @@
+[admin_plans]
+title = "Plans"
+list = "📦 <b>Plans</b>\n\nTap a plan to edit it. 🗄 archived, 🙈 hidden (available by link only)."
+list_empty = "📦 <b>Plans</b>\n\nNo plans yet - create the first one."
+invalid = "That value does not fit. Please try again."
+created = "✅ Plan created."
+
+[admin_plans.card]
+audience = "Audience: <code>{rule}</code> · allow-list: {users}"
+title = "📦 <b>{title}</b> · id {id}"
+duration = "⏱ Period: {duration} ({days} d)"
+price = "💰 Price: <b>{price}</b> (≈ {monthly} per month) · {stars}"
+stars_auto = "{stars} (by rate)"
+limits = "📱 Devices: {devices} · 📶 Traffic per period: {traffic}"
+flags = "Status: {status} · hidden: {hidden} · Telegram proxy: {proxy} · order: {order}"
+active = "🟢 on sale"
+archived = "🗄 archived"
+stats = "📊 Active subscriptions: {active} · purchases: {purchases} · revenue: {revenue}"
+link = "🔗 Link to the hidden plan:\n<code>{link}</code>"
+
+[admin_plans.btn]
+availability_rule = "👥 Audience"
+allowed_user_ids = "📋 Allow-list"
+new = "➕ New plan"
+back = "◀️ Back to plans"
+title = "✏️ Title"
+duration_days = "⏱ Period"
+price_kop = "💰 Price"
+price_stars = "⭐️ Price in Stars"
+device_limit = "📱 Devices"
+traffic_limit_gb = "📶 Traffic"
+is_hidden_on = "🙈 Hide"
+is_hidden_off = "👁 Show to everyone"
+includes_tg_proxy_on = "🛡 Include proxy"
+includes_tg_proxy_off = "🛡 No proxy"
+is_active_on = "♻️ Restore from archive"
+is_active_off = "🗄 Archive"
+
+[admin_plans.ask]
+availability_rule = "👥 Who can buy: <code>all</code>, <code>new</code>, <code>existing</code>, <code>invited</code> or <code>allowlist</code>."
+allowed_user_ids = "📋 Telegram IDs allowed to buy, separated by spaces or commas. Send an empty message to clear the list."
+title = "✏️ Send the plan title (up to 64 characters), e.g. \"1 month\"."
+duration_days = "⏱ How many days does the plan last? E.g. <code>30</code>."
+price_kop = "💰 Price in rubles, e.g. <code>149</code> or <code>199.90</code>. <code>0</code> means free."
+price_stars = "⭐️ Price in Telegram Stars. <code>0</code> means calculate by the rate."
+device_limit = "📱 How many devices can be connected? <code>0</code> means unlimited."
+traffic_limit_gb = "📶 Traffic limit per period in GB. <code>0</code> means unlimited."
+
+[admin_plans.create]
+step = "➕ <b>New plan</b> · step {step} of {total}"

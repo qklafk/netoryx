@@ -1,0 +1,67 @@
+# Public pages (browser) and notices about Remnawave events.
+
+[public_web]
+open_bot = "在 Telegram 中打开机器人"
+support = "客服支持"
+copy = "📋 复制链接"
+copied = "✅ 已复制"
+
+[public_web.not_found]
+title = "链接未找到"
+text = "该链接可能已过期或输入有误。请打开机器人——那里始终有最新链接。"
+
+[public_web.sub]
+active_until = "✅ 订阅有效期至 {date}"
+active_forever = "✅ 订阅永久有效"
+expired = "⛔ 您的订阅已到期——在机器人中续费后即可恢复使用。"
+disabled = "⛔ 访问已暂停。详情请见机器人。"
+none = "您还没有订阅——请在机器人中开通。"
+apps = "一键连接"
+apps_hint = "选择您已安装的应用——订阅将自动添加。"
+manual = "手动添加"
+manual_hint = "复制链接并作为订阅添加到应用中（Subscription /「从 URL 添加」）。或扫描二维码。"
+
+[public_web.proxy]
+title = "Telegram 代理"
+text = "点击后 Telegram 会提示开启代理。也可以用手机相机扫描二维码。"
+connect = "⚡️ 连接 · {title}"
+
+[public_web.open]
+title = "正在打开 {app}…"
+text = "如果应用没有自动打开，请点击下方按钮。"
+button = "在 {app} 中打开"
+install = "没有 {app}？请安装："
+manual = "手动添加订阅"
+
+[public_web.platform]
+ios = "iPhone/iPad"
+android = "Android"
+windows = "Windows"
+macos = "macOS"
+linux = "Linux"
+apple_tv = "Apple TV"
+android_tv = "Android TV"
+
+[public_web.gift]
+title = "🎁 送给您的礼物！"
+text = "有人送了您 {brand} VPN——{what}。打开机器人领取礼品。"
+button = "🎁 在 Telegram 中领取礼品"
+hint = "机器人将会打开——点击「Start」即可激活礼品。"
+gone = "该礼品已被领取，或链接无效。"
+
+[public_web.rw]
+limited = "📊 本期流量已用完，VPN 已暂停。\n\n如需继续使用，请续费订阅或选择流量更多的套餐 👇"
+threshold = "📊 本期流量已使用 {percent}%。如果可能不够用，请提前续费。"
+first_connected = "🎉 太好了，VPN 已连接并正常工作！如需帮助，我们随时都在。"
+device_added = "📱 有新设备连接：{device}。\n\n如果不是您本人，请重置设备并获取新的订阅链接。"
+unknown_device = "未命名"
+expiry_drift = "⚠️ Remnawave 将用户 <code>{user_id}</code> 的订阅标记为已到期，但在机器人中仍有效。同步很快会修正；如再次发生，请检查服务器时钟和面板设置。"
+node_lost = "🔴 Remnawave：节点 {node} 已断开连接{error}"
+node_restored = "✅ Remnawave：节点 {node} 已重新连接"
+node_traffic = "📊 Remnawave：节点 {node} 即将达到流量上限"
+
+[public_web.rw.btn]
+subscription = "🔐 我的订阅"
+buy = "🛒 续费"
+devices = "📱 设备"
+connect = "📲 连接"

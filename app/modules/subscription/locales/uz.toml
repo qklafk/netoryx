@@ -1,0 +1,248 @@
+# Subscription: card, trial, plans and checkout, connection, devices, reminders.
+
+[subscription.unit]
+mb = "{n} MB"
+gb = "{n} GB"
+
+[subscription.btn]
+addons = "➕ Qoʻshimchalar"
+trial = "🎉 Bepul sinab koʻrish"
+buy = "🛒 Tarif tanlash"
+renew = "🛒 Obunani uzaytirish"
+connect = "📲 Ulanish"
+auto_renew_on = "🔄 Avtouzaytirishni yoqish"
+auto_renew_off = "⏸ Avtouzaytirishni oʻchirish"
+devices = "📱 Qurilmalar"
+rotate = "🔁 Yangi havola"
+support = "🆘 Yordam"
+copy = "📋 Havolani nusxalash"
+copy_lte = "📋 LTE havolasini nusxalash"
+qr = "🔳 QR-kod"
+top_up = "💰 Balansni toʻldirish"
+
+[subscription.card]
+title = "🔐 <b>Mening obunam</b>"
+none = "Sizda hali obuna yoʻq. Tarif tanlang — ulanish bir daqiqadan kam vaqt oladi."
+none_personal = "Sizda hali ruxsat yoʻq. Egasidan taklif yuborishini soʻrang."
+trial_hint = "🎁 Bepul sinab koʻrish ham mumkin — {trial}, toʻlovsiz va kartasiz."
+status_active = "Holat: 🟢 <b>faol</b>"
+status_expired = "Holat: 🔴 <b>muddati tugagan</b>"
+status_disabled = "Holat: ⛔️ <b>toʻxtatilgan</b>"
+complimentary = "Tarif: 🎁 bepul foydalanish"
+trial = "Tarif: 🎉 bepul sinov"
+plan = "Tarif: <b>{plan}</b>"
+expires = "Amal qiladi: <b>{expires}</b> gacha"
+expires_left = "{date} ({left} qoldi)"
+forever = "Muddat: <b>{expires}</b> ♾"
+devices = "Qurilmalar: {devices}"
+traffic = "Ushbu davrdagi trafik: {used}"
+traffic_limited = "Trafik: {limit} dan {used}"
+auto_renew_on = "Avtouzaytirish: 🟢 yoqilgan"
+auto_renew_off = "Avtouzaytirish: ⚪️ oʻchirilgan"
+auto_renew_stars = "Telegram Stars obunasi orqali uzaytiriladi ⭐"
+auto_renew_low = "⚠️ Avtouzaytirish uchun {price} kerak, balansingizda esa {balance}. Uni oldindan toʻldiring."
+expired_hint = "Obunani uzaytiring — VPN yana ishlaydi. Hech narsani qayta sozlash shart emas."
+expired_hint_personal = "Foydalanish muddatingiz tugadi. Egasidan uni uzaytirishni soʻrang."
+disabled_hint = "Obunangizni administrator toʻxtatgan. Yordam xizmatiga yozing — hal qilamiz."
+
+[subscription.trial]
+started = "🎉 <b>Bepul sinov boshlandi!</b>\n\nSizda {trial} bepul foydalanish bor — {expires} gacha.\nBir daqiqada ulaning 👇"
+unavailable = "Bepul sinov hozir mavjud emas 🙏"
+used = "Siz bepul sinovdan foydalanib boʻlgansiz — davom etish uchun tarif tanlang 🙂"
+
+[subscription.auto_renew]
+enabled = "Avtouzaytirish yoqildi 🔄"
+disabled = "Avtouzaytirish oʻchirildi"
+stars_failed = "Telegram Stars obunasini bekor qilib boʻlmadi. Bir daqiqadan soʻng qayta urinib koʻring."
+
+[subscription.rotate]
+confirm = "🔁 <b>Yangi obuna havolasi</b>\n\nEski havola darhol ishlamay qoladi, yangisini esa har bir qurilmaga qoʻshishingiz kerak boʻladi.\n\nHavola begona qoʻlga tushgan boʻlsa foydali. Davom etasizmi?"
+yes = "🔁 Ha, yangisini chiqarish"
+done = "✅ <b>Tayyor!</b> Mana yangi havolangiz:\n<code>{url}</code>\n\nUni barcha qurilmalaringizdagi ilovaga qoʻshing."
+done_no_url = "✅ Havolangiz yangilandi. Ilovaga qoʻshish uchun «📲 Ulanish» boʻlimini oching."
+popup = "Havola yangilandi"
+
+[subscription.plans]
+title = "🛒 <b>Tarif tanlang</b>\n\nHar bir tarifda barcha serverlar toʻliq tezlikda. Muddat qanchalik uzun boʻlsa, narx shunchalik foydali 💸"
+line = "• <b>{title}</b> — {price}"
+line_discount = "• <b>{title}</b> — {price} ({per_month}/oy, {discount}% tejash)"
+button = "{title} — {price}"
+button_discount = "{title} — {price} · −{discount}%"
+extends = "Yangi muddat joriy muddatga qoʻshiladi (hozir {expires} gacha) — bir kun ham yoʻqotmaysiz."
+footer = "Balansdan yoki istalgan mavjud usulda toʻlang — oʻzingizga qulayini tanlang."
+empty = "Tariflar hali sozlanmagan. Birozdan soʻng qarab koʻring 🙏"
+unavailable = "Bu yerda obuna sotib olib boʻlmaydi."
+gone = "Bu tarif endi mavjud emas. Boshqasini tanlang 👇"
+
+[subscription.plan]
+title = "📦 <b>{title}</b>"
+duration = "📅 Muddat: {duration}"
+devices = "📱 Qurilmalar: {devices}"
+traffic = "📶 Trafik: {traffic}"
+price = "💰 Narx: <b>{price}</b>"
+per_month = "Bu oyiga {per_month}"
+extends = "Obunangiz uzaytiriladi — muddat joriy muddatga qoʻshiladi (hozir {expires} gacha)."
+switch = "Qurilma va trafik limitlari shu tarif limitlariga oʻtadi."
+balance = "Balansingiz: {balance}"
+pay_balance = "✅ Balansdan toʻlash · {price}"
+missing = "<b>{missing}</b> yetishmayapti. Farqni istalgan usulda toʻlang — obuna avtomatik faollashadi 👇"
+choose_method = "Toʻlov usulini tanlang — obuna toʻlovdan soʻng avtomatik faollashadi 👇"
+stars_button = "{title} · {stars}"
+no_methods = "{missing} yetishmayapti, onlayn toʻlov esa hozir mavjud emas. Yordam xizmatiga yozing — yordam beramiz."
+
+[subscription.buy]
+done = "🎉 <b>Hammasi tayyor!</b> «{plan}» obunangiz {expires} gacha faol.\n\nEndi qurilmalaringizni ulang 👇"
+syncing = "⏳ Serverlarni sozlayapmiz — bu bir necha daqiqa oladi."
+
+[subscription.invoice]
+text = "🧾 <b>{amount} miqdoridagi hisob</b>\n\nToʻlov usuli: {provider}\nToʻlov sahifasini ochish uchun «Toʻlash» tugmasini bosing. Toʻlov oʻtishi bilan «{plan}» obunasi avtomatik faollashadi va men sizga xabar beraman.\n\nHisob {hours} davomida amal qiladi."
+pay = "💳 Toʻlash"
+check = "🔄 Toʻladim — tekshirish"
+stars = "⭐ «{plan}» uchun hisob quyida. Uni toʻlang — obuna darhol faollashadi."
+description = "{brand}: «{plan}» obunasi"
+
+[subscription.email]
+ask = "📧 Chek uchun e-mail manzilingiz kerak. Uni bitta xabarda yuboring — masalan, <code>name@example.com</code>."
+invalid = "Bu e-mailga oʻxshamaydi 🤔 Tekshirib, qayta yuboring."
+
+[subscription.manual]
+text = "💳 <b>Qoʻlda oʻtkazma: {amount}</b>\n\n«{plan}» uchun quyidagi rekvizitlar boʻyicha toʻlang:\n<code>{details}</code>\n\nSoʻng chekning rasmi yoki hujjatini shu chatga yuboring. Administrator uni tekshirib, obunani faollashtiradi."
+sent = "✅ Chek qabul qilindi. Toʻlovni tekshiramiz va tasdiqlangach obunangizni faollashtiramiz."
+unsupported = "Toʻlov chekining rasmi yoki hujjatini yuboring."
+
+[subscription.pay]
+unavailable = "Bu toʻlov usuli hozir mavjud emas. Boshqasini tanlang 🙏"
+failed = "😔 Hisob yaratib boʻlmadi. Qayta urinib koʻring yoki boshqa usulni tanlang."
+received = "✅ <b>Toʻlov qabul qilindi!</b> Rahmat 💜"
+expired = "Bu hisob endi amal qilmaydi. Tariflardan yangisini yarating."
+not_yet = "Toʻlov hali kelmadi. Agar toʻlagan boʻlsangiz, bir daqiqa kutib, yana bosing."
+
+[subscription.error]
+banned = "🚫 Ruxsat cheklangan. Agar bu xato boʻlsa, yordam xizmatiga yozing."
+insufficient = "Balansingizda mablagʻ yetarli emas — toʻlov usulini tanlang."
+
+[subscription.connect]
+title = "📲 <b>Ulanish</b>"
+steps = "1️⃣ Qurilma va ilovani tanlang, uni oʻrnating.\n2️⃣ «➕ … ga qoʻshish» tugmasini bosing — ilova oʻzi sozlanadi.\n3️⃣ VPN-ni yoqing. Tayyor!"
+url = "Obuna havolangiz (nusxalash uchun bosing):\n<code>{url}</code>"
+lte = "📶 «LTE» belgili serverlar faqat «oq roʻyxatlar» ishlaydigan mobil internet uchun."
+lte_url = "📶 «Oq roʻyxatlar»li mobil internet uchun havola (LTE):\n<code>{url}</code>"
+keep_secret = "🔒 Bu havolani hech kimga bermang — qurilmalaringiz u orqali ulanadi."
+platform = "{platform}\n\nIlovani tanlang. <b>{app}</b> ni tavsiya qilamiz — bir bosishda sozlanadi."
+recommended = "⭐ {app}"
+no_apps = "Bu platforma uchun hali ilovalar yoʻq."
+qr = "🔳 Obunangizning QR-kodi.\n\nIlovada «+» → «QR-kodni skanerlash» ni bosing va kamerani ekranga qarating."
+no_url = "Obuna havolasi hali mavjud emas: server sozlanmoqda. Keyinroq urinib koʻring yoki yordam xizmatiga yozing."
+need_sub = "Ulanish uchun faol obuna kerak. Tarif tanlang — bir daqiqa oladi 👇"
+need_sub_trial = "Ulanish uchun obuna kerak. Bepul sinovdan boshlang — {trial} 🎁"
+need_sub_personal = "Sizda hali ruxsat yoʻq yoki muddati tugagan. Egasidan uzaytirishni soʻrang."
+
+[subscription.platform]
+ios = "🍏 iPhone / iPad"
+android = "🤖 Android"
+windows = "🪟 Windows"
+macos = "💻 macOS"
+linux = "🐧 Linux"
+apple_tv = "📺 Apple TV"
+android_tv = "📺 Android TV"
+
+[subscription.app]
+title = "<b>{app}</b> · {platform}"
+steps = "1️⃣ Quyidagi tugma orqali {app} ni oʻrnating.\n2️⃣ Bu yerga qaytib, «➕ {app} ga qoʻshish» tugmasini bosing.\n3️⃣ Konfiguratsiyani qoʻshishga ruxsat bering va VPN-ni yoqing."
+steps_tv = "1️⃣ Televizorga {app} ni oʻrnating.\n2️⃣ Ilovada QR-kod orqali qoʻshishni tanlang va shu chatdagi kodni skanerlang — «🔳 QR-kod» tugmasi.\n3️⃣ VPN-ni yoqing."
+manual = "Ochilmadimi? Havolani nusxalab, qoʻlda qoʻshing: «+» → «Buferdan qoʻyish».\n<code>{url}</code>"
+crypt = "🔐 Shifrlangan havola — oddiysi ishlamasa:\n<code>{link}</code>"
+add = "➕ {app} ga qoʻshish"
+download = "⬇️ {label}"
+
+[subscription.devices]
+title = "📱 <b>Qurilmalar</b>"
+limit = "Ulash mumkin: {limit}."
+unknown = "Qurilma"
+none = "Hozircha qurilmalar yoʻq — bittasini ulang, u shu yerda paydo boʻladi."
+not_listed = "Bu server qurilmalarni koʻrsatmaydi, lekin bogʻlanishlarni tiklash mumkin — qurilmalar qayta ulanadi."
+partial = "⚠️ Hamma serverlar javob bermadi — roʻyxat toʻliq boʻlmasligi mumkin."
+hint = "Yangi telefonmi yoki limitga yetdingizmi? Endi ishlatmaydigan qurilmani uzing."
+reset_all = "🔄 Barcha qurilmalarni uzish"
+reset_yes = "🔄 Ha, barchasini uzish"
+reset_confirm = "Barcha qurilmalar uzilsinmi?\n\nIlovalar ishlashda davom etadi, lekin har bir qurilma ulanganda yana joy egallaydi (limit — {limit})."
+cooldown = "Qurilmalarni bunchalik tez-tez uzib boʻlmaydi. {time} dan keyin qayta urinib koʻring 🙏"
+gone = "Bu qurilma endi roʻyxatda yoʻq"
+not_supported = "Bu server qurilmalarni birma-bir uza olmaydi — barchasini birdaniga tiklang."
+deleted = "Qurilma uzildi ✅"
+reset_done = "Barcha qurilmalar uzildi ✅"
+reset_partial = "Hamma joyda uzilmadi: baʼzi serverlar javob bermadi. Keyinroq urinib koʻring."
+reset_failed = "Boʻlmadi — serverlar javob bermadi. Birozdan soʻng urinib koʻring."
+
+[subscription.remind]
+soon = "⏳ <b>Obunangiz {left} dan soʻng tugaydi</b> — {date}."
+auto_ok = "Avtouzaytirish yoqilgan: muddat tugashidan oldin balansdan «{plan}» uchun {price} yechamiz — hech narsa qilish shart emas 👌"
+auto_low = "Avtouzaytirish yoqilgan, lekin balansingizda {balance}, kerakli summa esa {price}. VPN ishlashda davom etishi uchun uni toʻldiring."
+stars = "Obunangiz Telegram Stars orqali avtomatik uzaytiriladi ⭐"
+trial = "Bepul sinov tez orada tugaydi. Yoqdimi? Foydalanishni saqlab qolish uchun tarif tanlang 🙂"
+renew = "VPN uzilishsiz ishlashi uchun obunani uzaytiring."
+personal = "VPN ishlashda davom etishi uchun egasidan foydalanishni uzaytirishni soʻrang."
+expired = "🔴 <b>Obunangiz muddati tugadi</b>\n\nVPN oʻchirildi. Obunani uzaytiring — hammasi yana ishlaydi, hech narsani sozlash shart emas."
+expired_personal = "🔴 <b>Foydalanish muddatingiz tugadi</b>\n\nVPN oʻchirildi. Egasidan foydalanishni uzaytirishni soʻrang."
+
+[subscription]
+renewed = "🔄 <b>Obuna avtomatik uzaytirildi</b>\n\n«{plan}» tarifi {expires} gacha amal qiladi. {price} yechildi, balansingizda {balance} qoldi."
+
+[subscription.admin]
+trial = "🎉 Bepul sinov: {user} (<code>{user_id}</code>)"
+renewed = "🔄 Avtouzaytirish: {user} (<code>{user_id}</code>) — «{plan}», {price}"
+
+[subscription.alert]
+panel_down = "🔴 <b>{name}</b> serveri javob bermayapti: <code>{error}</code>"
+panel_up = "🟢 <b>{name}</b> serveri yana aloqada"
+endpoint_down = "🟠 <b>{name}</b> kirish nuqtasi mavjud emas va obunalardan yashirildi: <code>{error}</code>"
+endpoint_up = "🟢 <b>{name}</b> kirish nuqtasi yana mavjud va obunalarga qaytarildi"
+probes_down = "⚠️ Hech bir kirish nuqtasi tekshiruvdan oʻtmadi — ehtimol, bot tomonidagi tarmoq muammosi. Obunalardan hech narsa yashirilmadi."
+probes_up = "🟢 Kirish nuqtalari tekshiruvi yana oʻtmoqda"
+inbounds_new = "🆕 <b>{panel}</b> serverida yangi inboundlar paydo boʻldi: {count}. Obunalarga qoʻshish uchun ularni serverlar boʻlimida yoqing."
+inbounds_gone = "⚠️ <b>{panel}</b> serverida inboundlar yoʻqoldi yoki oʻzgardi: {count}. Ular obunalardan olib tashlandi."
+
+[subscription.gw]
+stars = "⭐ Telegram Stars"
+cryptobot = "🪙 Kriptovalyuta (CryptoBot)"
+platega = "💳 Karta / bank oʻtkazmasi"
+yookassa = "💳 Bank kartasi (YooKassa)"
+yoomoney = "💳 YooMoney"
+freekassa = "💳 FreeKassa"
+test = "🧪 Sinov toʻlovi"
+
+[subscription.addons]
+title = "➕ <b>Obuna uchun qoʻshimchalar</b>"
+balance = "Hamyon balansi: <b>{balance}</b>"
+unavailable = "Bu obuna uchun mos qoʻshimchalar yoʻq."
+traffic_pack = "Trafik paketi"
+traffic_reset = "Trafikni nollash"
+device_addon = "Qoʻshimcha qurilmalar"
+buy = "{title}: {quantity} · {price}"
+done = "Qoʻshimcha qoʻllanildi va serverlarga yuborildi."
+insufficient = "Balansda mablagʻ yetarli emas. Toʻldirib, qayta urinib koʻring."
+
+[subscription.multi]
+list_title = "🔐 <b>Mening obunalarim</b>\n\nBoshqarish uchun obunani tanlang."
+list_button = "🔐 Barcha obunalar"
+choose_purchase = "🛒 <b>Nimani uzaytirmoqchisiz?</b>\n\nMavjud obunani tanlang yoki yangisini yarating."
+renew_target = "Uzaytirish: {name}"
+renew_button = "🔄 Shuni uzaytirish"
+new_button = "➕ Yangi obuna"
+buy_new = "Oʻz havolasi va qurilmalariga ega alohida obuna yaratiladi."
+name = "Obuna: <b>{name}</b>"
+links_button = "🌍 Server havolalari"
+links_title = "🌍 <b>Server havolalari</b>\n\nAlohida obuna yoki profilini olish uchun serverni tanlang."
+links_empty = "Server havolalari hali yoʻq."
+server_title = "🌍 <b>{name}</b>"
+server_sub = "Ushbu server obunasi:\n<code>{url}</code>"
+profile_title = "🔑 <b>{name}</b>"
+copy_profile = "📋 Profilni nusxalash"
+qr_unavailable = "Bu profil uchun QR-kod yaratib boʻlmaydi."
+
+[subscription.winback]
+offer = "🎁 Keyingi tarifingiz uchun {until} gacha {discount}% shaxsiy chegirma mavjud."
+
+[subscription.autopay]
+declined = "⚠️ <b>Obunani avtomatik uzaytirib boʻlmadi</b>\n\nBank {card} kartasidan {amount} yechishni rad etdi. Obuna tugashidan oldin balansni toʻldiring — shunda u balansdan uzaytiriladi."
+card_removed = "{card} kartasidan endi pul yechib boʻlmaydi, u saqlangan kartalardan olib tashlandi."

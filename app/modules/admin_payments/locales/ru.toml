@@ -1,0 +1,67 @@
+[admin_payments]
+title = "Платежи"
+list = "💳 <b>Платежи</b> · {title} · страница {page}"
+list_empty = "Платежей нет."
+search_prompt = "🔎 Пришлите ID платежа, ID у провайдера или Telegram ID пользователя."
+not_found_query = "🤷 Такой платёж не нашёлся."
+checked = "🔄 Провайдер ответил, статус: {status}"
+confirm_paid = "✅ <b>Отметить платёж оплаченным?</b>\n\nНа баланс пользователя <code>{user_id}</code> поступит {amount}, затем выполнится всё, что положено после оплаты (покупка тарифа, подарок, уведомления).\n\nДелайте это, только если точно знаете, что деньги пришли."
+confirm_refund = "↩️ <b>Вернуть {amount} пользователю <code>{user_id}</code>?</b>\n\nTelegram вернёт звёзды сразу. Можно заодно списать зачисленную сумму с баланса (сколько на нём осталось)."
+refunded = "↩️ Звёзды возвращены. Списано с баланса: {debited}."
+
+[admin_payments.filter]
+all = "Все"
+ok = "✅ Оплачены"
+open = "⏳ Ожидают"
+fail = "✖️ Не прошли"
+ref = "↩️ Возвраты"
+user = "пользователь {user_id}"
+
+[admin_payments.btn]
+receipt = "🧾 Открыть чек"
+search = "🔎 Найти"
+back = "◀️ К платежам"
+check = "🔄 Проверить у провайдера"
+mark_paid = "✅ Отметить оплаченным"
+rerun = "🔁 Повторить обработку"
+refund = "↩️ Вернуть звёзды"
+refund_debit = "↩️ Вернуть и списать с баланса"
+refund_keep = "↩️ Вернуть, баланс не трогать"
+user = "👤 Пользователь"
+user_payments = "💳 Его платежи"
+
+[admin_payments.details]
+receipt = "Чек приложен: {kind}"
+title = "💳 <b>Платёж</b> <code>{id}</code>"
+status = "Статус: {status}"
+amount = "Сумма: <b>{amount}</b> · у провайдера: {provider_amount}"
+provider = "Провайдер: {provider} · ID: <code>{provider_id}</code>"
+user = "Пользователь: <code>{user_id}</code>"
+purpose = "Назначение: {purpose}"
+dates = "Создан: {created} · зачислен: {credited}"
+
+[admin_payments.purpose]
+topup = "пополнение баланса"
+plan = "тариф «{plan}»"
+gift = "подарок «{plan}»"
+donation = "донат"
+recurring = "🔁 подписка Stars"
+
+[admin_payments.outcome]
+credited = "✅ Платёж зачислен."
+rerun = "🔁 Обработка выполнена повторно."
+purchase = "📦 Тариф оформлен."
+purchase_before = "📦 Тариф был оформлен раньше."
+gift = "🎁 Подарочный код: <code>{code}</code>"
+error = "⚠️ Тариф не оформлен ({reason}) — деньги остались на балансе."
+notified = "✉️ Уведомлений отправлено: {count}"
+
+[admin_payments.error]
+not_found = "🤷 Платёж не найден."
+not_creditable = "Этот платёж уже зачислен или не может быть зачислен."
+not_succeeded = "Повторить обработку можно только для оплаченного платежа."
+no_polling = "Этот провайдер не умеет отвечать на запросы статуса — дождитесь уведомления."
+provider_error = "😔 Провайдер не ответил."
+not_refundable = "Вернуть можно только оплаченный платёж в Telegram Stars."
+refund_failed = "😔 Telegram не принял возврат."
+failed = "😔 Не получилось — подробности в логах."

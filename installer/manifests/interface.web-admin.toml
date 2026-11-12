@@ -1,0 +1,11 @@
+id = "interface.web-admin"
+version = 1
+title = "Web administration"
+description = "Administrative web interface served by the existing application."
+roles = ["all-in-one", "control-plane"]
+profiles = ["personal", "commercial"]
+depends_on = ["core.platform"]
+
+[resources]
+ram_mb = 64
+disk_mb = 50

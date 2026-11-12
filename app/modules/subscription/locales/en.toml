@@ -1,0 +1,248 @@
+# Subscription: card, trial, plans and checkout, connection, devices, reminders.
+
+[subscription.unit]
+mb = "{n} MB"
+gb = "{n} GB"
+
+[subscription.btn]
+addons = "➕ Extras"
+trial = "🎉 Try for free"
+buy = "🛒 Choose a plan"
+renew = "🛒 Renew subscription"
+connect = "📲 Connect"
+auto_renew_on = "🔄 Turn on auto-renewal"
+auto_renew_off = "⏸ Turn off auto-renewal"
+devices = "📱 Devices"
+rotate = "🔁 New link"
+support = "🆘 Support"
+copy = "📋 Copy link"
+copy_lte = "📋 Copy LTE link"
+qr = "🔳 QR code"
+top_up = "💰 Top up balance"
+
+[subscription.card]
+title = "🔐 <b>My subscription</b>"
+none = "You don't have a subscription yet. Pick a plan — connecting takes less than a minute."
+none_personal = "You don't have access yet. Ask the owner to send you an invitation."
+trial_hint = "🎁 You can also try it for free — {trial}, no payment or card needed."
+status_active = "Status: 🟢 <b>active</b>"
+status_expired = "Status: 🔴 <b>expired</b>"
+status_disabled = "Status: ⛔️ <b>suspended</b>"
+complimentary = "Plan: 🎁 free access"
+trial = "Plan: 🎉 free trial"
+plan = "Plan: <b>{plan}</b>"
+expires = "Valid until: <b>{expires}</b>"
+expires_left = "{date} ({left} left)"
+forever = "Term: <b>{expires}</b> ♾"
+devices = "Devices: {devices}"
+traffic = "Traffic this period: {used}"
+traffic_limited = "Traffic: {used} of {limit}"
+auto_renew_on = "Auto-renewal: 🟢 on"
+auto_renew_off = "Auto-renewal: ⚪️ off"
+auto_renew_stars = "Renewed by a Telegram Stars subscription ⭐"
+auto_renew_low = "⚠️ Auto-renewal needs {price}, but your balance is {balance}. Top it up in advance."
+expired_hint = "Renew your subscription and the VPN will work again. No need to set anything up again."
+expired_hint_personal = "Your access has ended. Ask the owner to extend it."
+disabled_hint = "Your subscription was suspended by an administrator. Contact support and we'll sort it out."
+
+[subscription.trial]
+started = "🎉 <b>Your free trial is on!</b>\n\nYou have {trial} of free access — until {expires}.\nConnect in a minute 👇"
+unavailable = "The free trial isn't available right now 🙏"
+used = "You've already used the free trial — choose a plan to continue 🙂"
+
+[subscription.auto_renew]
+enabled = "Auto-renewal is on 🔄"
+disabled = "Auto-renewal is off"
+stars_failed = "Couldn't cancel the Telegram Stars subscription. Please try again in a minute."
+
+[subscription.rotate]
+confirm = "🔁 <b>New subscription link</b>\n\nThe old link will stop working right away, and you'll need to add the new one on each device.\n\nUseful if your link got into the wrong hands. Continue?"
+yes = "🔁 Yes, issue a new one"
+done = "✅ <b>Done!</b> Here's your new link:\n<code>{url}</code>\n\nAdd it to the app on all your devices."
+done_no_url = "✅ Your link has been updated. Open «📲 Connect» to add it to the app."
+popup = "Link updated"
+
+[subscription.plans]
+title = "🛒 <b>Choose a plan</b>\n\nEvery plan includes all servers at full speed. The longer the term, the better the price 💸"
+line = "• <b>{title}</b> — {price}"
+line_discount = "• <b>{title}</b> — {price} ({per_month}/mo, save {discount}%)"
+button = "{title} — {price}"
+button_discount = "{title} — {price} · −{discount}%"
+extends = "The new term is added to the current one (now until {expires}) — you won't lose a single day."
+footer = "Pay from your balance or any available method — whatever suits you."
+empty = "No plans have been set up yet. Please check back a bit later 🙏"
+unavailable = "Subscriptions can't be bought here."
+gone = "This plan is no longer available. Please pick another one 👇"
+
+[subscription.plan]
+title = "📦 <b>{title}</b>"
+duration = "📅 Term: {duration}"
+devices = "📱 Devices: {devices}"
+traffic = "📶 Traffic: {traffic}"
+price = "💰 Price: <b>{price}</b>"
+per_month = "That's {per_month} a month"
+extends = "Your subscription will be extended — the term is added to the current one (now until {expires})."
+switch = "Device and traffic limits will switch to this plan's limits."
+balance = "Your balance: {balance}"
+pay_balance = "✅ Pay from balance · {price}"
+missing = "You're <b>{missing}</b> short. Pay the difference any way you like — the subscription activates automatically 👇"
+choose_method = "Choose a payment method — the subscription activates automatically after payment 👇"
+stars_button = "{title} · {stars}"
+no_methods = "You're {missing} short, and online payment isn't available right now. Contact support and we'll help."
+
+[subscription.buy]
+done = "🎉 <b>All set!</b> Your «{plan}» subscription is active until {expires}.\n\nNow connect your devices 👇"
+syncing = "⏳ We're setting up the servers — it'll take a couple of minutes."
+
+[subscription.invoice]
+text = "🧾 <b>Invoice for {amount}</b>\n\nPayment method: {provider}\nTap «Pay» to open the payment page. As soon as the payment goes through, your «{plan}» subscription activates automatically and I'll let you know.\n\nThe invoice is valid for {hours}."
+pay = "💳 Pay"
+check = "🔄 I've paid — check"
+stars = "⭐ The invoice for «{plan}» is below. Pay it and the subscription activates right away."
+description = "{brand}: «{plan}» subscription"
+
+[subscription.email]
+ask = "📧 We need your e-mail for the receipt. Send it in one message — for example, <code>name@example.com</code>."
+invalid = "That doesn't look like an e-mail 🤔 Please check it and send it again."
+
+[subscription.manual]
+text = "💳 <b>Manual transfer: {amount}</b>\n\nPay for «{plan}» using these details:\n<code>{details}</code>\n\nThen send a photo or document of the receipt in this chat. An administrator will verify it and activate the subscription."
+sent = "✅ Receipt received. We will verify the payment and activate your subscription once it is confirmed."
+unsupported = "Please send a photo or document of the payment receipt."
+
+[subscription.pay]
+unavailable = "This payment method isn't available right now. Please choose another one 🙏"
+failed = "😔 Couldn't create the invoice. Please try again or choose another method."
+received = "✅ <b>Payment received!</b> Thank you 💜"
+expired = "This invoice is no longer valid. Create a new one from the plans."
+not_yet = "The payment hasn't arrived yet. If you've already paid, wait a minute and tap again."
+
+[subscription.error]
+banned = "🚫 Access is restricted. If this is a mistake, please contact support."
+insufficient = "Not enough money on your balance — please choose a payment method."
+
+[subscription.connect]
+title = "📲 <b>Connecting</b>"
+steps = "1️⃣ Choose your device and an app, then install it.\n2️⃣ Tap «➕ Add to …» — the app sets itself up.\n3️⃣ Turn on the VPN. Done!"
+url = "Your subscription link (tap to copy):\n<code>{url}</code>"
+lte = "📶 Servers marked «LTE» are for mobile internet when only «white lists» work."
+lte_url = "📶 Link for mobile internet with «white lists» (LTE):\n<code>{url}</code>"
+keep_secret = "🔒 Don't share this link — it's how your devices connect."
+platform = "{platform}\n\nChoose an app. We recommend <b>{app}</b> — it sets up in one tap."
+recommended = "⭐ {app}"
+no_apps = "There are no apps listed for this platform yet."
+qr = "🔳 Your subscription QR code.\n\nIn the app, tap «+» → «Scan QR code» and point the camera at the screen."
+no_url = "The subscription link isn't available yet: the server is still being set up. Please try later or contact support."
+need_sub = "You need an active subscription to connect. Pick a plan — it takes a minute 👇"
+need_sub_trial = "You need a subscription to connect. Start with a free trial — {trial} 🎁"
+need_sub_personal = "You don't have access yet, or it has ended. Ask the owner to extend it."
+
+[subscription.platform]
+ios = "🍏 iPhone / iPad"
+android = "🤖 Android"
+windows = "🪟 Windows"
+macos = "💻 macOS"
+linux = "🐧 Linux"
+apple_tv = "📺 Apple TV"
+android_tv = "📺 Android TV"
+
+[subscription.app]
+title = "<b>{app}</b> · {platform}"
+steps = "1️⃣ Install {app} using the button below.\n2️⃣ Come back here and tap «➕ Add to {app}».\n3️⃣ Allow adding the configuration and turn on the VPN."
+steps_tv = "1️⃣ Install {app} on your TV.\n2️⃣ In the app, choose adding by QR code and scan the code from this chat — the «🔳 QR code» button.\n3️⃣ Turn on the VPN."
+manual = "Didn't open? Copy the link and add it manually: «+» → «Paste from clipboard».\n<code>{url}</code>"
+crypt = "🔐 Encrypted link — if the regular one doesn't work:\n<code>{link}</code>"
+add = "➕ Add to {app}"
+download = "⬇️ {label}"
+
+[subscription.devices]
+title = "📱 <b>Devices</b>"
+limit = "You can connect: {limit}."
+unknown = "Device"
+none = "No devices yet — connect one and it'll show up here."
+not_listed = "This server doesn't list devices, but you can reset the bindings — devices will reconnect."
+partial = "⚠️ Not all servers responded — the list may be incomplete."
+hint = "New phone or hit the limit? Unlink the device you no longer use."
+reset_all = "🔄 Unlink all devices"
+reset_yes = "🔄 Yes, unlink all"
+reset_confirm = "Unlink all devices?\n\nThe apps will keep working, but each device takes a slot again when it connects (limit — {limit})."
+cooldown = "Devices can't be unlinked that often. Please try again after {time} 🙏"
+gone = "This device is no longer in the list"
+not_supported = "This server can't unlink devices one by one — reset them all at once."
+deleted = "Device unlinked ✅"
+reset_done = "All devices unlinked ✅"
+reset_partial = "Not unlinked everywhere: some servers didn't respond. Please try later."
+reset_failed = "That didn't work — the servers didn't respond. Please try a bit later."
+
+[subscription.remind]
+soon = "⏳ <b>Your subscription ends in {left}</b> — {date}."
+auto_ok = "Auto-renewal is on: before it ends we'll charge {price} from your balance for «{plan}» — nothing to do 👌"
+auto_low = "Auto-renewal is on, but your balance is {balance} and {price} is needed. Top it up so the VPN keeps working."
+stars = "Your subscription will renew automatically via Telegram Stars ⭐"
+trial = "Your free trial is ending soon. Enjoyed it? Choose a plan to keep your access 🙂"
+renew = "Renew your subscription so the VPN keeps working without a break."
+personal = "Ask the owner to extend your access so the VPN keeps working."
+expired = "🔴 <b>Your subscription has ended</b>\n\nThe VPN is off. Renew your subscription and everything works again — no need to set anything up."
+expired_personal = "🔴 <b>Your access has ended</b>\n\nThe VPN is off. Ask the owner to extend your access."
+
+[subscription]
+renewed = "🔄 <b>Subscription renewed automatically</b>\n\nYour «{plan}» plan is valid until {expires}. Charged {price}, {balance} left on your balance."
+
+[subscription.admin]
+trial = "🎉 Free trial: {user} (<code>{user_id}</code>)"
+renewed = "🔄 Auto-renewal: {user} (<code>{user_id}</code>) — «{plan}», {price}"
+
+[subscription.alert]
+panel_down = "🔴 Server <b>{name}</b> is not responding: <code>{error}</code>"
+panel_up = "🟢 Server <b>{name}</b> is back online"
+endpoint_down = "🟠 Endpoint <b>{name}</b> is unreachable and hidden from subscriptions: <code>{error}</code>"
+endpoint_up = "🟢 Endpoint <b>{name}</b> is reachable again and back in subscriptions"
+probes_down = "⚠️ No endpoint passed the check — most likely a network problem on the bot's side. Nothing was hidden from subscriptions."
+probes_up = "🟢 Endpoint checks are passing again"
+inbounds_new = "🆕 New inbounds appeared on server <b>{panel}</b>: {count}. Enable them in the servers section to add them to subscriptions."
+inbounds_gone = "⚠️ Inbounds disappeared or changed on server <b>{panel}</b>: {count}. They were removed from subscriptions."
+
+[subscription.gw]
+stars = "⭐ Telegram Stars"
+cryptobot = "🪙 Crypto (CryptoBot)"
+platega = "💳 Card / bank transfer"
+yookassa = "💳 Bank card (YooKassa)"
+yoomoney = "💳 YooMoney"
+freekassa = "💳 FreeKassa"
+test = "🧪 Test payment"
+
+[subscription.addons]
+title = "➕ <b>Extras for your subscription</b>"
+balance = "Wallet balance: <b>{balance}</b>"
+unavailable = "There are no applicable extras for this subscription."
+traffic_pack = "Traffic pack"
+traffic_reset = "Reset traffic"
+device_addon = "Extra devices"
+buy = "{title}: {quantity} · {price}"
+done = "Extra applied and sent to the servers."
+insufficient = "Not enough balance. Top it up and try again."
+
+[subscription.multi]
+list_title = "🔐 <b>My subscriptions</b>\n\nChoose a subscription to manage."
+list_button = "🔐 All subscriptions"
+choose_purchase = "🛒 <b>What would you like to renew?</b>\n\nChoose an existing subscription or create a new one."
+renew_target = "Renew: {name}"
+renew_button = "🔄 Renew this one"
+new_button = "➕ New subscription"
+buy_new = "A separate subscription with its own link and devices will be created."
+name = "Subscription: <b>{name}</b>"
+links_button = "🌍 Server links"
+links_title = "🌍 <b>Server links</b>\n\nChoose a server to get its separate subscription or profile."
+links_empty = "No server links are available yet."
+server_title = "🌍 <b>{name}</b>"
+server_sub = "This server's subscription:\n<code>{url}</code>"
+profile_title = "🔑 <b>{name}</b>"
+copy_profile = "📋 Copy profile"
+qr_unavailable = "A QR code cannot be created for this profile."
+
+[subscription.winback]
+offer = "🎁 A personal {discount}% discount is available for your next plan until {until}."
+
+[subscription.autopay]
+declined = "⚠️ <b>Couldn't renew your subscription automatically</b>\n\nThe bank declined the {amount} charge to the card {card}. Top up your balance before the subscription ends — it will then renew from the balance."
+card_removed = "The card {card} can no longer be charged and was removed from your saved cards."

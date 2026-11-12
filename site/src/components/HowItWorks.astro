@@ -1,0 +1,166 @@
+---
+import { how, labels } from '~/data/i18n';
+import type { Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = how[lang];
+const l = labels[lang];
+---
+
+<section class="nx-s not-content" id="how">
+  <div class="nx-wrap">
+    <div class="nx-head">
+      <span class="nx-chip">{l.how}</span>
+      <h2>{t.title}</h2>
+    </div>
+    <div class="layout">
+      <div class="visual nx-frame">
+        <canvas aria-hidden="true"></canvas>
+        <span class="tag" aria-hidden="true">FIG.<b>01</b></span>
+      </div>
+      <ol class="steps">
+        {
+          t.steps.map((s, i) => (
+            <li class="step" data-step={i} data-active={i === 0 ? 'true' : 'false'}>
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              <h3><span class="mark">{s.title}</span></h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initMorph } from '~/scripts/morph';
+  const root = document.querySelector<HTMLElement>('#how');
+  const canvas = root?.querySelector('canvas');
+  if (root && canvas) {
+    const morph = initMorph(canvas);
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('.step'));
+    const activate = (i: number) => {
+      steps.forEach((s, k) => s.setAttribute('data-active', String(k === i)));
+      const b = root.querySelector('.tag b');
+      if (b) b.textContent = String(i + 1).padStart(2, '0');
+      morph.set(i);
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) activate(Number((e.target as HTMLElement).dataset.step));
+        }
+      },
+      { rootMargin: '-40% 0px -50% 0px' },
+    );
+    steps.forEach((s) => {
+      io.observe(s);
+      s.addEventListener('click', () => activate(Number(s.dataset.step)));
+    });
+  }
+</script>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .visual {
+    position: sticky;
+    top: calc(var(--sl-nav-height) + 1.5rem);
+    order: 2;
+    aspect-ratio: 1 / 1;
+    max-height: 70vh;
+    justify-self: stretch;
+    background-color: var(--nx-bg);
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .tag {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.8rem;
+    font-family: var(--nx-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--nx-dim);
+  }
+  .tag b {
+    color: var(--nx-ink);
+    margin-left: 0.3em;
+  }
+  .steps {
+    order: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+  .step {
+    margin: 0;
+    padding: 2rem 0;
+    min-height: 38vh;
+    border-top: 1px solid var(--nx-line);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.25s;
+  }
+  .step[data-active='true'] {
+    opacity: 1;
+  }
+  .num {
+    display: block;
+    font-family: var(--nx-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--nx-dim);
+    margin-bottom: 0.9rem;
+  }
+  .step h3 {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    margin-bottom: 0.9rem;
+  }
+  .mark {
+    padding: 0.05em 0.3em;
+    margin-left: -0.3em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .step[data-active='true'] .mark {
+    background: var(--nx-ink);
+    color: var(--nx-bg);
+  }
+  .step p {
+    max-width: 44ch;
+    color: var(--nx-dim);
+  }
+  @media (max-width: 52rem) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .visual {
+      order: 0;
+      top: var(--sl-nav-height);
+      z-index: 3;
+      aspect-ratio: auto;
+      height: 38vw;
+      min-height: 170px;
+      max-height: 230px;
+      margin: 0 0.5rem 1rem;
+    }
+    .step {
+      min-height: 0;
+      padding: 1.5rem 0;
+    }
+  }
+</style>

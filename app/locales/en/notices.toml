@@ -1,0 +1,24 @@
+# Messages about payments and rewards, and notifications for administrators.
+
+[paid]
+topped_up = "✅ Your balance was topped up by <b>{amount}</b>.\nCurrent balance: <b>{balance}</b>."
+plan_activated = "🎉 Thank you! Your <b>{plan}</b> subscription is active until <b>{expires}</b>.\n\nThe connection link is in the main menu."
+gift_ready = "🎁 Your gift is ready: <b>{plan}</b>.\n\nSend this link to the recipient:\n{link}\n\nOr the code: <code>{code}</code>"
+donation_thanks = "💜 Thank you for your support! We received <b>{amount}</b>."
+plan_failed = "✅ Your payment of <b>{amount}</b> was added to your balance (now <b>{balance}</b>), but the <b>{plan}</b> subscription could not be activated automatically.\n\nBuy it from your balance in the menu or contact support."
+partial = "⚠️ Received <b>{amount}</b> instead of <b>{expected}</b>. The amount was added to your balance, which is now <b>{balance}</b>."
+
+[reward]
+money = "💸 Referral reward: <b>+{amount}</b> to your balance (level {level})."
+partner = "💼 Partner reward: <b>+{amount}</b> to your partner balance (level {level})."
+days = "🎁 Referral bonus: <b>+{days}</b> added to your subscription (level {level})."
+
+[admin_notify]
+payment = "💰 <b>{amount}</b> via {provider}\nUser: <code>{user_id}</code> {username}\n{what}"
+what_topup = "Balance top-up"
+what_plan = "Purchase: {plan}"
+what_gift = "Gift: {plan}"
+what_donation = "Donation"
+plan_failed = "⚠️ Subscription not activated: {reason}"
+channel_check_failed = "⚠️ Cannot check membership of channel <code>{channel_id}</code>. Make sure the bot is an admin there. Until then users pass without the check."
+error = "🔥 <b>Error</b> <code>{signature}</code>\nupdate {update_id} ({update_type}), user <code>{user_id}</code>\n<code>{error}</code>\n<pre>{trace}</pre>"

@@ -1,0 +1,43 @@
+# Gift subscriptions and the "Gift / promo code" section.
+
+[gifts]
+unlimited_devices = "unlimited devices"
+share = "📤 Send the gift"
+copy_link = "📋 Copy link"
+share_text = "🎁 Here's a {brand} subscription for {period} — my gift to you! Open the link to activate it:"
+ready = "🎉 <b>Your gift is ready!</b>\n\nSubscription “{plan}” for {period}.\n\nSend this link to the recipient — the gift activates in one tap:\n{link}\n\nOr the code <code>{code}</code> — it can be entered in “🎁 Gift / promo code”."
+
+[gifts.hub]
+text = "🎁 <b>Gifts and promo codes</b>\n\nGive a friend a {brand} subscription: you'll get a link and a code — send them to the recipient and the subscription activates in one tap.\n\nIf someone gave you a gift or you have a promo code, enter it below 👇"
+give = "🎁 Give a subscription"
+enter_code = "🎟 I have a code"
+mine = "📦 My gifts"
+
+[gifts.plans]
+text = "🎁 <b>What shall we give?</b>\n\nPick a plan — the subscription starts when the recipient activates the gift."
+item = "{plan} — {price}"
+empty = "😔 There are no plans available as gifts right now. Please check back later!"
+
+[gifts.plan]
+text = "🎁 <b>Gift: “{plan}”</b>\n{period} · {devices} · <b>{price}</b>"
+balance = "Your balance: {balance}."
+missing = "You're <b>{amount}</b> short — pay it any way you like and the code arrives right after the payment."
+pay_balance = "💰 Pay from balance · {price}"
+pay = "💳 Pay for the gift"
+no_payments = "Top up your balance to pay for the gift."
+unavailable = "This plan can't be given as a gift right now — please choose another one."
+
+[gifts.mine]
+title = "📦 <b>My gifts</b>"
+item = "🎁 “{plan}” — <code>{code}</code>\n{status}"
+redeemed = "✅ activated"
+waiting = "⏳ waiting for the recipient"
+share = "📤 Send {code}"
+empty = "📦 You haven't given anyone a subscription yet. A perfect time to make a friend happy!"
+
+[gifts.code]
+ask = "🎟 Send the gift or promo code in one message:"
+not_found = "😕 There's no such code. Check the spelling and send it again — or tap “Cancel”."
+
+[gifts.error]
+funds = "There isn't enough money on your balance — top it up or choose to pay by card."

@@ -1,0 +1,45 @@
+[admin_promo]
+title = "Promo codes"
+list = "🏷 <b>Promo codes</b> · page {page}\n\nCode · bonus · used/limit. ✖️ means off."
+list_empty = "🏷 <b>Promo codes</b>\n\nNo promo codes yet - create the first one."
+gifts = "🎁 <b>Gift codes</b> · page {page}\n\n🎁 not redeemed yet, ✅ redeemed."
+gifts_empty = "🎁 No gift codes yet."
+invalid = "That value does not fit. Please try again."
+exists = "⚠️ This promo code already exists - pick another one."
+created = "✅ Promo code created."
+
+[admin_promo.btn]
+new = "➕ New promo code"
+gifts = "🎁 Gift codes"
+back = "◀️ Back to the list"
+random = "🎲 Generate"
+deactivate = "⛔️ Turn off"
+copy_link = "📋 Copy link"
+
+[admin_promo.status]
+on = "🟢 active"
+off = "✖️ turned off"
+expired = "⌛️ expired"
+exhausted = "🔚 limit reached"
+
+[admin_promo.card]
+title = "🏷 <b>{code}</b>"
+gift_title = "🎁 <b>{code}</b> (gift)"
+status = "Status: {status}"
+bonus = "Bonus: {bonus}"
+uses = "Used: {uses} · redemptions: {activations}"
+rules = "New customers only: {only_new} · valid until: {expires}"
+created = "Created: {created} · by: {by}"
+plan = "Gift plan: {plan}"
+link = "🔗 Link that applies the code:\n<code>{link}</code>"
+
+[admin_promo.ask]
+code = "Make up a code (3-64 characters: letters, digits, \"_\" and \"-\") or generate a random one."
+bonus_kop = "💰 How many rubles to add to the balance? <code>0</code> means no money."
+bonus_days = "📅 How many days to add to the subscription? <code>0</code> means no days. At least one bonus is required."
+max_uses = "🔢 How many times can the code be redeemed? <code>0</code> means unlimited."
+valid_days = "⏳ For how many days is the code valid? <code>0</code> means forever."
+only_new = "🆕 Only for people who have never paid?"
+
+[admin_promo.create]
+step = "➕ <b>New promo code</b> · step {step} of {total}"

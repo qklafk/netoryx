@@ -1,0 +1,44 @@
+---
+import { cta } from '~/data/i18n';
+import { GITHUB, docUrl, type Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = cta[lang];
+---
+
+<section class="nx-s not-content" id="start">
+  <div class="nx-wrap">
+    <div class="nx-frame box">
+      <h2>{t.title}</h2>
+      <p>{t.text}</p>
+      <div class="actions">
+        <a class="nx-btn primary" href={docUrl(lang, 'installation')}>{t.install} &rarr;</a>
+        <a class="nx-btn" href={GITHUB} rel="noopener">{t.github}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .box {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    padding: clamp(1.75rem, 6vw, 4rem);
+  }
+  h2 {
+    max-width: 20ch;
+  }
+  p {
+    color: var(--nx-dim);
+    max-width: 52ch;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

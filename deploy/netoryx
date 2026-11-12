@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+# netoryx - day-to-day management of a Netoryx installation (installed to /usr/local/bin by install.sh).
+set -euo pipefail
+
+if [ -r /etc/default/netoryx ]; then
+  # shellcheck disable=SC1091
+  . /etc/default/netoryx
+fi
+DIR="${NETORYX_DIR:-/opt/netoryx}"
+SECRETS_DIR="${NETORYX_SECRETS_DIR:-/root/netoryx}"
+PY=/app/.venv/bin/python
+
+usage() {
+  cat <<'EOF'
+Usage: netoryx <command>
+
+  status              containers and the health of the application
+  logs [service]      follow the logs (default service: app)
+  update              fetch the latest version and restart only the application
+  backup              create a database backup now
+  admin-link          print a one-time login link for the web admin
+  restart [service]   restart everything or the named services
+  uninstall [--purge] stop the stack (data volumes are kept; --purge deletes them, the code and secrets too)
+  help                this text
+EOF
+}
+
+[ -d "$DIR" ] || { echo "netoryx: no installation in $DIR" >&2; exit 1; }
+cd "$DIR"
+
+need_root() {
+  if [ "$(id -u)" != 0 ]; then
+    echo "netoryx: run with sudo" >&2
+    exit 1
+  fi
+}
+
+command="${1:-help}"
+[ $# -gt 0 ] && shift
+
+case "$command" in
+  status)
+    panel="$(sed -n 's/^NETORYX_PANEL=//p' .env 2>/dev/null | tail -n 1)"
+    echo "panel: ${panel:-xui}"
+    docker compose ps
+    if docker compose exec -T app "$PY" -c \
+      "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=4)" >/dev/null 2>&1; then
+      echo "application: healthy"
+    else
+      echo "application: NOT answering (netoryx logs app)"
+    fi
+    ;;
+  logs)
+    exec docker compose logs -f --tail=200 "${1:-app}"
+    ;;
+  update)
+    need_root
+    exec bash "$DIR/install.sh" --update
+    ;;
+  backup)
+    docker compose exec -T app "$PY" -m app backup
+    echo "The backup is stored in the application's data volume (BACKUP_DIR); download it from the web admin."
+    ;;
+  admin-link)
+    docker compose exec -T app "$PY" -m app create-admin-link
+    ;;
+  restart)
+    need_root
+    for service in "$@"; do
+      case "$service" in
+        edge | caddy | xui | remnanode | marzban | marznode | pg-node)
+          echo "note: restarting $service drops open VPN connections; apps reconnect, some need a toggle." >&2
+          ;;
+      esac
+    done
+    docker compose restart "$@"
+    ;;
+  uninstall)
+    need_root
+    purge=0
+    [ "${1:-}" = "--purge" ] && purge=1
+    if [ "$purge" = 1 ]; then
+      echo "This stops Netoryx and DELETES its database, the VPN panel's data (containers and volumes), certificates, $DIR and $SECRETS_DIR."
+    else
+      echo "This stops Netoryx. Data volumes, $DIR and the secrets stay, so it can be started again."
+    fi
+    read -r -p "Type 'yes' to continue: " answer
+    [ "$answer" = "yes" ] || { echo "cancelled"; exit 1; }
+    if [ "$purge" = 1 ]; then
+      docker compose down --volumes --remove-orphans
+    else
+      docker compose down --remove-orphans
+    fi
+    rm -f /usr/local/bin/netoryx /etc/default/netoryx
+    if [ "$purge" = 1 ]; then
+      cd /
+      rm -rf "$DIR" "$SECRETS_DIR"
+    fi
+    echo "Netoryx stopped$([ "$purge" = 1 ] && echo ' and removed')."
+    ;;
+  help | -h | --help)
+    usage
+    ;;
+  *)
+    echo "netoryx: unknown command: $command" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

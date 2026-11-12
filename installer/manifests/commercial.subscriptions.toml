@@ -1,0 +1,11 @@
+id = "commercial.subscriptions"
+version = 1
+title = "Subscriptions and billing"
+description = "Existing subscription, tariff and payment capabilities."
+roles = ["all-in-one", "control-plane"]
+profiles = ["personal", "commercial"]
+depends_on = ["core.platform"]
+
+[resources]
+ram_mb = 48
+disk_mb = 30

@@ -1,0 +1,13 @@
+id = "interface.miniapp"
+version = 1
+title = "Telegram Mini App"
+description = "Client-facing Telegram Mini App with verified Telegram authentication."
+roles = ["all-in-one", "control-plane"]
+profiles = ["personal", "commercial"]
+depends_on = ["core.platform", "interface.telegram-bot"]
+requires_https = true
+requires_bot = true
+
+[resources]
+ram_mb = 50
+disk_mb = 50

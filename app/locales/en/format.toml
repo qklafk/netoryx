@@ -1,0 +1,56 @@
+# Number, money, date and period formats; plural forms (one / other).
+
+[fmt]
+money = "{amount} ₽"
+stars = "{amount} ⭐️"
+date = "{month} {day}, {year}"
+datetime = "{date}, {time}"
+unlimited = "unlimited"
+forever = "no expiry"
+never = "never"
+
+[fmt.month]
+1 = "January"
+2 = "February"
+3 = "March"
+4 = "April"
+5 = "May"
+6 = "June"
+7 = "July"
+8 = "August"
+9 = "September"
+10 = "October"
+11 = "November"
+12 = "December"
+
+[plural.days]
+one = "{n} day"
+other = "{n} days"
+
+[plural.months]
+one = "{n} month"
+other = "{n} months"
+
+[plural.years]
+one = "{n} year"
+other = "{n} years"
+
+[plural.hours]
+one = "{n} hour"
+other = "{n} hours"
+
+[plural.minutes]
+one = "{n} minute"
+other = "{n} minutes"
+
+[plural.devices]
+one = "{n} device"
+other = "{n} devices"
+
+[plural.gb]
+one = "{n} GB"
+other = "{n} GB"
+
+[plural.users]
+one = "{n} user"
+other = "{n} users"

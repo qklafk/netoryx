@@ -1,0 +1,237 @@
+---
+import { hero } from '~/data/i18n';
+import { GITHUB, TELEGRAM, docUrl, langOf } from '~/data/site';
+
+const lang = langOf(Astro.locals.starlightRoute.locale);
+const t = hero[lang];
+---
+
+<section class="nx-hero not-content">
+  <canvas class="net" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="nx-wrap inner">
+    <span class="nx-chip">NETORYX / v0.9 beta</span>
+    <h1 id="_top" aria-label={t.tagline}>
+      {
+        t.lines.map((line, i) => (
+          <span class="row" aria-hidden="true">
+            <span class="blk" data-text={line} style={`--d:${i * 0.45}s`}>
+              {line}
+            </span>
+          </span>
+        ))
+      }
+    </h1>
+    <p class="sub">{t.sub}</p>
+    <div class="actions">
+      <a class="nx-btn primary" href={docUrl(lang, 'installation')}>{t.install} &rarr;</a>
+      <a class="nx-btn" href={GITHUB} rel="noopener">{t.github}</a>
+      <a class="nx-btn" href={TELEGRAM} rel="noopener">{t.telegram}</a>
+    </div>
+    <dl class="stats">
+      {
+        t.stats.map((s) => (
+          <div class="stat">
+            <dt>{s.n}</dt>
+            <dd>{s.label}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<script>
+  import { initNetwork } from '~/scripts/network';
+  const canvas = document.querySelector<HTMLCanvasElement>('.nx-hero .net');
+  if (canvas) initNetwork(canvas);
+</script>
+
+<style>
+  .nx-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    padding-block: clamp(3rem, 9vw, 7rem) clamp(2rem, 5vw, 3.5rem);
+    background-image: radial-gradient(rgb(var(--nx-rgb) / 0.18) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+  .net {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+  .noise {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, rgb(var(--nx-rgb) / 0.06) 0 1px, transparent 1px 3px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    opacity: 0.55;
+    mix-blend-mode: soft-light;
+  }
+  .inner {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  h1 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: var(--nx-mono);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    font-size: clamp(1.55rem, 6.4vw, 4.6rem);
+    line-height: 1.12;
+    color: var(--nx-ink);
+  }
+  .row {
+    display: block;
+    margin-top: 0.12em;
+  }
+  .blk {
+    position: relative;
+    display: inline-block;
+    padding: 0.04em 0.22em 0.08em;
+    background: var(--nx-ink);
+    color: var(--nx-bg);
+    white-space: nowrap;
+  }
+  /* short monochrome glitch: sliced copies jump sideways for a fraction of a second */
+  .blk::before,
+  .blk::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    padding: inherit;
+    background: var(--nx-ink);
+    color: var(--nx-bg);
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+  }
+  .blk::before {
+    animation: nx-glitch-a 6s steps(1, end) infinite;
+    animation-delay: var(--d);
+  }
+  .blk::after {
+    animation: nx-glitch-b 6s steps(1, end) infinite;
+    animation-delay: var(--d);
+  }
+  @keyframes nx-glitch-a {
+    0%,
+    91%,
+    100% {
+      clip-path: inset(0 0 100% 0);
+      transform: none;
+    }
+    92% {
+      clip-path: inset(12% 0 62% 0);
+      transform: translateX(-0.09em);
+    }
+    94% {
+      clip-path: inset(58% 0 14% 0);
+      transform: translateX(0.07em);
+    }
+    96% {
+      clip-path: inset(30% 0 40% 0);
+      transform: translateX(-0.05em);
+    }
+    98% {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+  @keyframes nx-glitch-b {
+    0%,
+    92%,
+    100% {
+      clip-path: inset(0 0 100% 0);
+      transform: none;
+    }
+    93% {
+      clip-path: inset(70% 0 6% 0);
+      transform: translateX(0.1em);
+      opacity: 0.8;
+    }
+    95% {
+      clip-path: inset(4% 0 78% 0);
+      transform: translateX(-0.08em);
+    }
+    97% {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blk::before,
+    .blk::after {
+      animation: none;
+      display: none;
+    }
+  }
+  .sub {
+    margin: 0;
+    max-width: 52ch;
+    font-family: var(--nx-mono);
+    font-size: 0.9375rem;
+    color: var(--nx-dim);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .stats {
+    margin: clamp(1.5rem, 4vw, 3rem) 0 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--nx-line-strong);
+    border-bottom: 1px solid var(--nx-line-strong);
+    background: var(--nx-bg);
+  }
+  .stat {
+    padding: 1rem 0.75rem 1.1rem;
+    border-right: 1px solid var(--nx-line);
+    min-width: 0;
+  }
+  .stat:last-child {
+    border-right: 0;
+  }
+  dt {
+    font-family: var(--nx-mono);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 5.5vw, 3.6rem);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--nx-ink);
+  }
+  dd {
+    margin: 0.5rem 0 0;
+    font-family: var(--nx-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--nx-dim);
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 40rem) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stat:nth-child(2) {
+      border-right: 0;
+    }
+    .stat:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--nx-line);
+    }
+    .blk {
+      white-space: normal;
+    }
+  }
+</style>

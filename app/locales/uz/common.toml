@@ -1,0 +1,52 @@
+# Navigation, main menu and common buttons.
+
+[nav]
+back = "◀️ Orqaga"
+cancel = "✖️ Bekor qilish"
+menu = "🏠 Bosh menyu"
+close = "✖️ Yopish"
+refresh = "🔄 Yangilash"
+retry = "🔁 Qayta urinish"
+prev = "◀️"
+next = "▶️"
+page = "{page}/{pages}-sahifa"
+
+[menu]
+title = "<b>{brand}</b>\n\nQanday yordam bera olaman? Boʻlimni tanlang 👇"
+my_subscription = "🔐 Mening obunam"
+buy = "🛒 Sotib olish / uzaytirish"
+connect = "📲 Ulanish"
+balance = "💰 Balans"
+referral = "🤝 Doʻstni taklif qilish"
+gift = "🎁 Sovgʻa / promokod"
+support = "🆘 Yordam"
+language = "🌐 Til"
+instructions = "📖 Qoʻllanmalar"
+trial = "🎉 Bepul sinab koʻrish"
+tg_proxy = "🛡 Telegram proksi"
+mini_app = "📱 Shaxsiy kabinet"
+admin = "⚙️ Admin panel"
+
+[common]
+yes = "✅ Ha"
+no = "❌ Yoʻq"
+confirm = "✅ Tasdiqlash"
+copy = "📋 Nusxalash"
+open = "🔗 Ochish"
+on = "🟢 Yoqilgan"
+off = "⚪️ Oʻchirilgan"
+saved = "✅ Saqlandi"
+done = "Tayyor ✅"
+loading = "⏳ Bir daqiqa…"
+canceled = "Bekor qilindi 👌"
+
+[lang]
+title = "🌐 Bot tilini tanlang:"
+ru = "🇷🇺 Русский"
+en = "🇬🇧 English"
+uk = "🇺🇦 Українська"
+kk = "🇰🇿 Қазақша"
+uz = "🇺🇿 Oʻzbekcha"
+fa = "🇮🇷 فارسی"
+zh = "🇨🇳 简体中文"
+changed = "Tayyor! Endi oʻzbek tilida gaplashaman 🇺🇿"

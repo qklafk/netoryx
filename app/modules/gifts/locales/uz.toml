@@ -1,0 +1,43 @@
+# Gift subscriptions and the "Gift / promo code" section.
+
+[gifts]
+unlimited_devices = "cheksiz qurilmalar"
+share = "📤 Sovgʻani yuborish"
+copy_link = "📋 Havolani nusxalash"
+share_text = "🎁 Senga {period} muddatga {brand} obunasi — mendan sovgʻa! Faollashtirish uchun havolani och:"
+ready = "🎉 <b>Sovgʻangiz tayyor!</b>\n\n«{plan}» obunasi, {period}.\n\nUshbu havolani oluvchiga yuboring — sovgʻa bir bosishda faollashadi:\n{link}\n\nYoki <code>{code}</code> kodi — uni «🎁 Sovgʻa / promokod» boʻlimida kiritish mumkin."
+
+[gifts.hub]
+text = "🎁 <b>Sovgʻalar va promokodlar</b>\n\nDoʻstingizga {brand} obunasini sovgʻa qiling: siz havola va kod olasiz — ularni oluvchiga yuboring, obuna bir bosishda faollashadi.\n\nAgar sizga sovgʻa berilgan boʻlsa yoki promokodingiz boʻlsa, uni quyida kiriting 👇"
+give = "🎁 Obuna sovgʻa qilish"
+enter_code = "🎟 Menda kod bor"
+mine = "📦 Mening sovgʻalarim"
+
+[gifts.plans]
+text = "🎁 <b>Nima sovgʻa qilamiz?</b>\n\nTarif tanlang — obuna oluvchi sovgʻani faollashtirganda boshlanadi."
+item = "{plan} — {price}"
+empty = "😔 Hozir sovgʻa uchun mavjud tariflar yoʻq. Keyinroq qarab koʻring!"
+
+[gifts.plan]
+text = "🎁 <b>Sovgʻa: «{plan}»</b>\n{period} · {devices} · <b>{price}</b>"
+balance = "Balansingiz: {balance}."
+missing = "<b>{amount}</b> yetishmayapti — istalgan usulda toʻlang, kod toʻlovdan soʻng darhol keladi."
+pay_balance = "💰 Balansdan toʻlash · {price}"
+pay = "💳 Sovgʻa uchun toʻlash"
+no_payments = "Sovgʻa uchun toʻlash maqsadida balansni toʻldiring."
+unavailable = "Bu tarifni hozir sovgʻa qilib boʻlmaydi — boshqasini tanlang."
+
+[gifts.mine]
+title = "📦 <b>Mening sovgʻalarim</b>"
+item = "🎁 «{plan}» — <code>{code}</code>\n{status}"
+redeemed = "✅ faollashtirilgan"
+waiting = "⏳ oluvchini kutmoqda"
+share = "📤 {code} ni yuborish"
+empty = "📦 Siz hali hech kimga obuna sovgʻa qilmagansiz. Doʻstingizni xursand qilish uchun ajoyib payt!"
+
+[gifts.code]
+ask = "🎟 Sovgʻa kodi yoki promokodni bitta xabarda yuboring:"
+not_found = "😕 Bunday kod yoʻq. Yozilishini tekshirib, qayta yuboring — yoki «Bekor qilish» tugmasini bosing."
+
+[gifts.error]
+funds = "Balansingizda mablagʻ yetarli emas — uni toʻldiring yoki karta bilan toʻlashni tanlang."

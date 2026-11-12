@@ -1,0 +1,14 @@
+# Backups and cleanup: captions and admin notices.
+
+[housekeeping.backup]
+caption = "💾 <b>{brand} backup</b>\n{when} · {size}"
+encrypted = "🔒 The file is encrypted with the password from the settings."
+plain = "⚠️ The file is not encrypted — keep it somewhere safe or set a backup password in the settings."
+failed = "😔 Could not create a backup: <code>{error}</code>"
+not_sent = "😔 Backup <code>{name}</code> was created but could not be sent to the chat: <code>{error}</code>. The file is kept on the server."
+
+[housekeeping.unit]
+b = "{n} B"
+kb = "{n} KB"
+mb = "{n} MB"
+gb = "{n} GB"

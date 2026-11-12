@@ -1,0 +1,119 @@
+[admin_users]
+title = "Users"
+back_to_card = "◀️ Back to the card"
+
+[admin_users.search]
+prompt = "👥 <b>Users</b>\n\nSend an ID, @username, t.me link or part of a name - or forward any message from the user here."
+again = "🔎 New search"
+nothing = "🤷 Nobody found for \"{query}\"."
+found = "Found {count} for \"{query}\". Pick one 👇"
+hidden_forward = "🙈 The user hides their account in forwarded messages - send their ID or @username instead."
+text_only = "Send text: an ID, @username or name."
+
+[admin_users.list]
+recent = "🆕 Newest"
+active = "🟢 Subscribed"
+banned = "🚫 Banned"
+title = "{title} · page {page}"
+empty = "The list is empty."
+
+[admin_users.card]
+title = "👤 <b>{user}</b>"
+profile = "🌐 {language} · since {created} · last seen: {seen}"
+banned = "🚫 banned"
+bot_blocked = "📵 blocked the bot"
+admin = "🛡 {role}"
+referred_by = "🤝 invited by <code>{user_id}</code>"
+invited = "👥 invited: {count}"
+campaign = "📣 campaign {code}"
+no_subscription = "🔐 No subscription"
+sub_active = "🔐 🟢 Active until <b>{expires}</b> ({left} left)"
+sub_expired = "🔐 🔴 Expired on {expires}"
+sub_disabled = "🔐 ⏸ Blocked by an admin (paid until {expires})"
+plan = "📦 {plan} · 📱 {devices} · 📶 {traffic}"
+no_plan = "no plan"
+auto_renew_on = "🔁 auto-renewal on"
+auto_renew_off = "🔁 auto-renewal off"
+trial = "🧪 trial"
+complimentary = "🎁 complimentary"
+stars_subscription = "⭐️ Stars subscription"
+balances = "💰 Balance: <b>{balance}</b> · partner: {partner}"
+payments = "💳 Payments: {count}, {total} in total (last on {last})"
+no_payments = "💳 No payments yet"
+
+[admin_users.btn]
+balance = "💰 Balance ±"
+partner_balance = "💼 Partner ±"
+days = "📅 Days ±"
+plan = "📦 Plan"
+devices_limit = "📱 Device limit"
+traffic = "📶 Traffic limit"
+auto_renew_on = "🔁 Turn auto-renewal on"
+auto_renew_off = "🔁 Turn auto-renewal off"
+comp_on = "🎁 Make complimentary"
+comp_off = "🎁 Make it paid again"
+reset_devices = "♻️ Reset devices"
+rotate = "🔗 New link"
+sync = "🔄 Sync"
+block = "⏸ Block subscription"
+unblock = "▶️ Unblock subscription"
+message = "✉️ Message"
+history = "📜 History"
+ban = "🚫 Ban"
+unban = "✅ Unban"
+delete = "🗑 Delete"
+
+[admin_users.ask]
+bal = "💰 How much to add to or take from the main balance? Send an amount in rubles: <code>500</code> adds, <code>-200</code> takes."
+pbal = "💼 How much to add to or take from the partner balance? Send an amount in rubles: <code>500</code> adds, <code>-200</code> takes."
+days = "📅 How many days to add? Send a number: <code>30</code> adds, <code>-7</code> removes."
+dev = "📱 Send the new device limit (<code>0</code> = unlimited)."
+traf = "📶 Send the traffic limit per period in GB (<code>0</code> = unlimited)."
+msg = "✉️ Send the message for the user - text, photo, video, file, voice, anything. I will ask you to confirm before sending."
+
+[admin_users.confirm]
+balance_main = "💰 Change the main balance by <b>{amount}</b>?"
+balance_partner = "💼 Change the partner balance by <b>{amount}</b>?"
+add_days = "📅 Add <b>{days}</b> to the subscription?"
+remove_days = "📅 Remove <b>{days}</b> from the subscription?"
+reset_devices = "♻️ Unlink all devices of {user}? They will have to connect again."
+rotate = "🔗 Issue a new subscription link for {user}? The old one stops working at once - they will need to update it in the app."
+ban = "🚫 Ban {user}? The bot stops answering them and their VPN is turned off."
+delete = "🗑 <b>Delete {user} for good?</b>\n\nTheir subscription, balances, payment history and server accounts will be removed. This cannot be undone."
+message = "Send this message to user <code>{user_id}</code>?"
+
+[admin_users.done]
+balance = "✅ Balance changed by {amount}."
+devices = "✅ Devices reset (servers: {count})."
+devices_partial = "⚠️ Reset on {count} servers, failed on {failed}."
+rotated = "✅ The subscription link was renewed."
+banned = "🚫 The user is banned."
+unbanned = "✅ The user is unbanned."
+deleted = "🗑 User <code>{user_id}</code> deleted (server accounts removed: {removed})."
+deleted_partial = "🗑 User <code>{user_id}</code> deleted. Server accounts removed: {removed}, failed: {failed} - background sync will clean them up."
+message = "✅ Message delivered."
+
+[admin_users.sync]
+done = "✅ Saved and pushed to the servers."
+later = "✅ Saved. The servers will get the change with the next sync."
+
+[admin_users.error]
+not_found = "🤷 User not found."
+no_subscription = "The user has no subscription - add some days first."
+plan_not_found = "Plan not found."
+insufficient = "❌ Not enough money on the balance to take that much."
+is_admin = "⛔️ This is an administrator - not allowed."
+blocked_bot = "📵 Not delivered: the user blocked the bot."
+send_failed = "❌ Could not send: {error}"
+
+[admin_users.plan]
+title = "📦 Pick a plan. Its limits apply right away; the expiry date stays the same."
+empty = "There are no plans yet."
+
+[admin_users.history]
+payments = "💳 <b>Payments</b>"
+payment_row = "• {date} · {amount} · {provider} · {status}"
+ledger = "📒 <b>Balance history</b>"
+ledger_row = "• {date} · {amount} · {kind}{account}"
+partner_mark = " (partner)"
+none = "- nothing"

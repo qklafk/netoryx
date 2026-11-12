@@ -1,0 +1,64 @@
+# Number, money, date and period formats; plural forms (one / few / many).
+
+[fmt]
+money = "{amount} ₽"
+stars = "{amount} ⭐️"
+date = "{day} {month} {year}"
+datetime = "{date}, {time}"
+unlimited = "без обмежень"
+forever = "безстроково"
+never = "ніколи"
+
+[fmt.month]
+1 = "січня"
+2 = "лютого"
+3 = "березня"
+4 = "квітня"
+5 = "травня"
+6 = "червня"
+7 = "липня"
+8 = "серпня"
+9 = "вересня"
+10 = "жовтня"
+11 = "листопада"
+12 = "грудня"
+
+[plural.days]
+one = "{n} день"
+few = "{n} дні"
+many = "{n} днів"
+
+[plural.months]
+one = "{n} місяць"
+few = "{n} місяці"
+many = "{n} місяців"
+
+[plural.years]
+one = "{n} рік"
+few = "{n} роки"
+many = "{n} років"
+
+[plural.hours]
+one = "{n} година"
+few = "{n} години"
+many = "{n} годин"
+
+[plural.minutes]
+one = "{n} хвилина"
+few = "{n} хвилини"
+many = "{n} хвилин"
+
+[plural.devices]
+one = "{n} пристрій"
+few = "{n} пристрої"
+many = "{n} пристроїв"
+
+[plural.gb]
+one = "{n} ГБ"
+few = "{n} ГБ"
+many = "{n} ГБ"
+
+[plural.users]
+one = "{n} користувач"
+few = "{n} користувачі"
+many = "{n} користувачів"

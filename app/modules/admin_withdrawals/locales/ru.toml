@@ -1,0 +1,64 @@
+[admin_withdrawals]
+title = "Выводы"
+queue = "💸 <b>Заявки на вывод</b>\n\nВ очереди: {count} на {total}. Нажмите на заявку, чтобы проверить и обработать."
+queue_empty = "💸 <b>Заявки на вывод</b>\n\nОчередь пуста 🎉"
+disabled_note = "ℹ️ Сейчас вывод средств для партнёров выключен — новых заявок не будет."
+history = "📜 <b>Обработанные заявки</b> · страница {page}"
+history_empty = "📜 Обработанных заявок пока нет."
+ask_comment = "✖️ <b>Отклонить заявку</b>\n\nНапишите причину — партнёр увидит её в уведомлении. Деньги вернутся на его партнёрский баланс."
+confirm_paid = "✅ Подтвердите, что отправили <b>{amount}</b> ({method}) на реквизиты:\n<code>{details}</code>"
+
+[admin_withdrawals.btn]
+history = "📜 Обработанные"
+back = "◀️ К заявкам"
+approve = "👍 Одобрить"
+paid = "✅ Выплачено"
+reject = "✖️ Отклонить"
+reject_silent = "✖️ Отклонить без комментария"
+user = "👤 Партнёр"
+
+[admin_withdrawals.status]
+pending = "⏳ ждёт решения"
+approved = "👍 одобрена, выплата в процессе"
+paid = "✅ выплачена"
+rejected = "✖️ отклонена"
+
+[admin_withdrawals.card]
+title = "💸 <b>Заявка #{id}</b>"
+status = "Статус: {status}"
+partner = "Партнёр: {user} · с {since}"
+amount = "Сумма: <b>{amount}</b> · способ: {method}"
+details = "Реквизиты: <code>{details}</code>"
+dates = "Создана: {created} · обработана: {processed}"
+comment = "Комментарий: {comment}"
+stats = "📊 Заработал всего: {earned} · рефералов: {users} (принесли доход: {paid_users})\nУже выведено: {withdrawn} · на партнёрском балансе: {balance}"
+flags = "⚠️ <b>Обратите внимание:</b>"
+no_flags = "✅ Подозрительных признаков не нашлось."
+
+[admin_withdrawals.flag]
+young_account = "аккаунту всего {age_days} дн."
+low_conversion = "из {referrals} рефералов оплатили только {paid}"
+registration_burst = "{count} рефералов зарегистрировались за один день ({day})"
+concentrated_earnings = "{share}% дохода — от одного реферала (<code>{source_user_id}</code>)"
+
+[admin_withdrawals.done]
+approve = "👍 Заявка одобрена — партнёр получил уведомление."
+paid = "✅ Выплата отмечена — партнёр получил уведомление."
+reject = "✖️ Заявка отклонена, деньги вернулись на партнёрский баланс."
+
+[admin_withdrawals.error]
+not_found = "🤷 Заявка не найдена."
+bad_status = "Заявку уже обработал кто-то другой — обновите экран."
+disabled = "Вывод средств выключен."
+bad_amount = "Некорректная сумма."
+below_minimum = "Сумма меньше минимальной."
+bad_method = "Неизвестный способ выплаты."
+bad_details = "Некорректные реквизиты."
+pending_exists = "У партнёра уже есть открытая заявка."
+insufficient_funds = "Недостаточно средств на партнёрском балансе."
+
+[admin_withdrawals.notify]
+approved = "👍 Ваша заявка на вывод #{id} на {amount} одобрена. Деньги скоро придут."
+paid = "✅ Выплата по заявке #{id} на {amount} отправлена. Спасибо, что вы с нами!"
+rejected = "✖️ Заявка на вывод #{id} на {amount} отклонена. Деньги вернулись на ваш партнёрский баланс."
+comment = "Комментарий: {comment}"

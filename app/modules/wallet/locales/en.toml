@@ -1,0 +1,51 @@
+# Balance, top-ups and the operations history.
+
+[wallet]
+topup_button = "➕ Top up"
+history_button = "📜 Transaction history"
+partner_button = "💼 Partner balance"
+cards_button = "💳 Saved cards"
+
+[wallet.balance]
+title = "💰 <b>Your balance: {balance}</b>"
+partner = "💼 Partner balance: <b>{balance}</b>"
+hint = "Use your balance to pay for a subscription or a gift for a friend. With auto-renewal on, your subscription renews by itself whenever the balance covers it."
+
+[wallet.topup]
+text = "➕ <b>Top up your balance</b>\n\nPick an amount or enter your own — from {min} to {max} 👇"
+custom = "✏️ Other amount"
+ask = "✏️ Enter the top-up amount in rubles — from {min} to {max}.\n\nFor example: <code>500</code>"
+invalid = "I couldn't read that amount 🤔 Please send a whole number of rubles from {min} to {max}, for example <code>500</code>."
+unavailable = "😔 Top-ups are unavailable right now. Please check back a bit later — or contact support."
+
+[wallet.history]
+title = "📜 <b>Transaction history</b>"
+item = "<b>{amount}</b> · {label}\n<i>{date}</i>"
+empty = "📜 No transactions yet. Top-ups, purchases and bonuses will show up here."
+end = "📜 No more transactions."
+older = "Older ▶️"
+newest = "◀️ Latest"
+
+[wallet.tx]
+payment = "💳 Top-up"
+purchase = "🛒 Subscription payment"
+gift_purchase = "🎁 Gift purchase"
+referral_invitee = "🤝 Sign-up bonus from an invitation"
+referral_inviter = "🤝 Bonus for an invited friend"
+welcome_bonus = "👋 Welcome bonus"
+promo = "🎟 Promo code"
+admin_adjust = "🛠 Adjustment by an administrator"
+refund = "↩️ Refund"
+referral_commission = "💼 Partner reward"
+referral_transfer = "🔁 Transfer from the partner balance"
+withdrawal = "📤 Withdrawal"
+partner_account = "(partner balance)"
+
+[wallet.cards]
+title = "💳 <b>Saved cards</b>"
+item = "• {title} — saved {date}"
+hint = "If the balance is short when a subscription renews, the missing amount is charged to the most recently used card. Removed cards are never charged."
+remove = "🗑 Remove {title}"
+removed = "Card removed"
+empty = "💳 No saved cards yet.\n\nTo add one, pay for a subscription or a top-up by card and choose “save card for auto-renewal”."
+off = "💳 Saved cards are not used in this shop right now."

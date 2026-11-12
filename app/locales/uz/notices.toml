@@ -1,0 +1,24 @@
+# Messages about payments and rewards, and notifications for administrators.
+
+[paid]
+topped_up = "✅ Balansingiz <b>{amount}</b> ga toʻldirildi.\nJoriy balans: <b>{balance}</b>."
+plan_activated = "🎉 Rahmat! <b>{plan}</b> obunangiz <b>{expires}</b> gacha faol.\n\nUlanish havolasi bosh menyuda."
+gift_ready = "🎁 Sovgʻangiz tayyor: <b>{plan}</b>.\n\nUshbu havolani oluvchiga yuboring:\n{link}\n\nYoki kod: <code>{code}</code>"
+donation_thanks = "💜 Qoʻllab-quvvatlaganingiz uchun rahmat! Biz <b>{amount}</b> oldik."
+plan_failed = "✅ <b>{amount}</b> toʻlovingiz balansga tushdi (hozir <b>{balance}</b>), lekin <b>{plan}</b> obunasini avtomatik faollashtirib boʻlmadi.\n\nUni menyudan balans hisobidan sotib oling yoki yordam xizmatiga yozing."
+partial = "⚠️ <b>{expected}</b> oʻrniga <b>{amount}</b> olindi. Summa balansga qoʻshildi, hozir unda <b>{balance}</b>."
+
+[reward]
+money = "💸 Referal mukofoti: balansga <b>+{amount}</b> ({level}-daraja)."
+partner = "💼 Hamkorlik mukofoti: hamkor balansiga <b>+{amount}</b> ({level}-daraja)."
+days = "🎁 Referal bonusi: obunangizga <b>+{days}</b> qoʻshildi ({level}-daraja)."
+
+[admin_notify]
+payment = "💰 <b>{amount}</b>, {provider} orqali\nFoydalanuvchi: <code>{user_id}</code> {username}\n{what}"
+what_topup = "Balansni toʻldirish"
+what_plan = "Xarid: {plan}"
+what_gift = "Sovgʻa: {plan}"
+what_donation = "Xayriya"
+plan_failed = "⚠️ Obuna faollashtirilmadi: {reason}"
+channel_check_failed = "⚠️ <code>{channel_id}</code> kanaliga aʼzolikni tekshirib boʻlmayapti. Bot u yerda admin ekanini tekshiring. Shungacha foydalanuvchilar tekshiruvsiz oʻtadi."
+error = "🔥 <b>Xato</b> <code>{signature}</code>\nupdate {update_id} ({update_type}), foydalanuvchi <code>{user_id}</code>\n<code>{error}</code>\n<pre>{trace}</pre>"

@@ -1,0 +1,21 @@
+# Entering promo and gift codes.
+
+[promo]
+enter = "🎟 <b>Promo or gift code</b>\n\nSend the code in one message and I'll activate it right away."
+canceled = "Okay, maybe next time 👌"
+try_another = "🔁 Enter another code"
+gift_redeemed_buyer = "🎁 Your gift “{plan}” has just been activated! Thank you for sharing {brand} with people you care about 💜"
+
+[promo.ok]
+title = "🎉 <b>Promo code activated!</b>"
+gift = "🎉 <b>Gift activated!</b> The “{plan}” subscription is yours."
+days = "📅 +{days} added — your subscription is now valid until <b>{date}</b>."
+money = "💰 +{amount} added to your balance (it's now {balance})."
+
+[promo.error]
+not_found = "😕 There's no such code. Please check for typos."
+not_found_retry = "😕 There's no such code. Check the spelling and send it again — or tap “Cancel”."
+expired = "⌛️ This code has expired."
+exhausted = "😔 This code has already been used the maximum number of times."
+already_used = "You've already activated this code 🙂"
+only_new = "This code is only for new users who haven't bought anything yet 🙏"

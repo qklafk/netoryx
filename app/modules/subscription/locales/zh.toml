@@ -1,0 +1,248 @@
+# Subscription: card, trial, plans and checkout, connection, devices, reminders.
+
+[subscription.unit]
+mb = "{n} MB"
+gb = "{n} GB"
+
+[subscription.btn]
+addons = "➕ 附加服务"
+trial = "🎉 免费试用"
+buy = "🛒 选择套餐"
+renew = "🛒 续费订阅"
+connect = "📲 连接"
+auto_renew_on = "🔄 开启自动续费"
+auto_renew_off = "⏸ 关闭自动续费"
+devices = "📱 设备"
+rotate = "🔁 新链接"
+support = "🆘 客服支持"
+copy = "📋 复制链接"
+copy_lte = "📋 复制 LTE 链接"
+qr = "🔳 二维码"
+top_up = "💰 充值余额"
+
+[subscription.card]
+title = "🔐 <b>我的订阅</b>"
+none = "您还没有订阅。选择一个套餐——连接只需不到一分钟。"
+none_personal = "您还没有访问权限。请让所有者给您发送邀请。"
+trial_hint = "🎁 也可以免费试用——{trial}，无需付款和绑卡。"
+status_active = "状态：🟢 <b>有效</b>"
+status_expired = "状态：🔴 <b>已到期</b>"
+status_disabled = "状态：⛔️ <b>已暂停</b>"
+complimentary = "套餐：🎁 免费访问"
+trial = "套餐：🎉 免费试用"
+plan = "套餐：<b>{plan}</b>"
+expires = "有效期至：<b>{expires}</b>"
+expires_left = "{date}（剩余 {left}）"
+forever = "期限：<b>{expires}</b> ♾"
+devices = "设备：{devices}"
+traffic = "本期流量：{used}"
+traffic_limited = "流量：{used} / {limit}"
+auto_renew_on = "自动续费：🟢 已开启"
+auto_renew_off = "自动续费：⚪️ 已关闭"
+auto_renew_stars = "通过 Telegram Stars 订阅续费 ⭐"
+auto_renew_low = "⚠️ 自动续费需要 {price}，但您的余额为 {balance}。请提前充值。"
+expired_hint = "续费订阅后 VPN 即可恢复使用，无需重新设置。"
+expired_hint_personal = "您的访问已结束。请让所有者为您延长。"
+disabled_hint = "您的订阅已被管理员暂停。请联系客服，我们会处理。"
+
+[subscription.trial]
+started = "🎉 <b>免费试用已开启！</b>\n\n您有 {trial}免费访问——至 {expires}。\n一分钟即可连接 👇"
+unavailable = "免费试用暂不可用 🙏"
+used = "您已使用过免费试用——请选择套餐继续使用 🙂"
+
+[subscription.auto_renew]
+enabled = "已开启自动续费 🔄"
+disabled = "已关闭自动续费"
+stars_failed = "无法取消 Telegram Stars 订阅。请一分钟后重试。"
+
+[subscription.rotate]
+confirm = "🔁 <b>新的订阅链接</b>\n\n旧链接将立即失效，您需要在每台设备上添加新链接。\n\n适用于链接泄露的情况。是否继续？"
+yes = "🔁 是，生成新链接"
+done = "✅ <b>完成！</b>这是您的新链接：\n<code>{url}</code>\n\n请将其添加到您所有设备的应用中。"
+done_no_url = "✅ 您的链接已更新。打开「📲 连接」将其添加到应用中。"
+popup = "链接已更新"
+
+[subscription.plans]
+title = "🛒 <b>选择套餐</b>\n\n每个套餐都包含全部服务器，全速使用。时长越长，价格越优惠 💸"
+line = "• <b>{title}</b> — {price}"
+line_discount = "• <b>{title}</b> — {price}（{per_month}/月，省 {discount}%）"
+button = "{title} — {price}"
+button_discount = "{title} — {price} · −{discount}%"
+extends = "新时长将累加到当前时长上（目前至 {expires}）——一天都不会浪费。"
+footer = "可用余额或任何可用方式付款——怎么方便怎么来。"
+empty = "尚未设置任何套餐。请稍后再来 🙏"
+unavailable = "此处无法购买订阅。"
+gone = "该套餐已下架。请选择其他套餐 👇"
+
+[subscription.plan]
+title = "📦 <b>{title}</b>"
+duration = "📅 时长：{duration}"
+devices = "📱 设备：{devices}"
+traffic = "📶 流量：{traffic}"
+price = "💰 价格：<b>{price}</b>"
+per_month = "相当于每月 {per_month}"
+extends = "您的订阅将被延长——时长累加到当前时长上（目前至 {expires}）。"
+switch = "设备和流量限额将切换为此套餐的限额。"
+balance = "您的余额：{balance}"
+pay_balance = "✅ 用余额支付 · {price}"
+missing = "还差 <b>{missing}</b>。可用任意方式补足差额——订阅将自动开通 👇"
+choose_method = "请选择支付方式——付款后订阅将自动开通 👇"
+stars_button = "{title} · {stars}"
+no_methods = "还差 {missing}，且在线支付暂不可用。请联系客服，我们会协助您。"
+
+[subscription.buy]
+done = "🎉 <b>全部就绪！</b>您的「{plan}」订阅有效期至 {expires}。\n\n现在连接您的设备吧 👇"
+syncing = "⏳ 正在配置服务器——需要几分钟。"
+
+[subscription.invoice]
+text = "🧾 <b>账单金额 {amount}</b>\n\n支付方式：{provider}\n点击「支付」打开付款页面。付款成功后，「{plan}」订阅将自动开通，我会通知您。\n\n账单有效期 {hours}。"
+pay = "💳 支付"
+check = "🔄 我已付款——检查"
+stars = "⭐「{plan}」的账单在下方。付款后订阅立即开通。"
+description = "{brand}：「{plan}」订阅"
+
+[subscription.email]
+ask = "📧 开具收据需要您的电子邮箱。请用一条消息发送——例如 <code>name@example.com</code>。"
+invalid = "这看起来不像电子邮箱 🤔 请检查后重新发送。"
+
+[subscription.manual]
+text = "💳 <b>手动转账：{amount}</b>\n\n请按以下信息支付「{plan}」：\n<code>{details}</code>\n\n然后在此对话中发送收据的照片或文件。管理员核实后将为您开通订阅。"
+sent = "✅ 已收到收据。我们核实付款并确认后将开通您的订阅。"
+unsupported = "请发送付款收据的照片或文件。"
+
+[subscription.pay]
+unavailable = "该支付方式暂不可用。请选择其他方式 🙏"
+failed = "😔 无法创建账单。请重试或选择其他方式。"
+received = "✅ <b>已收到付款！</b>谢谢 💜"
+expired = "该账单已失效。请从套餐中重新创建。"
+not_yet = "尚未收到付款。如果您已付款，请等一分钟后再点一次。"
+
+[subscription.error]
+banned = "🚫 访问受限。如有误判，请联系客服。"
+insufficient = "余额不足——请选择支付方式。"
+
+[subscription.connect]
+title = "📲 <b>连接</b>"
+steps = "1️⃣ 选择您的设备和应用并安装。\n2️⃣ 点击「➕ 添加到 …」——应用会自动完成设置。\n3️⃣ 打开 VPN。完成！"
+url = "您的订阅链接（点击复制）：\n<code>{url}</code>"
+lte = "📶 标有「LTE」的服务器适用于只有「白名单」可用的移动网络。"
+lte_url = "📶 适用于「白名单」移动网络的链接（LTE）：\n<code>{url}</code>"
+keep_secret = "🔒 请勿分享此链接——您的设备通过它连接。"
+platform = "{platform}\n\n请选择应用。推荐 <b>{app}</b>——一键即可完成设置。"
+recommended = "⭐ {app}"
+no_apps = "该平台暂无可用应用。"
+qr = "🔳 您的订阅二维码。\n\n在应用中点击「+」→「扫描二维码」，将摄像头对准屏幕。"
+no_url = "订阅链接暂不可用：服务器仍在配置中。请稍后再试或联系客服。"
+need_sub = "连接需要有效订阅。选择一个套餐——只需一分钟 👇"
+need_sub_trial = "连接需要订阅。先从免费试用开始——{trial} 🎁"
+need_sub_personal = "您还没有访问权限，或访问已结束。请让所有者为您延长。"
+
+[subscription.platform]
+ios = "🍏 iPhone / iPad"
+android = "🤖 Android"
+windows = "🪟 Windows"
+macos = "💻 macOS"
+linux = "🐧 Linux"
+apple_tv = "📺 Apple TV"
+android_tv = "📺 Android TV"
+
+[subscription.app]
+title = "<b>{app}</b> · {platform}"
+steps = "1️⃣ 通过下方按钮安装 {app}。\n2️⃣ 回到这里点击「➕ 添加到 {app}」。\n3️⃣ 允许添加配置，然后打开 VPN。"
+steps_tv = "1️⃣ 在电视上安装 {app}。\n2️⃣ 在应用中选择通过二维码添加，并扫描此对话中的二维码——「🔳 二维码」按钮。\n3️⃣ 打开 VPN。"
+manual = "没有打开？复制链接并手动添加：「+」→「从剪贴板粘贴」。\n<code>{url}</code>"
+crypt = "🔐 加密链接——如果普通链接无法使用：\n<code>{link}</code>"
+add = "➕ 添加到 {app}"
+download = "⬇️ {label}"
+
+[subscription.devices]
+title = "📱 <b>设备</b>"
+limit = "可连接：{limit}。"
+unknown = "设备"
+none = "暂无设备——连接一台后会显示在这里。"
+not_listed = "该服务器不显示设备列表，但可以重置绑定——设备会重新连接。"
+partial = "⚠️ 部分服务器未响应——列表可能不完整。"
+hint = "换了新手机或达到上限？请解绑不再使用的设备。"
+reset_all = "🔄 解绑所有设备"
+reset_yes = "🔄 是，全部解绑"
+reset_confirm = "解绑所有设备？\n\n应用会继续工作，但每台设备重新连接时会再次占用名额（上限——{limit}）。"
+cooldown = "不能如此频繁地解绑设备。请在 {time}后重试 🙏"
+gone = "该设备已不在列表中"
+not_supported = "该服务器无法逐个解绑设备——请一次性全部重置。"
+deleted = "设备已解绑 ✅"
+reset_done = "所有设备已解绑 ✅"
+reset_partial = "未能全部解绑：部分服务器未响应。请稍后再试。"
+reset_failed = "操作失败——服务器未响应。请稍后再试。"
+
+[subscription.remind]
+soon = "⏳ <b>您的订阅将在 {left}后到期</b>——{date}。"
+auto_ok = "已开启自动续费：到期前我们将从余额中扣除「{plan}」的费用 {price}——您无需操作 👌"
+auto_low = "已开启自动续费，但您的余额为 {balance}，需要 {price}。请充值以保证 VPN 正常使用。"
+stars = "您的订阅将通过 Telegram Stars 自动续费 ⭐"
+trial = "您的免费试用即将结束。用得满意？选择套餐即可保留访问 🙂"
+renew = "续费订阅，让 VPN 不间断使用。"
+personal = "请让所有者延长您的访问，以便继续使用 VPN。"
+expired = "🔴 <b>您的订阅已到期</b>\n\nVPN 已停用。续费订阅后一切恢复正常——无需重新设置。"
+expired_personal = "🔴 <b>您的访问已结束</b>\n\nVPN 已停用。请让所有者延长您的访问。"
+
+[subscription]
+renewed = "🔄 <b>订阅已自动续费</b>\n\n您的「{plan}」套餐有效期至 {expires}。已扣除 {price}，余额剩余 {balance}。"
+
+[subscription.admin]
+trial = "🎉 免费试用：{user}（<code>{user_id}</code>）"
+renewed = "🔄 自动续费：{user}（<code>{user_id}</code>）——「{plan}」，{price}"
+
+[subscription.alert]
+panel_down = "🔴 服务器 <b>{name}</b> 无响应：<code>{error}</code>"
+panel_up = "🟢 服务器 <b>{name}</b> 已恢复在线"
+endpoint_down = "🟠 入口 <b>{name}</b> 无法访问，已从订阅中隐藏：<code>{error}</code>"
+endpoint_up = "🟢 入口 <b>{name}</b> 已恢复访问，并重新加入订阅"
+probes_down = "⚠️ 没有任何入口通过检查——很可能是机器人一侧的网络问题。订阅中未隐藏任何内容。"
+probes_up = "🟢 入口检查已恢复正常"
+inbounds_new = "🆕 服务器 <b>{panel}</b> 上出现了新的入站：{count} 个。请在服务器板块中启用，以加入订阅。"
+inbounds_gone = "⚠️ 服务器 <b>{panel}</b> 上的入站已消失或变更：{count} 个。它们已从订阅中移除。"
+
+[subscription.gw]
+stars = "⭐ Telegram Stars"
+cryptobot = "🪙 加密货币（CryptoBot）"
+platega = "💳 银行卡 / 转账"
+yookassa = "💳 银行卡（YooKassa）"
+yoomoney = "💳 YooMoney"
+freekassa = "💳 FreeKassa"
+test = "🧪 测试支付"
+
+[subscription.addons]
+title = "➕ <b>订阅附加服务</b>"
+balance = "钱包余额：<b>{balance}</b>"
+unavailable = "该订阅没有可用的附加服务。"
+traffic_pack = "流量包"
+traffic_reset = "重置流量"
+device_addon = "额外设备"
+buy = "{title}：{quantity} · {price}"
+done = "附加服务已生效，并已同步到服务器。"
+insufficient = "余额不足。请充值后重试。"
+
+[subscription.multi]
+list_title = "🔐 <b>我的订阅</b>\n\n请选择要管理的订阅。"
+list_button = "🔐 全部订阅"
+choose_purchase = "🛒 <b>要续费哪个？</b>\n\n选择现有订阅或创建新订阅。"
+renew_target = "续费：{name}"
+renew_button = "🔄 续费此订阅"
+new_button = "➕ 新订阅"
+buy_new = "将创建一个独立订阅，拥有自己的链接和设备。"
+name = "订阅：<b>{name}</b>"
+links_button = "🌍 服务器链接"
+links_title = "🌍 <b>服务器链接</b>\n\n选择服务器，获取其独立订阅或配置文件。"
+links_empty = "暂无可用的服务器链接。"
+server_title = "🌍 <b>{name}</b>"
+server_sub = "该服务器的订阅：\n<code>{url}</code>"
+profile_title = "🔑 <b>{name}</b>"
+copy_profile = "📋 复制配置"
+qr_unavailable = "无法为该配置生成二维码。"
+
+[subscription.winback]
+offer = "🎁 您的下一个套餐可享 {discount}% 专属折扣，有效期至 {until}。"
+
+[subscription.autopay]
+declined = "⚠️ <b>订阅自动续费失败</b>\n\n银行拒绝了从卡 {card} 扣款 {amount}。请在订阅到期前充值余额——届时将从余额续费。"
+card_removed = "卡 {card} 已无法扣款，已从已保存的卡中移除。"

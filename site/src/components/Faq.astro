@@ -1,0 +1,96 @@
+---
+import { faq, labels } from '~/data/i18n';
+import { docUrl, type Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = faq[lang];
+const l = labels[lang];
+---
+
+<section class="nx-s not-content" id="faq">
+  <div class="nx-wrap">
+    <div class="nx-head">
+      <span class="nx-chip">{l.faq}</span>
+      <h2>{t.title}</h2>
+    </div>
+    <div class="list">
+      {
+        t.items.map((it, i) => (
+          <details open={i === 0}>
+            <summary>
+              <span class="n">{String(i + 1).padStart(2, '0')}</span>
+              <span class="q">{it.q}</span>
+              <span class="pm" aria-hidden="true" />
+            </summary>
+            <p>{it.a}</p>
+          </details>
+        ))
+      }
+    </div>
+    <p class="more"><a href={docUrl(lang, 'faq')}>{t.more} &rarr;</a></p>
+  </div>
+</section>
+
+<style>
+  .list {
+    border-top: 1px solid var(--nx-line-strong);
+  }
+  details {
+    border-bottom: 1px solid var(--nx-line-strong);
+  }
+  summary {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr 1.5rem;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.15rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--nx-mono);
+    color: var(--nx-ink);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .n {
+    font-size: 0.75rem;
+    color: var(--nx-dim);
+  }
+  .q {
+    font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+    font-weight: 600;
+  }
+  .pm {
+    width: 12px;
+    height: 12px;
+    justify-self: end;
+    background:
+      linear-gradient(var(--nx-ink), var(--nx-ink)) center / 100% 1px no-repeat,
+      linear-gradient(var(--nx-ink), var(--nx-ink)) center / 1px 100% no-repeat;
+  }
+  details[open] .pm {
+    background: linear-gradient(var(--nx-ink), var(--nx-ink)) center / 100% 1px no-repeat;
+  }
+  summary:hover .q {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  details p {
+    padding: 0 1.5rem 1.4rem 3rem;
+    max-width: 70ch;
+    color: var(--nx-dim);
+  }
+  .more {
+    margin-top: 1.25rem !important;
+    font-family: var(--nx-mono);
+    font-size: 0.8125rem;
+  }
+  .more a {
+    color: var(--nx-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

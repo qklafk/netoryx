@@ -1,0 +1,52 @@
+# Navigation, main menu and common buttons.
+
+[nav]
+back = "◀️ بازگشت"
+cancel = "✖️ لغو"
+menu = "🏠 منوی اصلی"
+close = "✖️ بستن"
+refresh = "🔄 به‌روزرسانی"
+retry = "🔁 تلاش دوباره"
+prev = "◀️"
+next = "▶️"
+page = "صفحهٔ {page} از {pages}"
+
+[menu]
+title = "<b>{brand}</b>\n\nچه کمکی از دستم برمی‌آید؟ یک بخش را انتخاب کنید 👇"
+my_subscription = "🔐 اشتراک من"
+buy = "🛒 خرید / تمدید"
+connect = "📲 اتصال"
+balance = "💰 موجودی"
+referral = "🤝 دعوت از دوستان"
+gift = "🎁 هدیه / کد تخفیف"
+support = "🆘 پشتیبانی"
+language = "🌐 زبان"
+instructions = "📖 راهنماها"
+trial = "🎉 امتحان رایگان"
+tg_proxy = "🛡 پراکسی تلگرام"
+mini_app = "📱 حساب من"
+admin = "⚙️ پنل مدیریت"
+
+[common]
+yes = "✅ بله"
+no = "❌ خیر"
+confirm = "✅ تأیید"
+copy = "📋 کپی"
+open = "🔗 باز کردن"
+on = "🟢 روشن"
+off = "⚪️ خاموش"
+saved = "✅ ذخیره شد"
+done = "انجام شد ✅"
+loading = "⏳ لحظه‌ای صبر کنید…"
+canceled = "لغو شد 👌"
+
+[lang]
+title = "🌐 زبان ربات را انتخاب کنید:"
+ru = "🇷🇺 Русский"
+en = "🇬🇧 English"
+uk = "🇺🇦 Українська"
+kk = "🇰🇿 Қазақша"
+uz = "🇺🇿 Oʻzbekcha"
+fa = "🇮🇷 فارسی"
+zh = "🇨🇳 简体中文"
+changed = "انجام شد! از این پس به فارسی صحبت می‌کنم 🇮🇷"

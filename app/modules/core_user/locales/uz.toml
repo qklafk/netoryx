@@ -1,0 +1,76 @@
+# Welcome, main menu, profile, help, legal pages and /start link results.
+
+[core_user]
+welcome = "👋 Salom, {name}!\n\n<b>{brand}</b> — telefon, kompyuter va televizor uchun tez va ishonchli VPN. Ulanish bir daqiqadan kam vaqt oladi."
+welcome_personal = "👋 Salom, {name}! <b>{brand}</b> ga xush kelibsiz."
+welcome_trial = "🎁 Bepul sinab koʻring: {trial} toʻliq foydalanish — toʻlovsiz va kartasiz."
+friend = "doʻstim"
+
+[core_user.menu]
+status_trial = "🎁 Bepul sinov muddati mavjud — {trial}."
+status_none = "Hozircha obuna yoʻq — «🛒 Sotib olish / uzaytirish» boʻlimidan tarif tanlang."
+status_active = "🟢 Obuna {expires} gacha faol"
+status_forever = "🟢 Muddatsiz foydalanish ♾"
+status_expired = "🔴 Obunangiz muddati tugadi — VPN yana ishlashi uchun uni uzaytiring."
+status_disabled = "⛔️ Obunangiz toʻxtatilgan — yordam xizmatiga yozing."
+button_gone = "Bu tugma endi mavjud emas."
+
+[core_user.ref]
+joined = "🤝 Siz doʻstingiz taklifi bilan qoʻshildingiz — xush kelibsiz!"
+joined_money = "🤝 Siz doʻstingiz taklifi bilan qoʻshildingiz — balansingizga <b>{amount}</b>!"
+joined_days = "🤝 Siz doʻstingiz taklifi bilan qoʻshildingiz — sizga <b>{days}</b> bepul foydalanish!"
+inviter = "🎉 Havolangiz orqali yangi foydalanuvchi qoʻshildi! Mukofot uning birinchi toʻlovidan keyin keladi."
+inviter_money = "🎉 Havolangiz orqali yangi foydalanuvchi qoʻshildi — siz <b>{amount}</b> oldingiz!"
+inviter_days = "🎉 Havolangiz orqali yangi foydalanuvchi qoʻshildi — obunangizga <b>{days}</b> qoʻshildi!"
+
+[core_user.code]
+not_found = "😕 Kod topilmadi yoki endi amal qilmaydi."
+expired = "⌛️ Bu kodning muddati tugagan."
+exhausted = "😕 Bu kod maksimal marta ishlatib boʻlingan."
+already_used = "Siz bu kodni allaqachon faollashtirgansiz 🙂"
+only_new = "Bu kod faqat yangi foydalanuvchilar uchun 🙏"
+gift_ok = "🎁 <b>Sovgʻa faollashtirildi!</b> «{plan}» obunasi — {expires} gacha. «📲 Ulanish» boʻlimida ulaning."
+days_ok = "🎉 Promokod faollashtirildi: obunaga <b>+{days}</b> (endi {expires} gacha)."
+money_ok = "🎉 Promokod faollashtirildi: balansga <b>{amount}</b>."
+
+[core_user.invite]
+accepted = "🎉 <b>Taklif qabul qilindi!</b> Foydalanish {expires} gacha ochiq. «📲 Ulanish» boʻlimida ulaning."
+accepted_forever = "🎉 <b>Taklif qabul qilindi!</b> Foydalanish muddatsiz. «📲 Ulanish» boʻlimida ulaning."
+already_used = "Siz bu taklifni allaqachon qabul qilgansiz 🙂"
+
+[core_user.import]
+claimed = "✅ <b>Obuna koʻchirildi!</b> Havolalarni olish uchun «📲 Ulanish» boʻlimini oching."
+unavailable = "😕 Obunani koʻchirib boʻlmadi: havola yaroqsiz, allaqachon ishlatilgan yoki hisob oʻzgargan. Xizmat egasidan yangi havola soʻrang."
+retry_later = "⏳ Server hozir mavjud emas, shuning uchun obunani koʻchirib boʻlmadi. Havola hali amal qiladi — birozdan keyin qayta urinib koʻring."
+
+[core_user.proxy]
+text = "🛡 <b>Telegram proksi</b>\n\nTelegram bloklangan joyda ham ishlaydi. Bir bosishda ulaning 👇"
+open = "🛡 Proksini olish"
+
+[core_user.profile]
+title = "👤 <b>Profil</b>"
+id = "ID: <code>{id}</code>"
+name = "Ism: {name}"
+language = "Til: {language}"
+since = "Biz bilan {date} dan beri"
+balance = "Balans: <b>{balance}</b>"
+partner_balance = "Hamkor balansi: <b>{balance}</b>"
+
+[core_user.help]
+text = "📖 <b>Yordam</b>\n\n<b>Qanday ulanaman?</b>\n«📲 Ulanish» boʻlimini oching, qurilmangizni tanlang va «➕ Qoʻshish» tugmasini bosing — ilova oʻzi sozlanadi.\n\n<b>VPN ishlamayaptimi?</b>\nIlovada obunani yangilang, boshqa serverni tanlang yoki ilovani qayta ishga tushiring.\n\n<b>Mobil internetda «oq roʻyxatlar» bormi?</b>\n«LTE» belgili serverni yoqing.\n\n<b>Nechta qurilma ulash mumkin?</b>\nLimit «🔐 Mening obunam» boʻlimida koʻrsatilgan. Yangi telefon oldingizmi? Eski qurilmani oʻsha yerda uzing.\n\n<b>Qanday uzaytiraman?</b>\n«🛒 Sotib olish / uzaytirish» boʻlimida: yangi muddat joriy muddatga qoʻshiladi.\n\nSavollaringiz qoldimi? Yordam xizmatiga yozing — tez javob beramiz 💬"
+text_personal = "📖 <b>Yordam</b>\n\n<b>Qanday ulanaman?</b>\n«📲 Ulanish» boʻlimini oching, qurilmangizni tanlang va «➕ Qoʻshish» tugmasini bosing — ilova oʻzi sozlanadi.\n\n<b>VPN ishlamayaptimi?</b>\nIlovada obunani yangilang, boshqa serverni tanlang yoki ilovani qayta ishga tushiring.\n\n<b>Mobil internetda «oq roʻyxatlar» bormi?</b>\n«LTE» belgili serverni yoqing.\n\n<b>Yangi telefon oldingizmi?</b>\nEski qurilmani «🔐 Mening obunam» → «📱 Qurilmalar» boʻlimida uzing."
+
+[core_user.legal]
+terms = "📄 Foydalanish shartlari — quyidagi havola orqali."
+privacy = "🔒 Maxfiylik siyosati — quyidagi havola orqali."
+missing = "Bu hujjat hali eʼlon qilinmagan. Savollaringiz boʻlsa, yordam xizmatiga yozing."
+
+[core_user.paysupport]
+text = "💳 <b>Toʻlov boʻyicha yordam</b>\n\nToʻlov oʻtmadimi, pul yechildi-yu obuna uzaytirilmadimi yoki pulni qaytarish kerakmi? Chek yoki toʻlov vaqtini koʻrsatib bizga yozing — 24 soat ichida hal qilamiz."
+no_contact = "💳 <b>Toʻlov boʻyicha yordam</b>\n\nChek yoki toʻlov vaqtini koʻrsatib bot administratoriga yozing — 24 soat ichida hal qilamiz."
+
+[core_user.admin]
+new_user = "👤 Yangi foydalanuvchi: {user} (<code>{user_id}</code>)"
+new_user_ref = "taklif qilgan: <code>{inviter_id}</code>"
+new_user_campaign = "kampaniya <code>{campaign}</code>"
+invite_redeemed = "👋 {user} (<code>{user_id}</code>) «{note}» taklifini qabul qildi"

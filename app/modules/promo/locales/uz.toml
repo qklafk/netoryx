@@ -1,0 +1,21 @@
+# Entering promo and gift codes.
+
+[promo]
+enter = "🎟 <b>Promokod yoki sovgʻa kodi</b>\n\nKodni bitta xabarda yuboring — men uni darhol faollashtiraman."
+canceled = "Mayli, keyingi safar 👌"
+try_another = "🔁 Boshqa kod kiritish"
+gift_redeemed_buyer = "🎁 «{plan}» sovgʻangiz hozirgina faollashtirildi! {brand} ni yaqinlaringiz bilan baham koʻrganingiz uchun rahmat 💜"
+
+[promo.ok]
+title = "🎉 <b>Promokod faollashtirildi!</b>"
+gift = "🎉 <b>Sovgʻa faollashtirildi!</b> «{plan}» obunasi — sizniki."
+days = "📅 +{days} qoʻshildi — obuna endi <b>{date}</b> gacha amal qiladi."
+money = "💰 Balansga +{amount} qoʻshildi (hozir {balance})."
+
+[promo.error]
+not_found = "😕 Bunday kod yoʻq. Xato yoʻqligini tekshiring."
+not_found_retry = "😕 Bunday kod yoʻq. Yozilishini tekshirib, qayta yuboring — yoki «Bekor qilish» tugmasini bosing."
+expired = "⌛️ Bu kodning muddati tugagan."
+exhausted = "😔 Bu kod maksimal marta ishlatib boʻlingan."
+already_used = "Siz bu kodni allaqachon faollashtirgansiz 🙂"
+only_new = "Bu kod faqat hali hech narsa sotib olmagan yangi foydalanuvchilar uchun 🙏"

@@ -1,0 +1,56 @@
+# Number, money, date and period formats; plural forms (one / other).
+
+[fmt]
+money = "{amount} ₽"
+stars = "{amount} ⭐️"
+date = "{year} ж. {day} {month}"
+datetime = "{date}, {time}"
+unlimited = "шектеусіз"
+forever = "мерзімсіз"
+never = "ешқашан"
+
+[fmt.month]
+1 = "қаңтар"
+2 = "ақпан"
+3 = "наурыз"
+4 = "сәуір"
+5 = "мамыр"
+6 = "маусым"
+7 = "шілде"
+8 = "тамыз"
+9 = "қыркүйек"
+10 = "қазан"
+11 = "қараша"
+12 = "желтоқсан"
+
+[plural.days]
+one = "{n} күн"
+other = "{n} күн"
+
+[plural.months]
+one = "{n} ай"
+other = "{n} ай"
+
+[plural.years]
+one = "{n} жыл"
+other = "{n} жыл"
+
+[plural.hours]
+one = "{n} сағат"
+other = "{n} сағат"
+
+[plural.minutes]
+one = "{n} минут"
+other = "{n} минут"
+
+[plural.devices]
+one = "{n} құрылғы"
+other = "{n} құрылғы"
+
+[plural.gb]
+one = "{n} ГБ"
+other = "{n} ГБ"
+
+[plural.users]
+one = "{n} пайдаланушы"
+other = "{n} пайдаланушы"

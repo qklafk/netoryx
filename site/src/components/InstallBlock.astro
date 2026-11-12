@@ -1,0 +1,98 @@
+---
+import { install, labels } from '~/data/i18n';
+import { INSTALL_COMMAND, docUrl, type Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = install[lang];
+const l = labels[lang];
+---
+
+<section class="nx-s not-content" id="install">
+  <div class="nx-wrap">
+    <div class="nx-head">
+      <span class="nx-chip">{l.install}</span>
+      <h2>{t.title}</h2>
+      <p class="nx-lead">{t.text}</p>
+    </div>
+    <div class="nx-frame box">
+      <div class="cmd">
+        <span class="prompt" aria-hidden="true">$</span>
+        <code>{INSTALL_COMMAND}</code>
+        <button type="button" data-copy={INSTALL_COMMAND} data-done={t.copied} data-label={t.copy}>{t.copy}</button>
+      </div>
+    </div>
+    <p class="note">{t.note} <a href={docUrl(lang, 'installation')}>{t.more} &rarr;</a></p>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('button[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+        btn.textContent = btn.dataset.done ?? '';
+        setTimeout(() => (btn.textContent = btn.dataset.label ?? ''), 2000);
+      } catch {
+        /* clipboard unavailable: the command stays selectable */
+      }
+    });
+  });
+</script>
+
+<style>
+  .box {
+    padding: 1.4rem clamp(0.75rem, 3vw, 1.75rem);
+  }
+  .cmd {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    min-width: 0;
+  }
+  .prompt {
+    font-family: var(--nx-mono);
+    color: var(--nx-dim);
+  }
+  code {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-family: var(--nx-mono);
+    font-size: clamp(0.78rem, 2.2vw, 1rem);
+    color: var(--nx-ink);
+    background: none;
+    border: 0;
+    padding: 0.4rem 0;
+  }
+  button {
+    flex: none;
+    cursor: pointer;
+    border: 1px solid var(--nx-ink);
+    background: var(--nx-ink);
+    color: var(--nx-bg);
+    padding: 0.5rem 0.9rem;
+    font-family: var(--nx-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  button:hover {
+    background: var(--nx-bg);
+    color: var(--nx-ink);
+  }
+  .note {
+    margin-top: 1.25rem !important;
+    font-size: 0.875rem;
+    color: var(--nx-dim);
+  }
+  .note a {
+    color: var(--nx-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

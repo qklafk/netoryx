@@ -1,0 +1,34 @@
+# Cost sharing: reminders to members and the owner's overview.
+
+[cost_sharing]
+menu = "Cost sharing"
+month_year = "{month} {year}"
+reminder = "💸 <b>Cost sharing for {month}</b>\n\nHi! It's time to chip in for our VPN server — your share is <b>{share}</b>.\n\nOnce you've sent it, tap the button below so the owner knows 🙌"
+details = "Where to send it: {details}"
+thanks = "🙏 Thank you! Your payment for {month} is marked and the owner has been notified."
+unknown = "This round of cost sharing is already closed 🙂"
+owner_paid = "💸 {name} marked their payment for {month}: {share}. Paid: {paid} of {total}."
+owner_started = "💸 Cost sharing for {month}: reminders sent ({count}). Share — {share}, total {total}."
+sent = "Reminders sent: {count}"
+not_configured = "💸 <b>Cost sharing</b>\n\nThis section helps you collect money for the server every month: the bot reminds members of their share and shows who has already paid.\n\nTo turn it on, set the monthly amount, the reminder day and payment details in the settings."
+not_started = "💸 <b>Cost sharing for {month}</b>\n\nReminders go out automatically on day {day} of the month. The total is {total}.\n\nYou can send them right now."
+overview = "💸 <b>Cost sharing for {month}</b>\n\nTotal: {total} · share: {share}\nPaid: {paid} of {count}"
+
+[cost_sharing.month]
+1 = "January"
+2 = "February"
+3 = "March"
+4 = "April"
+5 = "May"
+6 = "June"
+7 = "July"
+8 = "August"
+9 = "September"
+10 = "October"
+11 = "November"
+12 = "December"
+
+[cost_sharing.btn]
+paid = "✅ I've paid"
+remind = "📣 Remind those who haven't paid"
+start = "📣 Send now"

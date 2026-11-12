@@ -1,0 +1,4 @@
+# TLS server name -> backend (reality | tgproxy). Any other name goes to the web backend.
+# Example:
+# www.samsung.com reality
+# petrovich.ru tgproxy

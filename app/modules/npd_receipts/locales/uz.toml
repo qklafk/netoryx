@@ -1,0 +1,7 @@
+# "Мой налог" receipts: the buyer's message and admin notices.
+
+[npd_receipts]
+menu = "NPD cheklari"
+receipt = "🧾 {amount} toʻlovingiz cheki: <a href=\"{url}\">chekni ochish</a>"
+auth_failed = "🧾 <b>Мой налог: kirish bajarilmagan.</b>\nQayta kirmaguningizcha (veb-admin → NPD cheklari) yoki sozlamalarda INN va parolni tuzatmaguningizcha cheklar roʻyxatdan oʻtkazilmaydi.\n<code>{error}</code>"
+gave_up = "🧾 <b>Мой налог:</b> {count} ta chekni roʻyxatdan oʻtkazib boʻlmadi. Ularni veb-adminda qayta yuboring (NPD cheklari)."

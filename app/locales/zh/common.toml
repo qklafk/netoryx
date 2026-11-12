@@ -1,0 +1,52 @@
+# Navigation, main menu and common buttons.
+
+[nav]
+back = "◀️ 返回"
+cancel = "✖️ 取消"
+menu = "🏠 主菜单"
+close = "✖️ 关闭"
+refresh = "🔄 刷新"
+retry = "🔁 重试"
+prev = "◀️"
+next = "▶️"
+page = "第 {page} 页，共 {pages} 页"
+
+[menu]
+title = "<b>{brand}</b>\n\n需要什么帮助？请选择一个板块 👇"
+my_subscription = "🔐 我的订阅"
+buy = "🛒 购买 / 续费"
+connect = "📲 连接"
+balance = "💰 余额"
+referral = "🤝 邀请好友"
+gift = "🎁 礼品 / 优惠码"
+support = "🆘 客服支持"
+language = "🌐 语言"
+instructions = "📖 使用教程"
+trial = "🎉 免费试用"
+tg_proxy = "🛡 Telegram 代理"
+mini_app = "📱 我的账户"
+admin = "⚙️ 管理面板"
+
+[common]
+yes = "✅ 是"
+no = "❌ 否"
+confirm = "✅ 确认"
+copy = "📋 复制"
+open = "🔗 打开"
+on = "🟢 已开启"
+off = "⚪️ 已关闭"
+saved = "✅ 已保存"
+done = "完成 ✅"
+loading = "⏳ 请稍候…"
+canceled = "已取消 👌"
+
+[lang]
+title = "🌐 请选择机器人语言："
+ru = "🇷🇺 Русский"
+en = "🇬🇧 English"
+uk = "🇺🇦 Українська"
+kk = "🇰🇿 Қазақша"
+uz = "🇺🇿 Oʻzbekcha"
+fa = "🇮🇷 فارسی"
+zh = "🇨🇳 简体中文"
+changed = "好的！从现在起我将使用简体中文 🇨🇳"

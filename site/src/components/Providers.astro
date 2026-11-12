@@ -1,0 +1,120 @@
+---
+import { providers } from '~/data/partners';
+import type { Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const disclosure =
+  lang === 'ru'
+    ? 'Все ссылки в этом списке — партнёрские: проект получает вознаграждение, если вы арендуете сервер по ним.'
+    : 'All links in this list are affiliate links: the project receives a commission if you rent a server through them.';
+const visit = lang === 'ru' ? 'Перейти' : 'Visit';
+---
+
+<div class="providers not-content">
+  {
+    providers.map((p) => (
+      <a class="card" href={p.url} rel="sponsored noopener" target="_blank">
+        <span class="top">
+          <img class="icon" src={base + p.icon} alt="" width="40" height="40" loading="lazy" />
+          <span class="arrow" aria-hidden="true">
+            {'↗︎'}
+          </span>
+        </span>
+        <strong>{p.name}</strong>
+        <span class="desc">{p.description[lang]}</span>
+        <span class="go">{visit} →</span>
+      </a>
+    ))
+  }
+</div>
+<p class="disclosure not-content">
+  <small>{disclosure}</small>
+</p>
+
+<style>
+  .providers {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--nx-line, var(--sl-color-gray-5));
+    border-left: 1px solid var(--nx-line, var(--sl-color-gray-5));
+    margin-top: 1.5rem;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1.1rem 1rem 1rem;
+    border-right: 1px solid var(--nx-line, var(--sl-color-gray-5));
+    border-bottom: 1px solid var(--nx-line, var(--sl-color-gray-5));
+    color: var(--nx-ink, var(--sl-color-white));
+    text-decoration: none;
+    transition: background 0.15s;
+    min-width: 0;
+  }
+  .card:hover,
+  .card:focus-visible {
+    background: var(--nx-bg-2, var(--sl-color-gray-6));
+  }
+  .top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+  }
+  .icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 8px;
+    /* a light tile keeps dark logos visible in the dark theme */
+    background: #fff;
+    padding: 3px;
+    box-sizing: border-box;
+    outline: 1px solid var(--nx-line, var(--sl-color-gray-5));
+    filter: grayscale(1) contrast(1.1);
+    transition: filter 0.2s;
+  }
+  .card:hover .icon,
+  .card:focus-visible .icon {
+    filter: none;
+  }
+  .arrow {
+    font-family: var(--nx-mono, var(--sl-font-mono));
+    font-size: 0.9rem;
+    color: var(--nx-dim, var(--sl-color-gray-3));
+  }
+  strong {
+    font-family: var(--nx-mono, var(--sl-font-mono));
+    font-size: 0.95rem;
+  }
+  .desc {
+    font-size: 0.85rem;
+    color: var(--nx-dim, var(--sl-color-gray-3));
+    flex: 1;
+  }
+  .go {
+    font-family: var(--nx-mono, var(--sl-font-mono));
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 0.4rem;
+  }
+  .disclosure {
+    margin-top: 0.9rem;
+    color: var(--nx-dim, var(--sl-color-gray-3));
+  }
+  @media (max-width: 64rem) {
+    .providers {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 26rem) {
+    .providers {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

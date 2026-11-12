@@ -1,0 +1,55 @@
+# Product mode: shop or personal VPN
+
+[admin_mode]
+title = "Product mode"
+home = "🔀 <b>Product mode</b>\n\nNow: <b>{mode}</b>\n{about}"
+none = "none"
+preview_personal = "🏠 <b>Switching to personal mode</b>\n\nWhat changes:\n• sales close - plans, payments, wallet and referrals are hidden;\n• payment providers are turned off: {providers};\n• auto-renewal is turned off for {renew} subscribers - they get a notice;\n• everyone keeps their paid time, wallets stay as they are (refunds are manual);\n• the bot becomes private: new users need an invitation.\n\nYou can undo everything with \"Roll back\"."
+done_personal = "✅ The bot is now in personal mode. Auto-renewal was turned off for {renew} subscribers."
+settings_failed = "⚠️ Could not change these settings: {keys}. Please check them under \"Settings\"."
+readiness = "🛒 <b>Switching to shop mode</b>\n\n<b>Readiness:</b>\n{checklist}\n\n✅ done · ❌ required · ▫️ recommended\n\n👥 Members with free access: {members}. What should happen to them?"
+grace = "💳 Until when should members keep free access? After that they choose a plan like everyone else.\n\nAccess that ends earlier is not extended."
+members_keep = "👥 Members ({count}) stay free - no payment reminders, no auto-renewal."
+members_convert = "👥 Members ({count}) move to a regular subscription: free access until {date}. They get a notice."
+preview_shop = "🛒 <b>Let's double-check</b>\n\n{members}\n\n<b>Readiness:</b>\n{checklist}\n\nAfter the switch the bot opens to everyone and starts selling subscriptions."
+not_ready = "⚠️ Some required items are not done. Without them users can't pay properly or reach support - better set everything up first."
+done_shop = "✅ The bot is now a shop! Moved to paid subscriptions: {converted}."
+rollback = "↩️ Roll back the last switch (to \"{mode}\")? Settings and members' subscriptions return to how they were."
+rolled_back = "↩️ The switch was rolled back - everything is as it was."
+pending_payments = "⚠️ Customers still have {count} unpaid invoices. Once payment providers are off, an invoice paid later is not credited automatically. Better wait until they are paid or expire."
+nothing_to_rollback = "Nothing to roll back."
+
+[admin_mode.mode]
+shop = "🛒 shop"
+personal = "🏠 personal VPN"
+
+[admin_mode.about]
+shop = "The bot sells subscriptions: plans, payments, trial, referrals."
+personal = "A private VPN for your people: invitation-only, no payments."
+
+[admin_mode.btn]
+to_shop = "🛒 Switch to shop mode"
+to_personal = "🏠 Switch to personal mode"
+rollback = "↩️ Roll back the switch of {when}"
+rollback_yes = "↩️ Yes, roll back"
+apply = "✅ Switch"
+force = "⚠️ Switch anyway"
+keep_free = "🎁 Keep everyone free ({count})"
+convert = "💳 Move to paid subscriptions"
+
+[admin_mode.check]
+pending_payments = "No unpaid invoices"
+plans = "A plan with a price"
+payment_provider = "A payment provider is connected"
+test_payment = "A test payment went through"
+support = "A support link is set"
+terms = "Terms of service"
+privacy = "Privacy policy"
+domain = "A permanent HTTPS domain"
+trial = "Free trial"
+referral = "Referral program"
+channel = "A news channel"
+
+[admin_mode.notice]
+renew_off = "ℹ️ <b>{brand}</b> no longer accepts payments, so auto-renewal of your subscription is off. You keep all your paid time - use it as usual 🙌"
+converted = "📣 <b>{brand}</b> is moving to subscriptions. Your free access stays until <b>{date}</b> - thank you for being with us from the very start! After that date pick a plan under \"🛒 Buy / renew\"."

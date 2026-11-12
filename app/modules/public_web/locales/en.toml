@@ -1,0 +1,67 @@
+# Public pages (browser) and notices about Remnawave events.
+
+[public_web]
+open_bot = "Open the bot in Telegram"
+support = "Support"
+copy = "📋 Copy link"
+copied = "✅ Copied"
+
+[public_web.not_found]
+title = "Link not found"
+text = "The link seems to be outdated or mistyped. Open the bot — it always has the current link."
+
+[public_web.sub]
+active_until = "✅ Subscription active until {date}"
+active_forever = "✅ Subscription active with no end date"
+expired = "⛔ Your subscription has ended — renew it in the bot and everything will work again."
+disabled = "⛔ Access is paused. See the bot for details."
+none = "You have no subscription yet — get one in the bot."
+apps = "Connect in one tap"
+apps_hint = "Pick the app you have installed — the subscription will be added automatically."
+manual = "Manually"
+manual_hint = "Copy the link and add it to your app as a subscription (Subscription / “Add from URL”). Or scan the QR code."
+
+[public_web.proxy]
+title = "Telegram proxy"
+text = "Tap it and Telegram will offer to turn the proxy on. Or scan the QR code with your phone camera."
+connect = "⚡️ Connect · {title}"
+
+[public_web.open]
+title = "Opening {app}…"
+text = "If the app did not open by itself, tap the button below."
+button = "Open in {app}"
+install = "No {app}? Install it:"
+manual = "Add the subscription manually"
+
+[public_web.platform]
+ios = "iPhone/iPad"
+android = "Android"
+windows = "Windows"
+macos = "macOS"
+linux = "Linux"
+apple_tv = "Apple TV"
+android_tv = "Android TV"
+
+[public_web.gift]
+title = "🎁 A gift for you!"
+text = "You have been given {brand} VPN — {what}. Open the bot to claim your gift."
+button = "🎁 Claim the gift in Telegram"
+hint = "The bot will open — tap “Start” and the gift is activated."
+gone = "This gift has already been claimed or the link is not valid."
+
+[public_web.rw]
+limited = "📊 You have used up the traffic for this period, so the VPN is paused.\n\nTo keep using it, renew your subscription or pick a plan with more traffic 👇"
+threshold = "📊 You have used {percent}% of this period's traffic. If it may not be enough, renew in advance."
+first_connected = "🎉 Great, the VPN is connected and working! If you need any help, we are here."
+device_added = "📱 A new device was connected: {device}.\n\nIf it wasn't you, reset your devices and get a new subscription link."
+unknown_device = "unnamed"
+expiry_drift = "⚠️ Remnawave marked the subscription of user <code>{user_id}</code> as expired although it is active in the bot. Sync will fix it shortly; if it happens again, check the server clock and the panel settings."
+node_lost = "🔴 Remnawave: node {node} lost connection{error}"
+node_restored = "✅ Remnawave: node {node} is connected again"
+node_traffic = "📊 Remnawave: node {node} is close to its traffic limit"
+
+[public_web.rw.btn]
+subscription = "🔐 My subscription"
+buy = "🛒 Renew"
+devices = "📱 Devices"
+connect = "📲 Connection"

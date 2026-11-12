@@ -1,0 +1,383 @@
+@import '@fontsource-variable/geist/index.css';
+@import '@fontsource-variable/geist-mono/index.css';
+
+/* ---------- tokens: strictly black and white ---------- */
+:root {
+  --nx-bg: #000;
+  --nx-bg-2: #0b0b0b;
+  --nx-ink: #fff;
+  --nx-rgb: 255 255 255;
+  --nx-dim: #a3a3a3;
+  --nx-line: #2a2a2a;
+  --nx-line-strong: #5c5c5c;
+  --nx-gutter: clamp(1rem, 4vw, 2.5rem);
+  --nx-max: 76rem;
+  --nx-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --sl-font: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sl-font-mono: var(--nx-mono);
+
+  --sl-color-white: #fff;
+  --sl-color-gray-1: #e8e8e8;
+  --sl-color-gray-2: #c4c4c4;
+  --sl-color-gray-3: #8c8c8c;
+  --sl-color-gray-4: #5c5c5c;
+  --sl-color-gray-5: #2a2a2a;
+  --sl-color-gray-6: #141414;
+  --sl-color-gray-7: #0b0b0b;
+  --sl-color-black: #000;
+  --sl-color-accent-low: #1c1c1c;
+  --sl-color-accent: #fff;
+  --sl-color-accent-high: #fff;
+  --sl-color-text-accent: #fff;
+  --sl-color-bg-nav: #000;
+  --sl-color-bg-sidebar: #000;
+  --sl-color-hairline-light: #2a2a2a;
+  --sl-color-hairline: #2a2a2a;
+  --sl-color-hairline-shade: #1c1c1c;
+  --sl-color-bg-inline-code: #141414;
+  --sl-text-code-sm: 0.8125rem;
+}
+
+:root[data-theme='light'] {
+  --nx-bg: #fff;
+  --nx-bg-2: #f5f5f5;
+  --nx-ink: #000;
+  --nx-rgb: 0 0 0;
+  --nx-dim: #595959;
+  --nx-line: #d6d6d6;
+  --nx-line-strong: #8a8a8a;
+
+  --sl-color-white: #000;
+  --sl-color-gray-1: #1a1a1a;
+  --sl-color-gray-2: #3d3d3d;
+  --sl-color-gray-3: #595959;
+  --sl-color-gray-4: #8a8a8a;
+  --sl-color-gray-5: #d6d6d6;
+  --sl-color-gray-6: #f0f0f0;
+  --sl-color-gray-7: #f7f7f7;
+  --sl-color-black: #fff;
+  --sl-color-accent-low: #e8e8e8;
+  --sl-color-accent: #000;
+  --sl-color-accent-high: #000;
+  --sl-color-text-accent: #000;
+  --sl-color-bg-nav: #fff;
+  --sl-color-bg-sidebar: #fff;
+  --sl-color-hairline-light: #d6d6d6;
+  --sl-color-hairline: #d6d6d6;
+  --sl-color-hairline-shade: #ebebeb;
+  --sl-color-bg-inline-code: #f0f0f0;
+}
+
+body {
+  background: var(--nx-bg);
+  color: var(--sl-color-gray-2);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--nx-ink);
+  outline-offset: 3px;
+}
+
+/* ---------- docs pages ---------- */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.content-panel h1,
+.sidebar-content summary,
+.right-sidebar h2 {
+  font-family: var(--nx-mono);
+  letter-spacing: -0.02em;
+}
+.sl-markdown-content a:not(.not-content a) {
+  color: var(--nx-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+.sl-markdown-content a:not(.not-content a):hover {
+  text-decoration-thickness: 2px;
+}
+.sidebar-content a[aria-current='page'] {
+  background: var(--nx-ink);
+  color: var(--nx-bg);
+  font-family: var(--nx-mono);
+}
+.sidebar-content a {
+  font-family: var(--nx-mono);
+  font-size: 0.8125rem;
+  border-radius: 0;
+}
+.sidebar-content a:hover {
+  color: var(--nx-ink);
+}
+.sl-markdown-content :not(pre) > code {
+  border-radius: 0;
+  border: 1px solid var(--nx-line);
+  background: var(--sl-color-bg-inline-code);
+  color: var(--nx-ink);
+}
+.expressive-code {
+  --ec-brdRad: 0;
+  --ec-brdCol: var(--nx-line-strong);
+  --ec-codeBg: var(--nx-bg-2);
+  --ec-codeFg: var(--nx-ink);
+  --ec-frm-edBg: var(--nx-bg-2);
+  --ec-frm-edActTabBg: var(--nx-bg-2);
+  --ec-frm-edActTabIndTopCol: var(--nx-ink);
+  --ec-frm-edActTabIndBtmCol: var(--nx-ink);
+  --ec-frm-edTabBarBg: var(--nx-bg);
+  --ec-frm-trmBg: var(--nx-bg-2);
+  --ec-frm-trmTtbBg: var(--nx-bg);
+  --ec-frm-trmTtbFg: var(--nx-dim);
+  --ec-frm-trmTtbDotsFg: var(--nx-line-strong);
+  --ec-frm-trmTtbBrdBtmCol: var(--nx-line);
+}
+.expressive-code pre,
+.expressive-code code {
+  font-family: var(--nx-mono);
+}
+/* monochrome syntax: tokens keep ink colour, weight and style carry the structure */
+.expressive-code .ec-line span {
+  color: var(--nx-ink) !important;
+}
+.sl-markdown-content table {
+  border-collapse: collapse;
+}
+.sl-markdown-content th,
+.sl-markdown-content td {
+  border: 1px solid var(--nx-line);
+}
+.sl-markdown-content th {
+  font-family: var(--nx-mono);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--nx-bg-2);
+}
+.sl-markdown-content blockquote {
+  border-inline-start: 2px solid var(--nx-ink);
+}
+.starlight-aside {
+  border-radius: 0;
+  background: var(--nx-bg-2);
+  border: 1px solid var(--nx-line-strong);
+  border-inline-start-width: 4px;
+  --sl-color-asides-text-accent: var(--nx-ink);
+}
+.starlight-aside--note,
+.starlight-aside--tip,
+.starlight-aside--caution,
+.starlight-aside--danger {
+  --sl-color-asides-text-accent: var(--nx-ink);
+  border-color: var(--nx-ink);
+}
+.starlight-aside--note,
+.starlight-aside--tip,
+.starlight-aside--caution,
+.starlight-aside--danger {
+  background: var(--nx-bg-2);
+}
+
+/* ---------- header ---------- */
+.header,
+header.header {
+  font-family: var(--nx-mono);
+}
+:root {
+  --sl-nav-height: 3.5rem;
+}
+header {
+  border-bottom: 1px solid var(--nx-line);
+  backdrop-filter: blur(6px);
+}
+.site-title {
+  font-family: var(--nx-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--nx-ink);
+}
+site-search button[data-open-modal] {
+  border-radius: 0;
+  border: 1px solid var(--nx-line-strong);
+  background: transparent;
+  font-family: var(--nx-mono);
+  font-size: 0.8125rem;
+}
+starlight-theme-select select,
+starlight-lang-select select {
+  border-radius: 0;
+  font-family: var(--nx-mono);
+  font-size: 0.8125rem;
+}
+
+/* ---------- shared landing primitives ---------- */
+.nx-wrap {
+  width: 100%;
+  max-width: var(--nx-max);
+  margin-inline: auto;
+  padding-inline: var(--nx-gutter);
+}
+.nx-s {
+  margin: 0;
+  padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  border-top: 1px solid var(--nx-line);
+  color: var(--sl-color-gray-2);
+}
+.nx-s h2,
+.nx-s h3 {
+  font-family: var(--nx-mono);
+  color: var(--nx-ink);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+  border: 0;
+}
+.nx-s h2 {
+  font-size: clamp(1.7rem, 4.4vw, 2.9rem);
+  max-width: 24ch;
+  font-weight: 600;
+}
+.nx-s p {
+  margin: 0;
+}
+.nx-head {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  justify-items: start;
+}
+.nx-lead {
+  max-width: 58ch;
+  color: var(--nx-dim);
+  font-size: 1.0625rem;
+}
+.nx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--nx-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-ink);
+  border: 1px solid var(--nx-line-strong);
+  padding: 0.3rem 0.6rem;
+  line-height: 1;
+}
+.nx-chip::before {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--nx-ink);
+}
+
+/* corner brackets: only the four corners are drawn */
+.nx-frame {
+  --b: 14px;
+  --bw: 2px;
+  position: relative;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  background:
+    linear-gradient(var(--nx-ink), var(--nx-ink)) top left / var(--b) var(--bw) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) top left / var(--bw) var(--b) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) top right / var(--b) var(--bw) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) top right / var(--bw) var(--b) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) bottom left / var(--b) var(--bw) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) bottom left / var(--bw) var(--b) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) bottom right / var(--b) var(--bw) no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) bottom right / var(--bw) var(--b) no-repeat;
+}
+
+/* buttons */
+.nx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--nx-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--nx-ink);
+  color: var(--nx-ink) !important;
+  background: transparent;
+  text-decoration: none !important;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.nx-btn:hover {
+  background: var(--nx-ink);
+  color: var(--nx-bg) !important;
+}
+.nx-btn.primary {
+  background: var(--nx-ink);
+  color: var(--nx-bg) !important;
+}
+.nx-btn.primary:hover {
+  background: var(--nx-bg);
+  color: var(--nx-ink) !important;
+}
+
+/* crosshair intersections in bordered grids */
+.nx-grid {
+  position: relative;
+  display: grid;
+  border-top: 1px solid var(--nx-line-strong);
+  border-left: 1px solid var(--nx-line-strong);
+}
+.nx-cell {
+  position: relative;
+  border-right: 1px solid var(--nx-line-strong);
+  border-bottom: 1px solid var(--nx-line-strong);
+  min-width: 0;
+}
+.nx-cell::after,
+.nx-grid::before {
+  content: '';
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  right: -6px;
+  bottom: -6px;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--nx-ink), var(--nx-ink)) center / 100% 1px no-repeat,
+    linear-gradient(var(--nx-ink), var(--nx-ink)) center / 1px 100% no-repeat;
+}
+.nx-grid::before {
+  right: auto;
+  bottom: auto;
+  left: -6px;
+  top: -6px;
+}
+
+/* landing page frame (Starlight splash) */
+[data-has-hero] main {
+  padding: 0 !important;
+}
+[data-has-hero] .content-panel {
+  padding: 0;
+}
+[data-has-hero] .sl-container {
+  max-width: none;
+  margin-inline: 0;
+}
+[data-has-hero] .sl-container > * {
+  margin-top: 0 !important;
+}
+[data-has-hero] .sl-markdown-content {
+  max-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,36 @@
+# Errors and access notices shown by the bot itself.
+
+[error]
+generic = "😔 Something went wrong. Please try again a bit later — we're already on it."
+alert = "😔 Something went wrong. Please try again."
+expired_button = "This button has expired. Open the menu again 👇"
+unknown_message = "Sorry, I didn't get that 🤔 Everything you need is in the menu below."
+not_allowed = "⛔️ You don't have permission to do that."
+not_found = "Nothing found 🤷"
+invalid_input = "I couldn't read that. Please check it and send it again."
+unavailable = "This section is unavailable right now. Please check back later 🙏"
+
+[access]
+banned = "🚫 Your access to this bot is restricted.\nIf you think this is a mistake, please contact support."
+throttled = "🐢 Easy there! Wait a couple of seconds and try again."
+maintenance = "🛠 <b>Maintenance in progress</b>\n\nWe'll be back shortly. Thanks for your patience!"
+maintenance_eta = "🛠 <b>Maintenance in progress</b>\n\nWe expect to be back by {eta}. Thanks for your patience!"
+maintenance_until = "We expect to be back by {eta}."
+maintenance_alert = "🛠 Maintenance in progress — please check back soon"
+invite_only = "🔒 This is a private bot — access is by invitation only.\n\nAsk the owner for an invite link and open it."
+invite_invalid = "😕 This invite is invalid or has already been used. Ask the owner for a new link."
+
+[access.channel]
+text = "📢 To use the bot, please join our channel — news, deals and server status are posted there.\n\nJoined? Tap “✅ I've joined”."
+subscribe = "📢 Open the channel"
+check = "✅ I've joined"
+not_yet = "I can't see you in the channel yet 🤔 Join it and tap the button again."
+thanks = "Thanks for joining! 🙌"
+
+[consent]
+text = "📄 Before we start, please read our <b>Terms of Service</b> and <b>Privacy Policy</b> — the links are below.\n\nBy tapping “Accept”, you agree to them."
+terms = "📄 Terms of Service"
+privacy = "🔒 Privacy Policy"
+accept = "✅ Accept"
+accepted = "Thank you! Welcome aboard 👋"
+required = "Please accept the terms to continue 🙏"

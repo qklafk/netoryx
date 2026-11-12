@@ -1,0 +1,47 @@
+---
+import { labels } from '~/data/i18n';
+import { GITHUB, TELEGRAM, docUrl, langOf } from '~/data/site';
+
+const lang = langOf(Astro.locals.starlightRoute.locale);
+const l = labels[lang];
+---
+
+<nav class="chips" aria-label="Netoryx">
+  <a href={docUrl(lang, 'installation')}>{l.docs}</a>
+  <a href={GITHUB} rel="noopener">GitHub</a>
+  <a href={TELEGRAM} rel="noopener">Telegram</a>
+  <a class="cta" href={`${docUrl(lang, 'installation')}`}>{l.start}</a>
+</nav>
+
+<style>
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  a {
+    font-family: var(--nx-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--nx-ink);
+    border: 1px solid var(--nx-line-strong);
+    padding: 0.4rem 0.6rem;
+    line-height: 1;
+  }
+  a:hover {
+    border-color: var(--nx-ink);
+  }
+  a.cta {
+    background: var(--nx-ink);
+    border-color: var(--nx-ink);
+    color: var(--nx-bg);
+    font-weight: 700;
+  }
+  a.cta:hover {
+    background: var(--nx-bg);
+    color: var(--nx-ink);
+  }
+</style>

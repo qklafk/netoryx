@@ -1,0 +1,9 @@
+# Blacklist: notices to administrators.
+
+[blacklist]
+more = "…і ще {n}"
+
+[blacklist.notice]
+banned = "⛔️ <b>Чорний список:</b> заблоковано користувачів — {n}"
+flagged = "⚠️ <b>Чорний список:</b> знайдено користувачів зі списку — {n}"
+unbanned = "✅ <b>Чорний список:</b> розблоковано користувачів (видалено зі списку) — {n}"

@@ -1,0 +1,14 @@
+# Backups and cleanup: captions and admin notices.
+
+[housekeeping.backup]
+caption = "💾 <b>{brand} zaxira nusxasi</b>\n{when} · {size}"
+encrypted = "🔒 Fayl sozlamalardagi parol bilan shifrlangan."
+plain = "⚠️ Fayl shifrlanmagan — uni xavfsiz joyda saqlang yoki sozlamalarda zaxira paroli oʻrnating."
+failed = "😔 Zaxira nusxa yaratib boʻlmadi: <code>{error}</code>"
+not_sent = "😔 <code>{name}</code> zaxira nusxasi yaratildi, lekin chatga yuborib boʻlmadi: <code>{error}</code>. Fayl serverda saqlangan."
+
+[housekeeping.unit]
+b = "{n} B"
+kb = "{n} KB"
+mb = "{n} MB"
+gb = "{n} GB"

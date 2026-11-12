@@ -1,0 +1,58 @@
+# Marzneshin panel and its marznode in the Netoryx project network (the official compose file uses the host network).
+# The bot reaches the panel as http://marzneshin:8000, the panel reaches the node as marznode:53042 and the edge
+# reaches the node's Reality inbound as marznode:${REALITY_PORT}. Nothing is published except the panel UI on
+# 127.0.0.1:8000 (SSH tunnel, or deploy/caddy-sites/panel.caddy.example).
+# The Xray configuration of the node lives in deploy/panels/marzneshin/marznode/ (written by the installer).
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "3"
+
+services:
+  marzneshin:
+    image: dawsh/marzneshin:v0.7.4
+    logging: *logging
+    env_file: ./deploy/panels/marzneshin/panel.env
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - marzneshin-data:/var/lib/marzneshin
+    restart: unless-stopped
+
+  # marznode v0.5.7 ships Xray 25.2.21, whose Reality handshake current clients no longer complete. Docker copies the
+  # official Xray image's /usr/local/bin into this (versioned, initially empty) volume; the node runs it through
+  # xray-compat.sh, which keeps the `xray x25519` output in the format marznode reads.
+  marznode-xray:
+    image: ghcr.io/xtls/xray-core:26.10.31
+    logging: *logging
+    command: ["version"]
+    volumes:
+      - marznode-xray-26-10-31:/usr/local/bin
+    restart: "no"
+
+  marznode:
+    image: dawsh/marznode:v0.5.7
+    logging: *logging
+    depends_on:
+      marznode-xray:
+        condition: service_completed_successfully
+    environment:
+      SERVICE_ADDRESS: "0.0.0.0"
+      # The panel always connects over TLS; the node makes its own key pair and trusts only the panel's
+      # certificate, which the installer saves as client.pem.
+      SSL_CERT_FILE: /var/lib/marznode/ssl_cert.pem
+      SSL_KEY_FILE: /var/lib/marznode/ssl_key.pem
+      SSL_CLIENT_CERT_FILE: /var/lib/marznode/client.pem
+      XRAY_EXECUTABLE_PATH: /opt/xray-compat.sh
+      XRAY_ASSETS_PATH: /usr/local/lib/xray
+      XRAY_CONFIG_PATH: /var/lib/marznode/xray_config.json
+    volumes:
+      - ./deploy/panels/marzneshin/marznode:/var/lib/marznode:z
+      - ./deploy/panels/marzneshin/xray-compat.sh:/opt/xray-compat.sh:ro,z
+      - marznode-xray-26-10-31:/opt/xray:ro
+    restart: unless-stopped
+
+volumes:
+  marzneshin-data:
+  marznode-xray-26-10-31:

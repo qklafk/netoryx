@@ -1,0 +1,106 @@
+# Referral program: invite link, terms, stats, partner balance and payouts.
+
+[referral]
+title = "🤝 <b>Invite your friends</b>"
+link = "🔗 Your link:\n<code>{link}</code>"
+legal = "<i>Rewards are only paid for real purchases made by the people you invite. Joining is free.</i>"
+share = "📤 Share the link"
+copy = "📋 Copy"
+qr = "🔳 QR code"
+qr_caption = "🔳 Show this QR code to a friend — it opens the bot with your link.\n\n<code>{link}</code>"
+share_text = "I use {brand} — a fast and reliable VPN. Try it with my link:"
+levels_button = "📊 Stats by level"
+level_pct = "level {level} — {pct}%"
+to_balance = "💰 Open balance"
+
+[referral.terms]
+after_payment = " after their first payment"
+invitee_days = "🎁 Your friend gets {days} for free when they sign up with your link."
+inviter_days = "🎉 You get {days}{after}."
+invitee_money = "🎁 Your friend gets {amount} on their balance when they sign up with your link."
+inviter_money = "🎉 You get {amount} on your balance{after}."
+days_pct = "📅 Plus {pct}% of the days of every purchase they make."
+days_levels = "📅 Days from purchases of the people you invite: {levels}."
+balance_pct = "💸 Plus {pct}% of every payment they make, on your balance."
+balance_levels = "💸 A share of payments of the people you invite, on your balance: {levels}."
+partner_pct = "💼 {pct}% of every payment of the people you invite goes to your partner balance."
+partner_levels = "💼 A share of payments of the people you invite, on your partner balance: {levels}."
+partner_transfer = "🔁 You can move the partner balance to your main balance and spend it on a subscription."
+partner_withdraw = "🔁 You can move the partner balance to your main balance or withdraw it — from {min}."
+
+[referral.stats]
+invited = "👥 Invited: <b>{users}</b> · paid: <b>{paid}</b>"
+earned = "💰 Earned: <b>{amount}</b>"
+earned_days = "🎁 Received: <b>{days}</b>"
+partner_balance = "💼 Partner balance: <b>{amount}</b>"
+pending = "⏳ Being withdrawn: {amount}"
+
+[referral.levels]
+title = "📊 <b>Stats by level</b>"
+item = "<b>Level {level}</b> · {pct}%\n👥 {users} · paid {paid} · earned {earned}"
+
+[referral.transfer]
+button = "🔁 Move to main balance"
+text = "🔁 <b>Move to your main balance</b>\n\nPartner balance: <b>{balance}</b>.\n\nMoved money can be spent on a subscription or a gift. It can't be moved back to the partner balance."
+all = "Move everything · {amount}"
+custom = "✏️ Other amount"
+ask = "✏️ How much should I move? Send the amount in rubles — up to {balance}."
+invalid = "I couldn't read that amount 🤔 Please send a whole number of rubles, up to {balance}."
+ask_confirm = "Move <b>{amount}</b> from your partner balance to your main balance?"
+confirm = "✅ Move"
+done = "✅ Moved <b>{amount}</b>.\n\n💰 Main balance: {main}\n💼 Partner balance: {partner}"
+already = "✅ This transfer has already been made.\n\n💰 Main balance: {main}\n💼 Partner balance: {partner}"
+empty = "Your partner balance is empty for now."
+no_funds = "There isn't enough money on your partner balance for this transfer."
+
+[referral.withdraw]
+button = "📤 Withdraw"
+unavailable = "Withdrawals are unavailable right now."
+text = "📤 <b>Withdraw</b>\n\nAvailable: <b>{balance}</b> · minimum {min}.\n\nWhere should the money go?"
+too_little = "📤 The minimum withdrawal is <b>{min}</b>, and your partner balance is {balance} for now.\n\nKeep inviting friends — you'll get there 💪"
+has_open = "⏳ You already have request <b>#{id}</b> for {amount} — {status}.\n\nYou can create a new one as soon as we process it."
+all = "Withdraw everything · {amount}"
+ask_amount = "💰 How much would you like to withdraw? Send the amount in rubles — from {min} to {balance}."
+bad_amount = "That amount can't be withdrawn 🤔 Please send an amount from {min} to {balance}."
+confirm = "📋 <b>Please check your request</b>\n\nAmount: <b>{amount}</b>\nMethod: {method}\nDetails: <code>{details}</code>\n\nIs everything correct?"
+send = "✅ Send request"
+sent = "✅ Request <b>#{id}</b> for {amount} has been sent!\n\nThe amount was taken from your partner balance and goes back to it if the request is rejected. I'll message you as soon as it's processed."
+
+[referral.withdraw.error]
+below_minimum = "The amount is below the withdrawal minimum."
+funds = "There isn't enough money on your partner balance — perhaps some of it was already moved."
+pending = "You already have a request being processed — please wait for it."
+details = "The details didn't work — please check them and try again."
+
+[referral.details]
+card = "💳 Send the card number the money should go to:"
+sbp = "📱 Send your phone number and bank name for an SBP transfer:"
+usdt_trc20 = "💵 Send your USDT wallet address on the TRC-20 network:"
+default = "✏️ Send the payout details ({method}):"
+
+[referral.method]
+card = "💳 Bank card"
+sbp = "📱 SBP by phone number"
+usdt_trc20 = "💵 USDT (TRC-20)"
+
+[referral.withdrawals]
+button = "🧾 My withdrawal requests"
+title = "🧾 <b>Withdrawal requests</b>"
+item = "<b>#{id}</b> · {amount} · {method}\n{status} · <i>{date}</i>"
+empty = "🧾 No withdrawal requests yet."
+
+[referral.withdrawal.status]
+pending = "⏳ under review"
+approved = "🔄 approved, being paid out"
+paid = "✅ paid"
+rejected = "❌ rejected"
+
+[referral.withdrawal.notify]
+pending = "⏳ Withdrawal request <b>#{id}</b> for {amount} has been received and is waiting for review."
+approved = "🔄 Withdrawal request <b>#{id}</b> for {amount} has been approved — the money is on its way."
+paid = "✅ Withdrawal request <b>#{id}</b> has been paid: {amount} was sent to your details."
+rejected = "❌ Withdrawal request <b>#{id}</b> was rejected. {amount} went back to your partner balance."
+comment = "💬 Comment: {comment}"
+
+[referral.admin]
+withdrawal = "📤 <b>Withdrawal request #{id}</b>\nPartner: <code>{user_id}</code> {username}\nAmount: <b>{amount}</b>\nMethod: {method}\nDetails: <code>{details}</code>"

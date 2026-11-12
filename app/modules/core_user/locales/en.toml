@@ -1,0 +1,76 @@
+# Welcome, main menu, profile, help, legal pages and /start link results.
+
+[core_user]
+welcome = "👋 Hi, {name}!\n\n<b>{brand}</b> is a fast and reliable VPN for your phone, computer and TV. Connecting takes less than a minute."
+welcome_personal = "👋 Hi, {name}! Welcome to <b>{brand}</b>."
+welcome_trial = "🎁 Try it for free: {trial} of full access — no payment or card needed."
+friend = "friend"
+
+[core_user.menu]
+status_trial = "🎁 A free trial is available — {trial}."
+status_none = "No subscription yet — pick a plan in «🛒 Buy / renew»."
+status_active = "🟢 Subscription active until {expires}"
+status_forever = "🟢 Unlimited access ♾"
+status_expired = "🔴 Your subscription has ended — renew it to get the VPN working again."
+status_disabled = "⛔️ Your subscription is suspended — please contact support."
+button_gone = "This button is no longer available."
+
+[core_user.ref]
+joined = "🤝 You joined via a friend's invitation — welcome!"
+joined_money = "🤝 You joined via a friend's invitation — here's <b>{amount}</b> on your balance!"
+joined_days = "🤝 You joined via a friend's invitation — here's <b>{days}</b> of free access!"
+inviter = "🎉 A new user joined via your link! Your reward arrives after their first payment."
+inviter_money = "🎉 A new user joined via your link — you've received <b>{amount}</b>!"
+inviter_days = "🎉 A new user joined via your link — <b>{days}</b> added to your subscription!"
+
+[core_user.code]
+not_found = "😕 The code wasn't found or is no longer valid."
+expired = "⌛️ This code has expired."
+exhausted = "😕 This code has already been used the maximum number of times."
+already_used = "You've already activated this code 🙂"
+only_new = "This code is for new users only 🙏"
+gift_ok = "🎁 <b>Gift activated!</b> «{plan}» subscription — until {expires}. Connect in «📲 Connect»."
+days_ok = "🎉 Promo code activated: <b>+{days}</b> to your subscription (now until {expires})."
+money_ok = "🎉 Promo code activated: <b>{amount}</b> on your balance."
+
+[core_user.invite]
+accepted = "🎉 <b>Invitation accepted!</b> You have access until {expires}. Connect in «📲 Connect»."
+accepted_forever = "🎉 <b>Invitation accepted!</b> Your access never expires. Connect in «📲 Connect»."
+already_used = "You've already accepted this invitation 🙂"
+
+[core_user.import]
+claimed = "✅ <b>Subscription imported!</b> Open «📲 Connect» to get your links."
+unavailable = "😕 The subscription could not be imported: the link is invalid, used already, or the account changed. Ask the service owner for a new link."
+retry_later = "⏳ The server is unavailable right now, so the subscription could not be imported. The link is still valid — please try again a bit later."
+
+[core_user.proxy]
+text = "🛡 <b>Telegram proxy</b>\n\nTelegram will work even where it's blocked. Connect in one tap 👇"
+open = "🛡 Get the proxy"
+
+[core_user.profile]
+title = "👤 <b>Profile</b>"
+id = "ID: <code>{id}</code>"
+name = "Name: {name}"
+language = "Language: {language}"
+since = "With us since {date}"
+balance = "Balance: <b>{balance}</b>"
+partner_balance = "Partner balance: <b>{balance}</b>"
+
+[core_user.help]
+text = "📖 <b>Help</b>\n\n<b>How do I connect?</b>\nOpen «📲 Connect», choose your device and tap «➕ Add» — the app sets itself up.\n\n<b>VPN not working?</b>\nUpdate the subscription in the app, pick another server or restart the app.\n\n<b>Mobile internet with «white lists»?</b>\nTurn on a server marked «LTE».\n\n<b>How many devices can I connect?</b>\nThe limit is shown in «🔐 My subscription». Got a new phone? Unlink the old device there.\n\n<b>How do I renew?</b>\nIn «🛒 Buy / renew»: the new term is added to the current one.\n\nStill have questions? Message support — we reply fast 💬"
+text_personal = "📖 <b>Help</b>\n\n<b>How do I connect?</b>\nOpen «📲 Connect», choose your device and tap «➕ Add» — the app sets itself up.\n\n<b>VPN not working?</b>\nUpdate the subscription in the app, pick another server or restart the app.\n\n<b>Mobile internet with «white lists»?</b>\nTurn on a server marked «LTE».\n\n<b>Got a new phone?</b>\nUnlink the old device in «🔐 My subscription» → «📱 Devices»."
+
+[core_user.legal]
+terms = "📄 Terms of service — follow the link below."
+privacy = "🔒 Privacy policy — follow the link below."
+missing = "This document hasn't been published yet. If you have questions, please contact support."
+
+[core_user.paysupport]
+text = "💳 <b>Payment support</b>\n\nPayment failed, money was charged but the subscription wasn't extended, or you need a refund? Message us with the receipt or the payment time — we'll sort it out within 24 hours."
+no_contact = "💳 <b>Payment support</b>\n\nMessage the bot's administrator with the receipt or the payment time — we'll sort it out within 24 hours."
+
+[core_user.admin]
+new_user = "👤 New user: {user} (<code>{user_id}</code>)"
+new_user_ref = "invited by <code>{inviter_id}</code>"
+new_user_campaign = "campaign <code>{campaign}</code>"
+invite_redeemed = "👋 {user} (<code>{user_id}</code>) accepted the invitation «{note}»"

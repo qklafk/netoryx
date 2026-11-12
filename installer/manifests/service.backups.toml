@@ -1,0 +1,10 @@
+id = "service.backups"
+version = 1
+title = "Encrypted backups"
+description = "Scheduled configuration and database backups."
+roles = ["all-in-one", "control-plane", "vpn-node"]
+profiles = ["personal", "commercial"]
+
+[resources]
+ram_mb = 32
+disk_mb = 100

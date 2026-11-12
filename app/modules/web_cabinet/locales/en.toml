@@ -1,0 +1,13 @@
+# Web cabinet: bot messages and e-mails.
+
+[web_cabinet]
+unavailable = "The web cabinet is not available right now."
+link = "🌐 <b>Web cabinet</b>\n\nThis login link works once and expires in {minutes}. Do not share it."
+open = "Open the cabinet"
+button = "🌐 Web cabinet"
+
+[web_cabinet.mail]
+login_subject = "{brand}: sign in to your account"
+login_body = "Hello!\n\nTo sign in to your {brand} account open this link (single use, valid for {minutes} minutes):\n{link}\n\nIf you did not ask to sign in, just ignore this e-mail."
+verify_subject = "{brand}: confirm your e-mail"
+verify_body = "Hello!\n\nTo confirm this address for signing in to your {brand} account open this link (valid for 24 hours):\n{link}\n\nIf you did not ask for this, just ignore this e-mail."

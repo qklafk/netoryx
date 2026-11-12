@@ -1,0 +1,10 @@
+# Local preview of the project site: docker compose -f site/docker-compose.preview.yml up -d --build
+# then open http://127.0.0.1:8088/
+services:
+  site:
+    build:
+      context: ..
+      dockerfile: site/Dockerfile
+    ports:
+      - "127.0.0.1:8088:80"
+    restart: unless-stopped

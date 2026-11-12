@@ -1,0 +1,15 @@
+manifest_schema = 1
+id = "infrastructure.backups"
+version = 1
+title = "Encrypted backups"
+description = "Existing database backup engine exposed through the plugin lifecycle."
+roles = ["all-in-one", "control-plane"]
+profiles = ["personal", "commercial"]
+sdk_compatibility = ">=1,<2"
+core_compatibility = ">=1,<2"
+entrypoint = "app.core.plugins.backups:BackupsPlugin"
+permissions = ["storage.module", "storage.backup"]
+
+[resources]
+ram_mb = 32
+disk_mb = 100

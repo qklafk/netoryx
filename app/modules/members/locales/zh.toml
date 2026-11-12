@@ -1,0 +1,59 @@
+# Members of a private VPN: owner screens and notices to members.
+
+[members]
+menu = "成员"
+until = "至 {date}（剩余 {left}）"
+expired_on = "已于 {date} 结束"
+gone = "该成员已不在列表中"
+extended = "✅ 访问已延长"
+paused = "⏸ 访问已暂停"
+resumed = "▶️ 访问已恢复"
+rotated = "✅ 链接已更换，已通知该成员"
+reset_done = "✅ 设备已重置"
+reset_nothing = "无需重置：该成员没有已连接的服务器"
+reset_failed = "😔 无法重置设备——服务器未响应。请稍后再试。"
+removed = "🗑 成员已移除"
+removed_pending = "🗑 成员已移除。其在部分服务器上的账户将在这些服务器恢复可用后删除。"
+extend = "➕ <b>延长访问</b> · {name}\n\n当前：{access}\n\n延长多久？"
+limits = "📱 <b>限额</b> · {name}\n\n第一行是可连接的设备数，下面是每月流量。"
+rotate_confirm = "🔗 <b>为 {name} 生成新链接？</b>\n\n旧的订阅链接将立即失效。我们会提醒该成员重新连接应用。"
+remove_confirm = "🗑 <b>移除 {name}？</b>\n\n所有服务器上的 VPN 访问都将关闭，该成员将无法再使用机器人。之后可用新邀请将其加回。"
+
+[members.list]
+title = "👥 <b>成员</b> · {count}"
+intro = "所有可以使用您 VPN 的人。点击名字即可延长、暂停访问或修改限额。"
+empty = "这里还没有人。\n\n给家人和朋友发送邀请——请见管理菜单中的「✉️ 邀请」。"
+
+[members.card]
+title = "👤 {user}"
+state = "状态：{value}"
+access = "访问：{value}"
+devices = "设备：{value}"
+traffic = "每月流量：{value}"
+since = "加入时间：{value}"
+
+[members.state]
+active = "有效"
+paused = "已暂停"
+expired = "访问已结束"
+
+[members.btn]
+extend = "➕ 延长"
+pause = "⏸ 暂停"
+resume = "▶️ 恢复"
+limits = "📱 限额"
+reset = "🔄 重置设备"
+rotate = "🔗 新链接"
+rotate_ok = "🔗 是，生成新链接"
+remove = "🗑 移除"
+remove_ok = "🗑 是，移除"
+connect = "📲 连接"
+
+[members.notice]
+until = "至 {date}"
+forever = "永久有效"
+extended = "🎁 好消息：您的 VPN 访问已延长——{until}。祝您使用愉快！"
+paused = "⏸ 您的 VPN 访问已被暂停。如有疑问，请联系所有者。"
+resumed = "▶️ 您的 VPN 访问已恢复。可以连接了！"
+rotated = "🔗 您的订阅链接已变更——旧链接已失效。请打开连接板块，将新链接添加到应用中 👇"
+removed = "👋 所有者已关闭您的 VPN 访问。感谢您一直以来的陪伴！"

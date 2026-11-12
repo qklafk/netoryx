@@ -1,0 +1,59 @@
+# Settings in the bot
+
+[admin_settings]
+title = "Settings"
+home = "⚙️ <b>Settings</b>\n\nMode: {mode}\n\nThe essentials are on this screen, everything else is under \"All settings\". Changes apply immediately, no restart needed."
+modules = "🧩 <b>Bot features</b>\n\nTurn features on and off on the fly.\n✅ on · ⛔️ turned off by you · ⚪️ off by settings · 🔒 not available in personal mode"
+modules_readonly = "🧩 <b>Bot features</b>\n\n✅ on · ⛔️ off · ⚪️ off by settings · 🔒 not available in personal mode\n\n<i>Only the owner can turn features on and off.</i>"
+groups = "⚙️ <b>All settings</b>\n\nChoose a group:"
+group = "⚙️ <b>{title}</b>"
+spec = "⚙️ <b>{label}</b>\n\nNow: <b>{value}</b>\n<i>Source: {origin}</i>"
+restart = "⚠️ Takes effect after the bot restarts."
+owner_only = "🔒 Only the owner can change this setting."
+hidden = "••••••"
+empty = "not set"
+secret_set = "set 🔒"
+secret_unset = "not set"
+saved = "✅ Saved"
+reset_done = "↩️ Back to the default value"
+invalid = "⚠️ Not accepted: {error}"
+not_editable = "This setting cannot be changed from the bot."
+not_found = "Setting not found 🤷"
+web_only = "This setting is edited in the web admin."
+shop_only = "This feature is not available in personal mode."
+module_on = "✅ \"{module}\" is on"
+module_off = "⛔️ \"{module}\" is off"
+ask = "✏️ <b>{label}</b>\n\n{hint}"
+min = "minimum {value}"
+max = "maximum {value}"
+
+[admin_settings.mode]
+shop = "🛒 shop"
+personal = "🏠 personal VPN"
+
+[admin_settings.origin]
+db = "changed in the bot or web admin"
+env = ".env file"
+default = "default"
+
+[admin_settings.hint]
+str = "Send the new value as text."
+int = "Send a whole number."
+float = "Send a number (use a dot for decimals)."
+bool = "Send \"true\" or \"false\"."
+time = "Send a time as <code>HH:MM</code>, e.g. <code>04:00</code>."
+list_int = "Send numbers separated by commas, e.g. <code>3,1</code>."
+list_str = "Send values separated by commas."
+json = "Send the value as JSON."
+choice = "Send one of the options."
+secret = "Send the new value - I'll delete the message right away; it is stored encrypted."
+
+[admin_settings.btn]
+modules = "🧩 Bot features"
+all = "⚙️ All settings"
+reset = "↩️ Default"
+turn_on = "🟢 Turn on"
+turn_off = "⚪️ Turn off"
+edit = "✏️ Change"
+clear = "🧹 Clear"
+web_only = "🌐 Web admin only"

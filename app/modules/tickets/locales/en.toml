@@ -1,0 +1,72 @@
+# Support: user tickets and admin replies
+
+[tickets]
+title = "Support tickets"
+home = "🆘 <b>{brand} support</b>\n\nSomething isn't working or you have a question? Describe it and we'll reply right here in the bot. Screenshots are welcome 📸\n\nWe usually answer within a few hours."
+list = "📂 <b>Your tickets</b>\n\n🟡 waiting for us · 🟢 answered · ⚪️ closed"
+list_empty = "You have no tickets yet. If anything goes wrong, just write - we'll help 🙌"
+not_found = "Ticket not found 🤷"
+view = "💬 <b>Ticket #{id}</b> · {status}\n<i>{subject}</i>\n\n{messages}"
+ask_new = "✍️ Describe the problem in one message: what happened, on which device and in which app. You can attach a screenshot.\n\nThe more details, the faster we can help 🙏"
+created = "✅ Ticket <b>#{id}</b> created!\n\nWe'll reply right here in the bot - you'll get a notification."
+ask_reply = "✍️ Write your message for ticket #{id} (a screenshot is fine too):"
+sent = "✅ Message sent to support."
+closed = "Ticket closed"
+attachment = "📎 <i>attachment</i>"
+earlier = "<i>… earlier messages are hidden</i>"
+message = "<b>{author}</b> · <i>{time}</i>\n{text}"
+answer = "💬 <b>Support replied</b> to ticket #{id}:\n\n{text}"
+closed_by_support = "✅ Ticket #{id} is closed. If you still need help, just write in it again - we'll see it."
+
+[tickets.btn]
+new = "✍️ Contact support"
+my = "📂 My tickets"
+my_unread = "📂 My tickets · 🔔 {count}"
+chat = "💬 Chat with support"
+open = "📂 Open ticket"
+reply = "✍️ Reply"
+write_again = "✍️ Write again"
+close = "✅ Solved, close it"
+open_admin = "📂 Open ticket"
+
+[tickets.status]
+open = "🟡 waiting for support"
+answered = "🟢 answered"
+closed = "⚪️ closed"
+
+[tickets.author]
+support = "🛟 Support"
+user = "👤 User"
+you = "👤 You"
+
+[tickets.error]
+empty = "The message is empty - write some text or attach a screenshot."
+too_long = "The message is too long - please keep it under 4000 characters."
+too_many_open = "You already have several open tickets. Please wait for an answer or close the solved ones 🙏"
+not_found = "Ticket not found 🤷"
+forbidden = "Ticket not found 🤷"
+unsupported = "Send text, a photo or a file - I'll pass those on to support."
+
+[tickets.notify]
+new = "🆘 <b>New ticket #{id}</b>\nFrom: {user} (<code>{user_id}</code>)\n\n{text}"
+reply = "💬 <b>New message in ticket #{id}</b>\nFrom: {user} (<code>{user_id}</code>)\n\n{text}"
+
+[tickets.admin]
+inbox = "🆘 <b>Tickets</b> · {filter}\n\nWaiting for an answer: <b>{waiting}</b>\nThe longest waiting come first."
+inbox_empty = "🆘 <b>Tickets</b> · {filter}\n\nWaiting for an answer: <b>{waiting}</b>\n\nNothing here ✨"
+view = "💬 <b>Ticket #{id}</b> · {status}\n<i>{subject}</i>\n👤 {user} (<code>{user_id}</code>) · opened {created}\n\n{messages}"
+ask_reply = "✍️ Write the answer for ticket #{id}. You can attach a photo or a file - the user gets it right away."
+delivered = "✅ The answer was delivered."
+not_delivered = "⚠️ The answer is saved but could not be delivered: the user has blocked the bot."
+start_private = "Open a private chat with the bot (/start) and I'll send the ticket there."
+opened_private = "The ticket was sent to your private chat"
+
+[tickets.admin.tab]
+open = "🟡 Waiting"
+answered = "🟢 Answered"
+closed = "⚪️ Closed"
+
+[tickets.admin.btn]
+files = "📎 Attachments ({count})"
+close = "✅ Close ticket"
+inbox = "🆘 Back to tickets"

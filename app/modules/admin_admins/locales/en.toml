@@ -1,0 +1,45 @@
+# Administrators and roles
+
+[admin_admins]
+title = "Administrators"
+home = "👥 <b>Administrators</b> ({count})\n\n👑 owner · 🛠 admin · 🛟 support · 👀 viewer\n🔒 - owners from the server configuration (ADMIN_IDS), changed only there."
+card = "👤 {who}\n\nRole: <b>{role}</b>\n<i>{about}</i>\n\n📝 Note: {note}\n➕ Added by: {added_by}\n🗓 Since: {added}"
+env_owner = "🔒 An owner from ADMIN_IDS: manage them in the server configuration only."
+not_found = "Administrator not found 🤷"
+ask_who = "➕ <b>New administrator</b>\n\nSend their Telegram ID or @username - or just forward any of their messages here.\n\n<i>With a @username the person must have started the bot at least once.</i>"
+who_unknown = "I couldn't find this user 🤔 Send a numeric ID, the @username of someone who has started the bot, or forward their message (unless they hide their account in forwards)."
+pick_role = "👤 {who}\n\nWhich role should they get?\n\n{roles}"
+added = "✅ Administrator added. The admin commands will appear in their menu."
+saved = "✅ Saved"
+ask_note = "📝 A short note (up to {limit} characters), e.g. \"chat moderator\"."
+sessions_revoked = "🔌 Web sessions ended: {count}"
+confirm_remove = "🗑 Take away admin rights? Their web sessions end as well."
+removed = "🗑 Admin rights removed."
+
+[admin_admins.role]
+owner = "Owner"
+admin = "Admin"
+support = "Support"
+viewer = "Viewer"
+
+[admin_admins.about]
+owner = "everything, incl. administrators, payment keys and backup restore"
+admin = "everything except managing administrators and restoring backups"
+support = "users, granting days, resetting devices, tickets"
+viewer = "read-only stats, users and payments"
+
+[admin_admins.btn]
+add = "➕ Add an administrator"
+note = "📝 Note"
+clear_note = "🧹 Remove the note"
+sessions = "🔌 End web sessions"
+remove = "🗑 Remove rights"
+remove_yes = "🗑 Yes, remove"
+
+[admin_admins.error]
+forbidden = "Only the owner can manage administrators."
+env_owner = "Owners from ADMIN_IDS are changed in the server configuration only."
+exists = "This person is already an administrator."
+not_found = "Administrator not found."
+last_owner = "The bot cannot be left without an owner."
+invalid = "Invalid data."

@@ -1,0 +1,51 @@
+# Balance, top-ups and the operations history.
+
+[wallet]
+topup_button = "➕ Toʻldirish"
+history_button = "📜 Operatsiyalar tarixi"
+partner_button = "💼 Hamkor balansi"
+cards_button = "💳 Saqlangan kartalar"
+
+[wallet.balance]
+title = "💰 <b>Balansingiz: {balance}</b>"
+partner = "💼 Hamkor balansi: <b>{balance}</b>"
+hint = "Balans hisobidan obuna yoki doʻstingizga sovgʻa uchun toʻlash mumkin. Avtouzaytirish yoqilgan boʻlsa, balans yetarli boʻlganda obuna oʻzi uzaytiriladi."
+
+[wallet.topup]
+text = "➕ <b>Balansni toʻldirish</b>\n\nSummani tanlang yoki oʻzingiz kiriting — {min} dan {max} gacha 👇"
+custom = "✏️ Boshqa summa"
+ask = "✏️ Toʻldirish summasini rublda kiriting — {min} dan {max} gacha.\n\nMasalan: <code>500</code>"
+invalid = "Summani oʻqiy olmadim 🤔 {min} dan {max} gacha butun rubl sonini yuboring, masalan <code>500</code>."
+unavailable = "😔 Toʻldirish hozir mavjud emas. Birozdan soʻng qarab koʻring — yoki yordam xizmatiga yozing."
+
+[wallet.history]
+title = "📜 <b>Operatsiyalar tarixi</b>"
+item = "<b>{amount}</b> · {label}\n<i>{date}</i>"
+empty = "📜 Hozircha operatsiyalar yoʻq. Toʻldirishlar, xaridlar va bonuslar shu yerda koʻrinadi."
+end = "📜 Boshqa operatsiyalar yoʻq."
+older = "Avvalgilari ▶️"
+newest = "◀️ Soʻnggilari"
+
+[wallet.tx]
+payment = "💳 Toʻldirish"
+purchase = "🛒 Obuna toʻlovi"
+gift_purchase = "🎁 Sovgʻa xaridi"
+referral_invitee = "🤝 Taklif orqali roʻyxatdan oʻtish bonusi"
+referral_inviter = "🤝 Taklif qilingan doʻst uchun bonus"
+welcome_bonus = "👋 Xush kelibsiz bonusi"
+promo = "🎟 Promokod"
+admin_adjust = "🛠 Administrator tuzatishi"
+refund = "↩️ Qaytarish"
+referral_commission = "💼 Hamkorlik mukofoti"
+referral_transfer = "🔁 Hamkor balansidan oʻtkazma"
+withdrawal = "📤 Yechib olish"
+partner_account = "(hamkor balansi)"
+
+[wallet.cards]
+title = "💳 <b>Saqlangan kartalar</b>"
+item = "• {title} — {date} da saqlangan"
+hint = "Obuna uzaytirilayotganda balans yetmasa, yetishmagan summa oxirgi ishlatilgan kartadan yechiladi. Olib tashlangan kartalardan pul yechilmaydi."
+remove = "🗑 {title} ni olib tashlash"
+removed = "Karta olib tashlandi"
+empty = "💳 Hozircha saqlangan kartalar yoʻq.\n\nQoʻshish uchun obuna yoki toʻldirishni karta bilan toʻlang va «kartani avtouzaytirish uchun saqlash» ni tanlang."
+off = "💳 Bu doʻkonda saqlangan kartalar hozir ishlatilmaydi."

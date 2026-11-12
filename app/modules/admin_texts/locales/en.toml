@@ -1,0 +1,31 @@
+# Bot text editor
+
+[admin_texts]
+title = "Bot texts"
+home = "📝 <b>Bot texts</b>\n\nYou can rewrite any message of the bot your way - in Russian and English. Texts in total: {total}.\n\nFind a text by its words or by its key."
+modules = "📚 <b>Sections</b>\n\nPick a section to see its texts:"
+module = "📚 <b>{module}</b> · texts: {count}"
+results = "🔎 Found: {count}"
+changed_list = "✏️ Changed texts: {count}"
+nothing = "Nothing found for \"{query}\" 🤷 Try other words."
+not_found = "Text not found 🤷"
+list_expired = "This list has expired - please open it again."
+key = "📝 <code>{key}</code>\n<i>Section: {module}</i>\n🔣 Placeholders: {placeholders}\n\n{texts}"
+lang_block = "<b>{lang}</b> · {marker}\n<pre>{text}</pre>"
+changed = "changed"
+builtin = "built-in"
+no_placeholders = "none"
+ask_query = "🔎 Send a word or phrase from the text (or part of its key, e.g. <code>menu.title</code>)."
+ask_value = "✏️ <b>New text ({lang})</b> for <code>{key}</code>\n\nNow:\n<pre>{current}</pre>\n\nSend the new version. Telegram formatting or HTML tags (&lt;b&gt;, &lt;i&gt;, &lt;a href&gt;…) work. Keep the placeholders in curly braces as they are."
+invalid = "⚠️ Not saved: {error}\n\nPlease fix it and send again."
+saved = "✅ Text ({lang}) saved - the bot uses it already."
+reset_done = "↩️ Back to the built-in text ({lang})."
+preview_failed = "Could not show the text: {error}"
+
+[admin_texts.btn]
+search = "🔎 Find a text"
+modules = "📚 By section"
+changed = "✏️ Changed ({count})"
+edit = "✏️ {lang}"
+preview = "👀 {lang}"
+reset = "↩️ Built-in {lang}"

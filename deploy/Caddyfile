@@ -1,0 +1,26 @@
+{
+	servers :443 {
+		# Connections arrive through HAProxy, which prepends the client address (PROXY protocol).
+		listener_wrappers {
+			proxy_protocol {
+				timeout 5s
+				allow 172.16.0.0/12 10.0.0.0/8 192.168.0.0/16
+			}
+			tls
+		}
+	}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy app:8080
+}
+
+# Per-server extras (for example publishing a panel UI as panel.<domain>): *.caddy files in deploy/caddy-sites.
+import /etc/caddy/sites/*.caddy
+
+# The site a Reality inbound "borrows": clients use vpn.<domain> as the server name, so the name, the certificate and
+# the IP address all match. Only the panel on this host reaches it (127.0.0.1:8444, see docker-compose.yml).
+vpn.{$DOMAIN}:8444 {
+	respond "OK" 200
+}

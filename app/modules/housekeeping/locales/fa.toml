@@ -1,0 +1,14 @@
+# Backups and cleanup: captions and admin notices.
+
+[housekeeping.backup]
+caption = "💾 <b>نسخهٔ پشتیبان {brand}</b>\n{when} · {size}"
+encrypted = "🔒 فایل با رمز تنظیم‌شده رمزگذاری شده است."
+plain = "⚠️ فایل رمزگذاری نشده است — آن را در جای امنی نگه دارید یا در تنظیمات رمز پشتیبان تعیین کنید."
+failed = "😔 ساخت نسخهٔ پشتیبان ممکن نشد: <code>{error}</code>"
+not_sent = "😔 نسخهٔ پشتیبان <code>{name}</code> ساخته شد اما ارسال آن به گفتگو ممکن نشد: <code>{error}</code>. فایل روی سرور نگه داشته شده است."
+
+[housekeeping.unit]
+b = "{n} بایت"
+kb = "{n} کیلوبایت"
+mb = "{n} مگابایت"
+gb = "{n} گیگابایت"

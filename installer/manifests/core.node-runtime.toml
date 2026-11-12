@@ -1,0 +1,11 @@
+id = "core.node-runtime"
+version = 1
+title = "Node runtime"
+description = "Minimal authenticated management runtime for a VPN or proxy node."
+roles = ["all-in-one", "vpn-node"]
+profiles = ["personal", "commercial"]
+
+[resources]
+ram_mb = 96
+disk_mb = 100
+cpu_cores = 1

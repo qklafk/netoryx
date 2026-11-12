@@ -1,0 +1,106 @@
+# Referral program: invite link, terms, stats, partner balance and payouts.
+
+[referral]
+title = "🤝 <b>Doʻstlaringizni taklif qiling</b>"
+link = "🔗 Sizning havolangiz:\n<code>{link}</code>"
+legal = "<i>Mukofotlar faqat siz taklif qilgan odamlarning haqiqiy xaridlari uchun beriladi. Ishtirok bepul.</i>"
+share = "📤 Havolani ulashish"
+copy = "📋 Nusxalash"
+qr = "🔳 QR-kod"
+qr_caption = "🔳 Bu QR-kodni doʻstingizga koʻrsating — u botni sizning havolangiz bilan ochadi.\n\n<code>{link}</code>"
+share_text = "Men {brand} dan foydalanaman — tez va ishonchli VPN. Mening havolam orqali sinab koʻr:"
+levels_button = "📊 Darajalar boʻyicha statistika"
+level_pct = "{level}-daraja — {pct}%"
+to_balance = "💰 Balansni ochish"
+
+[referral.terms]
+after_payment = " uning birinchi toʻlovidan soʻng"
+invitee_days = "🎁 Doʻstingiz havolangiz orqali roʻyxatdan oʻtsa, {days} bepul oladi."
+inviter_days = "🎉 Siz {days} olasiz{after}."
+invitee_money = "🎁 Doʻstingiz havolangiz orqali roʻyxatdan oʻtsa, balansiga {amount} oladi."
+inviter_money = "🎉 Siz balansingizga {amount} olasiz{after}."
+days_pct = "📅 Shuningdek, uning har bir xaridi kunlaridan {pct}%."
+days_levels = "📅 Siz taklif qilganlar xaridlaridan kunlar: {levels}."
+balance_pct = "💸 Shuningdek, uning har bir toʻlovidan {pct}% — balansingizga."
+balance_levels = "💸 Siz taklif qilganlar toʻlovlaridan ulush — balansingizga: {levels}."
+partner_pct = "💼 Siz taklif qilganlarning har bir toʻlovidan {pct}% hamkor balansingizga tushadi."
+partner_levels = "💼 Siz taklif qilganlar toʻlovlaridan ulush — hamkor balansiga: {levels}."
+partner_transfer = "🔁 Hamkor balansini asosiy balansga oʻtkazib, obunaga sarflash mumkin."
+partner_withdraw = "🔁 Hamkor balansini asosiy balansga oʻtkazish yoki yechib olish mumkin — {min} dan."
+
+[referral.stats]
+invited = "👥 Taklif qilingan: <b>{users}</b> · toʻlagan: <b>{paid}</b>"
+earned = "💰 Ishlab topilgan: <b>{amount}</b>"
+earned_days = "🎁 Olingan: <b>{days}</b>"
+partner_balance = "💼 Hamkor balansi: <b>{amount}</b>"
+pending = "⏳ Yechib olinmoqda: {amount}"
+
+[referral.levels]
+title = "📊 <b>Darajalar boʻyicha statistika</b>"
+item = "<b>{level}-daraja</b> · {pct}%\n👥 {users} · toʻlagan {paid} · topilgan {earned}"
+
+[referral.transfer]
+button = "🔁 Asosiy balansga oʻtkazish"
+text = "🔁 <b>Asosiy balansga oʻtkazish</b>\n\nHamkor balansi: <b>{balance}</b>.\n\nOʻtkazilgan mablagʻni obuna yoki sovgʻaga sarflash mumkin. Uni hamkor balansiga qaytarib boʻlmaydi."
+all = "Hammasini oʻtkazish · {amount}"
+custom = "✏️ Boshqa summa"
+ask = "✏️ Qancha oʻtkazay? Summani rublda yuboring — {balance} gacha."
+invalid = "Summani oʻqiy olmadim 🤔 {balance} gacha butun rubl sonini yuboring."
+ask_confirm = "Hamkor balansidan asosiy balansga <b>{amount}</b> oʻtkazilsinmi?"
+confirm = "✅ Oʻtkazish"
+done = "✅ <b>{amount}</b> oʻtkazildi.\n\n💰 Asosiy balans: {main}\n💼 Hamkor balansi: {partner}"
+already = "✅ Bu oʻtkazma allaqachon bajarilgan.\n\n💰 Asosiy balans: {main}\n💼 Hamkor balansi: {partner}"
+empty = "Hamkor balansingiz hozircha boʻsh."
+no_funds = "Bu oʻtkazma uchun hamkor balansida mablagʻ yetarli emas."
+
+[referral.withdraw]
+button = "📤 Yechib olish"
+unavailable = "Yechib olish hozir mavjud emas."
+text = "📤 <b>Yechib olish</b>\n\nMavjud: <b>{balance}</b> · eng kami {min}.\n\nPulni qayerga yuboraylik?"
+too_little = "📤 Eng kam yechib olish summasi — <b>{min}</b>, hamkor balansingizda esa hozircha {balance}.\n\nDoʻstlarni taklif qilishda davom eting — albatta yetasiz 💪"
+has_open = "⏳ Sizda {amount} miqdorida <b>#{id}</b> ariza bor — {status}.\n\nUni koʻrib chiqqanimizdan soʻng yangisini yaratishingiz mumkin."
+all = "Hammasini yechib olish · {amount}"
+ask_amount = "💰 Qancha yechib olmoqchisiz? Summani rublda yuboring — {min} dan {balance} gacha."
+bad_amount = "Bu summani yechib boʻlmaydi 🤔 {min} dan {balance} gacha summa yuboring."
+confirm = "📋 <b>Arizani tekshiring</b>\n\nSumma: <b>{amount}</b>\nUsul: {method}\nRekvizitlar: <code>{details}</code>\n\nHammasi toʻgʻrimi?"
+send = "✅ Arizani yuborish"
+sent = "✅ {amount} miqdoridagi <b>#{id}</b> ariza yuborildi!\n\nSumma hamkor balansidan yechildi, ariza rad etilsa, qaytariladi. Koʻrib chiqilishi bilan sizga yozaman."
+
+[referral.withdraw.error]
+below_minimum = "Summa yechib olishning eng kam miqdoridan past."
+funds = "Hamkor balansida mablagʻ yetarli emas — ehtimol, bir qismi allaqachon oʻtkazilgan."
+pending = "Sizda koʻrib chiqilayotgan ariza bor — uni kuting."
+details = "Rekvizitlar mos kelmadi — tekshirib, qayta urinib koʻring."
+
+[referral.details]
+card = "💳 Pul oʻtkaziladigan karta raqamini yuboring:"
+sbp = "📱 SBP oʻtkazmasi uchun telefon raqami va bank nomini yuboring:"
+usdt_trc20 = "💵 TRC-20 tarmogʻidagi USDT hamyon manzilini yuboring:"
+default = "✏️ Toʻlov rekvizitlarini yuboring ({method}):"
+
+[referral.method]
+card = "💳 Bank kartasi"
+sbp = "📱 Telefon raqami orqali SBP"
+usdt_trc20 = "💵 USDT (TRC-20)"
+
+[referral.withdrawals]
+button = "🧾 Yechib olish arizalarim"
+title = "🧾 <b>Yechib olish arizalari</b>"
+item = "<b>#{id}</b> · {amount} · {method}\n{status} · <i>{date}</i>"
+empty = "🧾 Hozircha yechib olish arizalari yoʻq."
+
+[referral.withdrawal.status]
+pending = "⏳ koʻrib chiqilmoqda"
+approved = "🔄 tasdiqlandi, toʻlanmoqda"
+paid = "✅ toʻlandi"
+rejected = "❌ rad etildi"
+
+[referral.withdrawal.notify]
+pending = "⏳ {amount} miqdoridagi <b>#{id}</b> yechib olish arizasi qabul qilindi va koʻrib chiqilishini kutmoqda."
+approved = "🔄 {amount} miqdoridagi <b>#{id}</b> yechib olish arizasi tasdiqlandi — pul yoʻlda."
+paid = "✅ <b>#{id}</b> yechib olish arizasi toʻlandi: {amount} rekvizitlaringizga yuborildi."
+rejected = "❌ <b>#{id}</b> yechib olish arizasi rad etildi. {amount} hamkor balansingizga qaytarildi."
+comment = "💬 Izoh: {comment}"
+
+[referral.admin]
+withdrawal = "📤 <b>#{id} yechib olish arizasi</b>\nHamkor: <code>{user_id}</code> {username}\nSumma: <b>{amount}</b>\nUsul: {method}\nRekvizitlar: <code>{details}</code>"

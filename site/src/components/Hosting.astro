@@ -1,0 +1,70 @@
+---
+import { hosting, labels } from '~/data/i18n';
+import { docUrl, type Lang } from '~/data/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = hosting[lang];
+const l = labels[lang];
+---
+
+<section class="nx-s not-content" id="hosting">
+  <div class="nx-wrap">
+    <div class="nx-head">
+      <span class="nx-chip">{l.hosting}</span>
+      <h2>{t.title}</h2>
+      <p class="nx-lead">{t.text}</p>
+    </div>
+    <div class="nx-frame box">
+      <ul>{t.req.map((r) => <li>{r}</li>)}</ul>
+      <div class="side">
+        <p>{t.neutral}</p>
+        <a class="nx-btn" href={docUrl(lang, 'choosing-a-vps')}>{t.guide} &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .box {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+    font-family: var(--nx-mono);
+    font-size: 0.875rem;
+    color: var(--nx-ink);
+  }
+  li {
+    margin: 0;
+    padding-left: 1.9rem;
+    position: relative;
+  }
+  li::before {
+    content: '[+]';
+    position: absolute;
+    left: 0;
+    color: var(--nx-dim);
+  }
+  .side {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    justify-items: start;
+    color: var(--nx-dim);
+  }
+  @media (max-width: 48rem) {
+    .box {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

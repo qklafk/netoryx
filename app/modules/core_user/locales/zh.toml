@@ -1,0 +1,76 @@
+# Welcome, main menu, profile, help, legal pages and /start link results.
+
+[core_user]
+welcome = "👋 你好，{name}！\n\n<b>{brand}</b> 是一款快速、可靠的 VPN，适用于手机、电脑和电视。连接只需不到一分钟。"
+welcome_personal = "👋 你好，{name}！欢迎使用 <b>{brand}</b>。"
+welcome_trial = "🎁 免费试用：{trial}完整访问——无需付款，无需绑卡。"
+friend = "朋友"
+
+[core_user.menu]
+status_trial = "🎁 可免费试用——{trial}。"
+status_none = "暂无订阅——请在「🛒 购买 / 续费」中选择套餐。"
+status_active = "🟢 订阅有效期至 {expires}"
+status_forever = "🟢 永久访问 ♾"
+status_expired = "🔴 您的订阅已到期——续费后即可恢复 VPN。"
+status_disabled = "⛔️ 您的订阅已被暂停——请联系客服。"
+button_gone = "此按钮已不可用。"
+
+[core_user.ref]
+joined = "🤝 您通过好友邀请加入——欢迎！"
+joined_money = "🤝 您通过好友邀请加入——已向您的余额赠送 <b>{amount}</b>！"
+joined_days = "🤝 您通过好友邀请加入——赠送您 <b>{days}</b>免费使用！"
+inviter = "🎉 有新用户通过您的链接加入！对方首次付款后您将获得奖励。"
+inviter_money = "🎉 有新用户通过您的链接加入——您获得了 <b>{amount}</b>！"
+inviter_days = "🎉 有新用户通过您的链接加入——您的订阅已延长 <b>{days}</b>！"
+
+[core_user.code]
+not_found = "😕 未找到该代码，或代码已失效。"
+expired = "⌛️ 该代码已过期。"
+exhausted = "😕 该代码已达到最大使用次数。"
+already_used = "您已激活过该代码 🙂"
+only_new = "该代码仅限新用户使用 🙏"
+gift_ok = "🎁 <b>礼品已激活！</b>「{plan}」订阅——有效期至 {expires}。请在「📲 连接」中连接。"
+days_ok = "🎉 优惠码已激活：订阅 <b>+{days}</b>（现有效期至 {expires}）。"
+money_ok = "🎉 优惠码已激活：余额 <b>{amount}</b>。"
+
+[core_user.invite]
+accepted = "🎉 <b>已接受邀请！</b>访问有效期至 {expires}。请在「📲 连接」中连接。"
+accepted_forever = "🎉 <b>已接受邀请！</b>您的访问永久有效。请在「📲 连接」中连接。"
+already_used = "您已接受过此邀请 🙂"
+
+[core_user.import]
+claimed = "✅ <b>订阅已迁移！</b>打开「📲 连接」获取链接。"
+unavailable = "😕 无法迁移订阅：链接无效、已被使用或账户已变更。请向服务所有者索取新链接。"
+retry_later = "⏳ 服务器暂时不可用，订阅导入失败。链接仍然有效，请稍后再试。"
+
+[core_user.proxy]
+text = "🛡 <b>Telegram 代理</b>\n\n即使在 Telegram 被封锁的地方也能使用。一键连接 👇"
+open = "🛡 获取代理"
+
+[core_user.profile]
+title = "👤 <b>个人资料</b>"
+id = "ID：<code>{id}</code>"
+name = "名称：{name}"
+language = "语言：{language}"
+since = "加入时间：{date}"
+balance = "余额：<b>{balance}</b>"
+partner_balance = "合作伙伴余额：<b>{balance}</b>"
+
+[core_user.help]
+text = "📖 <b>帮助</b>\n\n<b>如何连接？</b>\n打开「📲 连接」，选择您的设备并点击「➕ 添加」——应用会自动完成设置。\n\n<b>VPN 无法使用？</b>\n在应用中更新订阅、换一个服务器或重启应用。\n\n<b>移动网络有「白名单」限制？</b>\n启用标有「LTE」的服务器。\n\n<b>可以连接几台设备？</b>\n限额显示在「🔐 我的订阅」中。换了新手机？请在那里解绑旧设备。\n\n<b>如何续费？</b>\n在「🛒 购买 / 续费」中：新时长会累加到当前时长上。\n\n还有问题？请联系客服——我们回复很快 💬"
+text_personal = "📖 <b>帮助</b>\n\n<b>如何连接？</b>\n打开「📲 连接」，选择您的设备并点击「➕ 添加」——应用会自动完成设置。\n\n<b>VPN 无法使用？</b>\n在应用中更新订阅、换一个服务器或重启应用。\n\n<b>移动网络有「白名单」限制？</b>\n启用标有「LTE」的服务器。\n\n<b>换了新手机？</b>\n在「🔐 我的订阅」→「📱 设备」中解绑旧设备。"
+
+[core_user.legal]
+terms = "📄 服务条款——请点击下方链接。"
+privacy = "🔒 隐私政策——请点击下方链接。"
+missing = "该文件尚未发布。如有疑问，请联系客服。"
+
+[core_user.paysupport]
+text = "💳 <b>支付帮助</b>\n\n付款失败、已扣款但订阅未延长，或需要退款？请附上收据或付款时间联系我们——我们会在 24 小时内处理。"
+no_contact = "💳 <b>支付帮助</b>\n\n请附上收据或付款时间联系机器人管理员——我们会在 24 小时内处理。"
+
+[core_user.admin]
+new_user = "👤 新用户：{user}（<code>{user_id}</code>）"
+new_user_ref = "邀请人 <code>{inviter_id}</code>"
+new_user_campaign = "活动 <code>{campaign}</code>"
+invite_redeemed = "👋 {user}（<code>{user_id}</code>）接受了邀请「{note}」"

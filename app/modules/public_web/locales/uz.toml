@@ -1,0 +1,67 @@
+# Public pages (browser) and notices about Remnawave events.
+
+[public_web]
+open_bot = "Botni Telegramda ochish"
+support = "Yordam"
+copy = "📋 Havolani nusxalash"
+copied = "✅ Nusxalandi"
+
+[public_web.not_found]
+title = "Havola topilmadi"
+text = "Havola eskirgan yoki xato kiritilganga oʻxshaydi. Botni oching — unda har doim joriy havola bor."
+
+[public_web.sub]
+active_until = "✅ Obuna {date} gacha faol"
+active_forever = "✅ Obuna muddatsiz faol"
+expired = "⛔ Obunangiz muddati tugadi — uni botda uzaytiring, hammasi yana ishlaydi."
+disabled = "⛔ Foydalanish toʻxtatilgan. Tafsilotlar — botda."
+none = "Sizda hali obuna yoʻq — uni botda rasmiylashtiring."
+apps = "Bir bosishda ulanish"
+apps_hint = "Oʻrnatilgan ilovangizni tanlang — obuna avtomatik qoʻshiladi."
+manual = "Qoʻlda"
+manual_hint = "Havolani nusxalab, ilovaga obuna sifatida qoʻshing (Subscription / «URL orqali qoʻshish»). Yoki QR-kodni skanerlang."
+
+[public_web.proxy]
+title = "Telegram proksi"
+text = "Bosing — Telegram proksini yoqishni taklif qiladi. Yoki QR-kodni telefon kamerasi bilan skanerlang."
+connect = "⚡️ Ulanish · {title}"
+
+[public_web.open]
+title = "{app} ochilmoqda…"
+text = "Agar ilova oʻzi ochilmasa, quyidagi tugmani bosing."
+button = "{app} da ochish"
+install = "{app} yoʻqmi? Oʻrnating:"
+manual = "Obunani qoʻlda qoʻshish"
+
+[public_web.platform]
+ios = "iPhone/iPad"
+android = "Android"
+windows = "Windows"
+macos = "macOS"
+linux = "Linux"
+apple_tv = "Apple TV"
+android_tv = "Android TV"
+
+[public_web.gift]
+title = "🎁 Siz uchun sovgʻa!"
+text = "Sizga {brand} VPN sovgʻa qilindi — {what}. Sovgʻani olish uchun botni oching."
+button = "🎁 Sovgʻani Telegramda olish"
+hint = "Bot ochiladi — «Start» ni bosing va sovgʻa faollashadi."
+gone = "Bu sovgʻa allaqachon olingan yoki havola yaroqsiz."
+
+[public_web.rw]
+limited = "📊 Ushbu davr uchun trafikni sarflab boʻldingiz, shuning uchun VPN toʻxtatildi.\n\nFoydalanishni davom ettirish uchun obunani uzaytiring yoki trafigi koʻproq tarif tanlang 👇"
+threshold = "📊 Ushbu davr trafigining {percent}% sarflandi. Yetmasligi mumkin boʻlsa, oldindan uzaytiring."
+first_connected = "🎉 Ajoyib, VPN ulandi va ishlayapti! Yordam kerak boʻlsa, biz shu yerdamiz."
+device_added = "📱 Yangi qurilma ulandi: {device}.\n\nAgar bu siz boʻlmasangiz, qurilmalarni tiklang va yangi obuna havolasini oling."
+unknown_device = "nomsiz"
+expiry_drift = "⚠️ Remnawave <code>{user_id}</code> foydalanuvchisining obunasini muddati tugagan deb belgiladi, vaholanki botda u faol. Sinxronizatsiya buni tez orada tuzatadi; takrorlansa, server soati va panel sozlamalarini tekshiring."
+node_lost = "🔴 Remnawave: {node} nodasi aloqani yoʻqotdi{error}"
+node_restored = "✅ Remnawave: {node} nodasi yana aloqada"
+node_traffic = "📊 Remnawave: {node} nodasi trafik limitiga yaqinlashmoqda"
+
+[public_web.rw.btn]
+subscription = "🔐 Mening obunam"
+buy = "🛒 Uzaytirish"
+devices = "📱 Qurilmalar"
+connect = "📲 Ulanish"

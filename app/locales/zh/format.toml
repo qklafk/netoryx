@@ -1,0 +1,48 @@
+# Number, money, date and period formats; plural forms (other only).
+
+[fmt]
+money = "{amount} ₽"
+stars = "{amount} ⭐️"
+date = "{year}年{month}{day}日"
+datetime = "{date} {time}"
+unlimited = "无限制"
+forever = "永久有效"
+never = "从不"
+
+[fmt.month]
+1 = "1月"
+2 = "2月"
+3 = "3月"
+4 = "4月"
+5 = "5月"
+6 = "6月"
+7 = "7月"
+8 = "8月"
+9 = "9月"
+10 = "10月"
+11 = "11月"
+12 = "12月"
+
+[plural.days]
+other = "{n} 天"
+
+[plural.months]
+other = "{n} 个月"
+
+[plural.years]
+other = "{n} 年"
+
+[plural.hours]
+other = "{n} 小时"
+
+[plural.minutes]
+other = "{n} 分钟"
+
+[plural.devices]
+other = "{n} 台设备"
+
+[plural.gb]
+other = "{n} GB"
+
+[plural.users]
+other = "{n} 位用户"

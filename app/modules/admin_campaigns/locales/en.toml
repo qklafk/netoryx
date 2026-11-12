@@ -1,0 +1,23 @@
+[admin_campaigns]
+title = "Campaigns"
+list = "📣 <b>Ad campaigns</b>\n\nEvery campaign has its own link to the bot - you see where people come from and how much they bring.\n👤 sign-ups · 💳 paying · revenue"
+list_empty = "📣 <b>Ad campaigns</b>\n\nCreate a campaign to get a separate link to the bot and see how many people came through it, tried and bought."
+ask = "➕ Send the campaign code (Latin letters, digits, \"_\" and \"-\", 2-32 characters) and a name after a space, e.g.:\n<code>vk_nov VK ads, November</code>"
+exists = "⚠️ A campaign with this code already exists."
+invalid = "⚠️ The code does not fit: 2-32 characters, Latin letters, digits, \"_\" and \"-\"."
+created = "✅ Campaign created - share the link!"
+
+[admin_campaigns.btn]
+new = "➕ New campaign"
+back = "◀️ Back to campaigns"
+copy = "📋 Copy link"
+pause = "⏸ Pause"
+resume = "▶️ Resume"
+
+[admin_campaigns.card]
+title = "📣 <b>{name}</b> · <code>{code}</code>"
+status = "Status: {status} · created {created}"
+active = "▶️ running"
+paused = "⏸ paused (new people are not counted)"
+funnel = "👤 Sign-ups: <b>{registrations}</b>\n🧪 Took the trial: {trials}\n💳 Became paying: {paying} (conversion {conversion}%)\n🧾 Purchases: {purchases} · 💸 revenue: <b>{revenue}</b>"
+link = "🔗 Link:\n<code>{link}</code>"

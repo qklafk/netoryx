@@ -1,0 +1,9 @@
+# Blacklist: notices to administrators.
+
+[blacklist]
+more = "…另有 {n} 个"
+
+[blacklist.notice]
+banned = "⛔️ <b>黑名单：</b>已封禁用户 — {n}"
+flagged = "⚠️ <b>黑名单：</b>发现名单中的用户 — {n}"
+unbanned = "✅ <b>黑名单：</b>已解封用户（已移出名单）— {n}"

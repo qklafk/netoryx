@@ -1,0 +1,47 @@
+# Maintenance: admin controls
+
+[admin_maintenance]
+title = "Maintenance"
+home = "🛠 <b>Maintenance</b>\n\n{status}\n\n💬 Message for users: {message}\n👥 Testers with access: {testers}\n🧩 Disabled features: {modules}\n\n🗓 <b>Planned:</b>\n{windows}\n\n<i>Admins keep using the bot as usual, even during maintenance.</i>"
+none = "none"
+message_default = "default"
+message_custom = "custom ({langs})"
+window_line = "• {start} - {end}"
+saved = "Saved ✅"
+turned_off = "Maintenance is off - users will be notified ✅"
+ask_eta = "🔴 <b>Close the bot for maintenance?</b>\n\nUsers will see a maintenance notice, and when you turn it off they'll be told everything works again.\n\nRoughly how long will it take?"
+ask_eta_change = "🕒 When do you expect to finish?"
+ask_eta_input = "🕒 Send the end time ({tz}), e.g. <code>18:30</code>, <code>25.12 10:00</code> or <code>+90m</code>."
+ask_message = "✏️ Send the text users will see ({lang}). Up to {limit} characters, no formatting.\n\nThe expected end time is added automatically."
+ask_testers = "👥 <b>Testers</b>\n\nThese users keep using the bot as usual during maintenance. Send their Telegram IDs separated by spaces or commas - the list is replaced.\n\nNow: <code>{ids}</code>"
+modules = "🧩 <b>Partial maintenance</b>\n\nTurn off individual features - everything else keeps working. Users will see \"temporarily unavailable\".\n\n✅ on · ⛔️ off"
+ask_window = "🗓 <b>Planned maintenance</b>\n\nSend the start and end ({tz}), for example:\n<code>25.12 03:00 - 05:00</code>\n<code>25.12 23:00 - 26.12 01:00</code>\n<code>03:00 - +2h</code>\n\nAdmins get a reminder {minutes} min before it starts."
+window_canceled = "Planned maintenance canceled"
+window_gone = "This window has already ended or was canceled"
+
+[admin_maintenance.status]
+off = "🟢 The bot works normally."
+on = "🔴 <b>The bot is closed for maintenance</b> since {since}.\nExpected end: {eta}"
+window = "🔴 <b>Planned maintenance in progress</b> - until {eta}."
+
+[admin_maintenance.btn]
+on = "🔴 Start maintenance"
+off = "🟢 End maintenance"
+eta = "🕒 Change end time"
+eta_custom = "🕒 Enter a time"
+no_eta = "♾ No end time"
+text_ru = "✏️ Text RU"
+text_en = "✏️ Text EN"
+text_reset = "↩️ Default text"
+testers = "👥 Testers"
+testers_clear = "🧹 Clear the list"
+modules = "🧩 Turn off features"
+plan = "🗓 Plan maintenance"
+cancel_window = "❌ Cancel maintenance {start}"
+
+[admin_maintenance.error]
+time = "I didn't get the time 🤔 Example: <code>18:30</code> or <code>+2h</code>. It must be in the future."
+too_long = "The text is too long - {limit} characters at most."
+ids = "No IDs found 🤔 Send numbers separated by spaces or commas ({limit} at most)."
+window = "I didn't get the period 🤔 Example: <code>25.12 03:00 - 05:00</code>. The end must be in the future."
+window_rejected = "Could not plan it: {reason}"

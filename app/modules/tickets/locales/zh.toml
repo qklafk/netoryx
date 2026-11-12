@@ -1,0 +1,72 @@
+# Support: user tickets and admin replies
+
+[tickets]
+title = "客服工单"
+home = "🆘 <b>{brand} 客服</b>\n\n遇到问题或有疑问？请描述一下，我们会直接在机器人中回复。欢迎附上截图 📸\n\n我们通常在几小时内回复。"
+list = "📂 <b>您的工单</b>\n\n🟡 等待我们回复 · 🟢 已回复 · ⚪️ 已关闭"
+list_empty = "您还没有工单。如有任何问题，直接写下来——我们会帮您 🙌"
+not_found = "未找到工单 🤷"
+view = "💬 <b>工单 #{id}</b> · {status}\n<i>{subject}</i>\n\n{messages}"
+ask_new = "✍️ 请用一条消息描述问题：发生了什么、在哪台设备、哪个应用上。可以附上截图。\n\n细节越多，我们帮得越快 🙏"
+created = "✅ 工单 <b>#{id}</b> 已创建！\n\n我们会在机器人中回复——届时您会收到通知。"
+ask_reply = "✍️ 请输入工单 #{id} 的消息（也可以发截图）："
+sent = "✅ 消息已发送给客服。"
+closed = "工单已关闭"
+attachment = "📎 <i>附件</i>"
+earlier = "<i>… 更早的消息已隐藏</i>"
+message = "<b>{author}</b> · <i>{time}</i>\n{text}"
+answer = "💬 <b>客服已回复</b>工单 #{id}：\n\n{text}"
+closed_by_support = "✅ 工单 #{id} 已关闭。如仍需帮助，直接在其中继续留言——我们会看到。"
+
+[tickets.btn]
+new = "✍️ 联系客服"
+my = "📂 我的工单"
+my_unread = "📂 我的工单 · 🔔 {count}"
+chat = "💬 与客服聊天"
+open = "📂 打开工单"
+reply = "✍️ 回复"
+write_again = "✍️ 再次留言"
+close = "✅ 已解决，关闭"
+open_admin = "📂 打开工单"
+
+[tickets.status]
+open = "🟡 等待客服回复"
+answered = "🟢 已回复"
+closed = "⚪️ 已关闭"
+
+[tickets.author]
+support = "🛟 客服"
+user = "👤 用户"
+you = "👤 您"
+
+[tickets.error]
+empty = "消息为空——请输入文字或附上截图。"
+too_long = "消息过长——请控制在 4000 个字符以内。"
+too_many_open = "您已有多个未关闭的工单。请等待回复或关闭已解决的工单 🙏"
+not_found = "未找到工单 🤷"
+forbidden = "未找到工单 🤷"
+unsupported = "请发送文字、图片或文件——我会转交给客服。"
+
+[tickets.notify]
+new = "🆘 <b>新工单 #{id}</b>\n来自：{user}（<code>{user_id}</code>）\n\n{text}"
+reply = "💬 <b>工单 #{id} 有新消息</b>\n来自：{user}（<code>{user_id}</code>）\n\n{text}"
+
+[tickets.admin]
+inbox = "🆘 <b>工单</b> · {filter}\n\n等待回复：<b>{waiting}</b>\n等待最久的排在最前。"
+inbox_empty = "🆘 <b>工单</b> · {filter}\n\n等待回复：<b>{waiting}</b>\n\n这里空空如也 ✨"
+view = "💬 <b>工单 #{id}</b> · {status}\n<i>{subject}</i>\n👤 {user}（<code>{user_id}</code>）· 创建于 {created}\n\n{messages}"
+ask_reply = "✍️ 请输入工单 #{id} 的回复。可以附上图片或文件——用户会立即收到。"
+delivered = "✅ 回复已送达。"
+not_delivered = "⚠️ 回复已保存但未能送达：用户已屏蔽机器人。"
+start_private = "请打开与机器人的私聊（/start），我会把工单发送到那里。"
+opened_private = "工单已发送到您的私聊"
+
+[tickets.admin.tab]
+open = "🟡 等待中"
+answered = "🟢 已回复"
+closed = "⚪️ 已关闭"
+
+[tickets.admin.btn]
+files = "📎 附件（{count}）"
+close = "✅ 关闭工单"
+inbox = "🆘 返回工单列表"

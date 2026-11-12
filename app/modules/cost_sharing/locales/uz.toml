@@ -1,0 +1,34 @@
+# Cost sharing: reminders to members and the owner's overview.
+
+[cost_sharing]
+menu = "Umumiy toʻlov"
+month_year = "{year}-yil {month}"
+reminder = "💸 <b>{month} oyi uchun umumiy toʻlov</b>\n\nSalom! VPN serverimiz uchun pul yigʻish vaqti keldi — sizning ulushingiz <b>{share}</b>.\n\nYuborganingizdan soʻng egasi bilishi uchun quyidagi tugmani bosing 🙌"
+details = "Qayerga yuborish: {details}"
+thanks = "🙏 Rahmat! {month} oyi uchun toʻlovingiz belgilandi, egasiga xabar berildi."
+unknown = "Bu yigʻim allaqachon yopilgan 🙂"
+owner_paid = "💸 {name} {month} oyi uchun toʻlovni belgiladi: {share}. Toʻlaganlar: {total} dan {paid}."
+owner_started = "💸 {month} oyi uchun umumiy toʻlov: eslatmalar yuborildi ({count}). Ulush — {share}, jami {total}."
+sent = "Yuborilgan eslatmalar: {count}"
+not_configured = "💸 <b>Umumiy toʻlov</b>\n\nBu boʻlim har oy server uchun pul yigʻishga yordam beradi: bot ishtirokchilarga ulushini eslatadi va kim toʻlaganini koʻrsatadi.\n\nYoqish uchun sozlamalarda oylik summa, eslatma kuni va toʻlov rekvizitlarini kiriting."
+not_started = "💸 <b>{month} oyi uchun umumiy toʻlov</b>\n\nEslatmalar har oyning {day}-kuni avtomatik yuboriladi. Umumiy summa — {total}.\n\nUlarni hozir yuborishingiz mumkin."
+overview = "💸 <b>{month} oyi uchun umumiy toʻlov</b>\n\nJami: {total} · ulush: {share}\nToʻlaganlar: {count} dan {paid}"
+
+[cost_sharing.month]
+1 = "yanvar"
+2 = "fevral"
+3 = "mart"
+4 = "aprel"
+5 = "may"
+6 = "iyun"
+7 = "iyul"
+8 = "avgust"
+9 = "sentabr"
+10 = "oktabr"
+11 = "noyabr"
+12 = "dekabr"
+
+[cost_sharing.btn]
+paid = "✅ Toʻladim"
+remind = "📣 Toʻlamaganlarga eslatish"
+start = "📣 Hozir yuborish"

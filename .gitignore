@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.pytest_cache_*/
+.pytest_tmp*/
+.pytest_tmp_*.json
+.uv-cache*/
+.installer-state.json
+.installer-journal.json
+*.tar.gz
+.coverage
+coverage.xml
+htmlcov/
+
+# Runtime data & secrets
+.env
+.env.*
+!.env.example
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+backups/
+*.log
+
+# Frontend
+web/node_modules/
+web/dist/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated server configuration with secrets
+deploy/telemt/
+deploy/caddy-sites/*.caddy
+# Per-server panel settings and keys written by the installer
+deploy/panels/*/*.env
+deploy/panels/*/certs/
+deploy/panels/marzneshin/marznode/
+
+# Per-server HAProxy routing table (written by the installer; template: deploy/haproxy/sni.map.example)
+deploy/haproxy/sni.map

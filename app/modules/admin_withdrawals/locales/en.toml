@@ -1,0 +1,64 @@
+[admin_withdrawals]
+title = "Payouts"
+queue = "💸 <b>Payout requests</b>\n\nIn the queue: {count}, {total} in total. Tap a request to review and process it."
+queue_empty = "💸 <b>Payout requests</b>\n\nThe queue is empty 🎉"
+disabled_note = "ℹ️ Partner payouts are turned off right now - no new requests will come in."
+history = "📜 <b>Processed requests</b> · page {page}"
+history_empty = "📜 No processed requests yet."
+ask_comment = "✖️ <b>Reject the request</b>\n\nWrite the reason - the partner will see it in the notification. The money goes back to their partner balance."
+confirm_paid = "✅ Confirm that you sent <b>{amount}</b> ({method}) to:\n<code>{details}</code>"
+
+[admin_withdrawals.btn]
+history = "📜 Processed"
+back = "◀️ Back to requests"
+approve = "👍 Approve"
+paid = "✅ Paid"
+reject = "✖️ Reject"
+reject_silent = "✖️ Reject without a comment"
+user = "👤 Partner"
+
+[admin_withdrawals.status]
+pending = "⏳ awaiting a decision"
+approved = "👍 approved, payout in progress"
+paid = "✅ paid"
+rejected = "✖️ rejected"
+
+[admin_withdrawals.card]
+title = "💸 <b>Request #{id}</b>"
+status = "Status: {status}"
+partner = "Partner: {user} · since {since}"
+amount = "Amount: <b>{amount}</b> · method: {method}"
+details = "Details: <code>{details}</code>"
+dates = "Created: {created} · processed: {processed}"
+comment = "Comment: {comment}"
+stats = "📊 Earned in total: {earned} · referrals: {users} (brought income: {paid_users})\nAlready paid out: {withdrawn} · partner balance: {balance}"
+flags = "⚠️ <b>Worth a look:</b>"
+no_flags = "✅ No suspicious signs found."
+
+[admin_withdrawals.flag]
+young_account = "the account is only {age_days} days old"
+low_conversion = "only {paid} of {referrals} referrals ever paid"
+registration_burst = "{count} referrals registered on a single day ({day})"
+concentrated_earnings = "{share}% of the income comes from one referral (<code>{source_user_id}</code>)"
+
+[admin_withdrawals.done]
+approve = "👍 Request approved - the partner has been notified."
+paid = "✅ Payout recorded - the partner has been notified."
+reject = "✖️ Request rejected, the money is back on the partner balance."
+
+[admin_withdrawals.error]
+not_found = "🤷 Request not found."
+bad_status = "Someone else has already processed this request - refresh the screen."
+disabled = "Payouts are turned off."
+bad_amount = "Invalid amount."
+below_minimum = "The amount is below the minimum."
+bad_method = "Unknown payout method."
+bad_details = "Invalid payout details."
+pending_exists = "The partner already has an open request."
+insufficient_funds = "Not enough money on the partner balance."
+
+[admin_withdrawals.notify]
+approved = "👍 Your payout request #{id} for {amount} is approved. The money is on its way."
+paid = "✅ The payout for request #{id} ({amount}) has been sent. Thank you for being with us!"
+rejected = "✖️ Payout request #{id} for {amount} was rejected. The money is back on your partner balance."
+comment = "Comment: {comment}"
