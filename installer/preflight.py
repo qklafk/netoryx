@@ -188,7 +188,8 @@ def _memory_mb() -> int:
 
         status = MemoryStatus()
         status.length = sizeof(status)
-        if ctypes.windll.kernel32.GlobalMemoryStatusEx(byref(status)):
+        windll = getattr(ctypes, "windll")  # noqa: B009 - only exists on Windows, keeps type checks portable
+        if windll.kernel32.GlobalMemoryStatusEx(byref(status)):
             return int(status.total_physical // (1024 * 1024))
     return 0
 

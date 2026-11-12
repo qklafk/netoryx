@@ -264,7 +264,10 @@ project will be listed here later.
 ## Star history
 
 <a href="https://github.com/qklafk/netoryx/stargazers">
-  <img src="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date" alt="Star history" width="600">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date&theme=dark">
+    <img src="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date" alt="Star history" width="600">
+  </picture>
 </a>
 
 ## License

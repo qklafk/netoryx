@@ -266,7 +266,10 @@ sudo netoryx update
 ## История звёзд
 
 <a href="https://github.com/qklafk/netoryx/stargazers">
-  <img src="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date" alt="История звёзд" width="600">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date&theme=dark">
+    <img src="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date" alt="История звёзд" width="600">
+  </picture>
 </a>
 
 ## Лицензия
