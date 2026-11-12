@@ -415,6 +415,8 @@ def _purge(tmp_path: Path, directory: str, secrets: str) -> subprocess.Completed
     calls = tmp_path / "calls.txt"
     (bin_dir / "id").write_text("#!/bin/sh\necho 0\n", encoding="utf-8", newline="\n")
     (bin_dir / "docker").write_text(f"#!/bin/sh\necho \"$@\" >>'{calls.as_posix()}'\n", encoding="utf-8", newline="\n")
+    for stub in ("id", "docker"):
+        (bin_dir / stub).chmod(0o755)  # on Linux PATH lookup skips files that are not executable
     script = (
         f"export PATH=\"$(cygpath -u '{bin_dir.as_posix()}' 2>/dev/null || echo '{bin_dir.as_posix()}'):$PATH\"; "
         f"export NETORYX_DIR='{directory}' NETORYX_SECRETS_DIR='{secrets}'; "
