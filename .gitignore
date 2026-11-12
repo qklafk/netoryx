@@ -21,7 +21,7 @@ htmlcov/
 .env
 .env.*
 !.env.example
-data/
+/data/
 *.db
 *.db-journal
 *.db-wal
