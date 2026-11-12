@@ -4,7 +4,7 @@
   "version": "0.9.0-beta.0",
   "type": "module",
   "dependencies": { "react": "^19.0.0", "react-dom": "^19.0.0", "react-router-dom": "^7.0.0", "lucide-react": "*" },
-  "devDependencies": { "vite": "^7.2.2", "@vitejs/plugin-react": "^5.1.1", "typescript": "^5.9.3", "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0", "@types/node": "^22.0.0", "vitest": "^3.2.4", "@playwright/test": "1.56.1" },
+  "devDependencies": { "vite": "^7.2.2", "@vitejs/plugin-react": "^5.1.1", "typescript": "^7.0.2", "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0", "@types/node": "^22.0.0", "vitest": "^3.2.4", "@playwright/test": "1.56.1" },
   "scripts": {
     "dev": "vite --mode admin --host 127.0.0.1",
     "dev:app": "vite --mode app --host 127.0.0.1 --port 5174",
