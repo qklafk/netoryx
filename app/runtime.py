@@ -8,6 +8,7 @@ import importlib
 import inspect
 import json
 import logging
+import re
 import signal
 import sys
 import threading
@@ -82,12 +83,16 @@ class JsonFormatter(logging.Formatter):
             "msg": record.getMessage(),
         }
         if record.exc_info:
-            payload["exc"] = self.formatException(record.exc_info)
+            payload["exc"] = record.exc_text or self.formatException(record.exc_info)
         return json.dumps(payload, ensure_ascii=False)
 
 
+# Telegram bot tokens look the same everywhere (also inside URLs of failed requests).
+_BOT_TOKEN = re.compile(r"\d{5,}:[A-Za-z0-9_-]{30,}")
+
+
 class SecretMaskFilter(logging.Filter):
-    """Replaces known secret values (bot token ...) in log messages with ``***``."""
+    """Replaces known secret values (bot token ...) in log messages and exception texts with ``***``."""
 
     def __init__(self, secrets: Iterable[str] = ()) -> None:
         super().__init__()
@@ -97,15 +102,20 @@ class SecretMaskFilter(logging.Filter):
         if secret and len(secret) >= 8 and secret not in self._secrets:
             self._secrets.append(secret)
 
-    def filter(self, record: logging.LogRecord) -> bool:
-        if not self._secrets:
-            return True
-        message = record.getMessage()
-        masked = message
+    def _mask(self, text: str) -> str:
         for secret in self._secrets:
-            masked = masked.replace(secret, "***")
+            text = text.replace(secret, "***")
+        return _BOT_TOKEN.sub("***", text)
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        message = record.getMessage()
+        masked = self._mask(message)
         if masked != message:
             record.msg, record.args = masked, None
+        if record.exc_info and not record.exc_text:
+            # The formatters append the traceback themselves; hand them the masked text instead.
+            trace = logging.Formatter().formatException(record.exc_info)
+            record.exc_text = self._mask(trace)
         return True
 
 

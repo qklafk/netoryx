@@ -23,6 +23,7 @@ from app.services.payments.base import (
     kop_to_plain,
     require,
 )
+from app.utils.security import const_eq
 
 if TYPE_CHECKING:
     from app.db.models import Payment, User
@@ -131,9 +132,7 @@ class NowPaymentsGateway(HttpGateway):
 
     async def parse_webhook(self, raw: bytes, headers: Mapping[str, str], remote_ip: str | None) -> WebhookResult:
         data = json_body(raw)
-        if not hmac.compare_digest(
-            signature(data, self._ipn_secret), (get_header(headers, "x-nowpayments-sig") or "").lower()
-        ):
+        if not const_eq(signature(data, self._ipn_secret), (get_header(headers, "x-nowpayments-sig") or "").lower()):
             raise WebhookRejected("bad NOWPayments signature", 401)
         return WebhookResult(
             payment_ids=[str(data["order_id"])] if data.get("order_id") else [],

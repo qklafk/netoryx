@@ -43,6 +43,7 @@ from app.services.payments.base import (
     kop_to_str,
     parse_networks,
 )
+from app.utils.security import const_eq
 
 if TYPE_CHECKING:
     from app.db.models import Payment, User
@@ -592,8 +593,8 @@ class CustomHttpGateway(HttpGateway):
             text = text[len(prefix) :]
         mac = hmac.new(self._secret, raw, self._digest).digest()
         if self._config.webhook_signature_encoding == "base64":
-            return hmac.compare_digest(base64.b64encode(mac).decode(), text)
-        return hmac.compare_digest(mac.hex(), text.lower())
+            return const_eq(base64.b64encode(mac).decode(), text)
+        return const_eq(mac.hex(), text.lower())
 
     async def parse_webhook(self, raw: bytes, headers: Mapping[str, str], remote_ip: str | None) -> WebhookResult:
         if self._c.allowed_ips and not ip_in(client_ip(remote_ip, headers, self._trusted), self._c.allowed_ips):

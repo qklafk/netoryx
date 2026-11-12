@@ -5,7 +5,6 @@ from __future__ import annotations
 import base64
 import contextlib
 import hashlib
-import hmac
 import json
 from collections.abc import Mapping
 from typing import TYPE_CHECKING, Any
@@ -23,6 +22,7 @@ from app.services.payments.base import (
     kop_to_plain,
     require,
 )
+from app.utils.security import const_eq
 
 if TYPE_CHECKING:
     from app.db.models import Payment, User
@@ -136,7 +136,7 @@ class HeleketGateway(HttpGateway):
     async def parse_webhook(self, raw: bytes, headers: Mapping[str, str], remote_ip: str | None) -> WebhookResult:
         data = json_body(raw)
         given = data.pop("sign", None)
-        if not isinstance(given, str) or not hmac.compare_digest(sign(data, self._api_key), given):
+        if not isinstance(given, str) or not const_eq(sign(data, self._api_key), given):
             raise WebhookRejected("bad Heleket signature", 401)
         return WebhookResult(
             payment_ids=[str(data["order_id"])] if data.get("order_id") else [],

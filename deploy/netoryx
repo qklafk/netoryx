@@ -84,6 +84,18 @@ case "$command" in
     else
       echo "This stops Netoryx. Data volumes, $DIR and the secrets stay, so it can be started again."
     fi
+    if [ "$purge" = 1 ]; then
+      # never let a mistyped or empty location turn the purge into "rm -rf /" (or a whole home directory)
+      for target in "$DIR" "$SECRETS_DIR"; do
+        case "$target" in
+          /?*/?*) ;;
+          *) echo "netoryx: refusing to delete '$target' (not a dedicated directory)" >&2; exit 1 ;;
+        esac
+        case "$target" in
+          */.. | */../* | */. | */./*) echo "netoryx: refusing to delete '$target'" >&2; exit 1 ;;
+        esac
+      done
+    fi
     read -r -p "Type 'yes' to continue: " answer
     [ "$answer" = "yes" ] || { echo "cancelled"; exit 1; }
     if [ "$purge" = 1 ]; then

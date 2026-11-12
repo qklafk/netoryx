@@ -1,3 +1,5 @@
+Русская версия: [CONTRIBUTING.ru.md](CONTRIBUTING.ru.md)
+
 # Contributing
 
 Thanks for helping. Bug reports, fixes, translations and new payment or panel integrations are all welcome.

@@ -32,6 +32,8 @@ services:
       PUBLIC_BASE_URL: https://${DOMAIN:?set DOMAIN in .env}
       WEB_HOST: 0.0.0.0
       WEB_PORT: "8080"
+      # Without it panel passwords and tokens would be stored unencrypted.
+      SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in .env (openssl rand -hex 32)}
     depends_on:
       db:
         condition: service_healthy
@@ -39,6 +41,9 @@ services:
       # Lets the bot reach a panel running on this server (for example the optional 3x-ui) as host.docker.internal.
       - host.docker.internal:host-gateway
     restart: unless-stopped
+    # Runs as an unprivileged user and needs no capabilities.
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
     volumes:
       - app-data:/app/data
 

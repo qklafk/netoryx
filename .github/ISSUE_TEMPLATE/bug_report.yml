@@ -5,59 +5,61 @@ body:
   - type: markdown
     attributes:
       value: |
+        **Не публикуйте токены ботов, API-ключи, пароли, содержимое `.env`, ссылки подписок, адреса панелей с секретными путями и любые данные клиентов (Telegram ID, имена, платежи). Замените их на `***`. О проблемах безопасности сообщайте приватно по SECURITY.ru.md, а не через issue.**
+
         **Do not paste bot tokens, API keys, passwords, `.env` contents, subscription links, panel addresses with secret paths, or any customer data (Telegram IDs, usernames, payment details).** Replace them with `***`. For security problems use the private route in SECURITY.md instead of an issue.
   - type: textarea
     id: what
     attributes:
-      label: What happened
-      description: What you did, what you expected, what you got instead.
+      label: Что произошло / What happened
+      description: Что вы делали, что ожидали и что получили. / What you did, what you expected, what you got instead.
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
+      label: Шаги воспроизведения / Steps to reproduce
     validations:
       required: false
   - type: input
     id: version
     attributes:
-      label: Netoryx version
-      description: Output of `netoryx status` or the release tag.
+      label: Версия Netoryx / Netoryx version
+      description: Вывод `netoryx status` или тег релиза. / Output of `netoryx status` or the release tag.
     validations:
       required: true
   - type: dropdown
     id: install
     attributes:
-      label: Installation
+      label: Способ установки / Installation
       options:
-        - One-line installer (Docker)
-        - Docker Compose by hand
-        - From source
+        - Установщик одной командой (Docker) / One-line installer (Docker)
+        - Docker Compose вручную / Docker Compose by hand
+        - Из исходников / From source
     validations:
       required: true
   - type: input
     id: panel
     attributes:
-      label: Panel and version
-      description: For example 3x-ui 2.x, Remnawave 3.x, Marzban. Leave empty if not related.
+      label: Панель и версия / Panel and version
+      description: Например, 3x-ui 2.x, Remnawave 3.x, Marzban. Оставьте пустым, если не относится. / For example 3x-ui 2.x, Remnawave 3.x, Marzban. Leave empty if not related.
   - type: input
     id: os
     attributes:
-      label: Server OS and database
-      description: For example Ubuntu 24.04, PostgreSQL.
+      label: ОС сервера и база данных / Server OS and database
+      description: Например, Ubuntu 24.04, PostgreSQL. / For example Ubuntu 24.04, PostgreSQL.
   - type: textarea
     id: logs
     attributes:
-      label: Relevant logs
-      description: From `netoryx logs`. Remove tokens, links and personal data first.
+      label: Логи / Relevant logs
+      description: Из `netoryx logs`. Сначала удалите токены, ссылки и личные данные. / From `netoryx logs`. Remove tokens, links and personal data first.
       render: text
   - type: checkboxes
     id: confirm
     attributes:
-      label: Before submitting
+      label: Перед отправкой / Before submitting
       options:
-        - label: I removed tokens, keys, subscription links and customer data from everything I pasted
+        - label: Я удалил(а) токены, ключи, ссылки подписок и данные клиентов из всего, что вставил(а) / I removed tokens, keys, subscription links and customer data from everything I pasted
           required: true
-        - label: I searched existing issues and the docs
+        - label: Я поискал(а) в существующих issue и в документации / I searched existing issues and the docs
           required: true

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hmac
 import logging
 import math
 from decimal import Decimal
@@ -13,6 +12,7 @@ from sqlalchemy import exists, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models import Payment, PaymentStatus, Plan, Purchase, PurchaseKind, User
+from app.utils.security import const_eq
 from app.utils.time import MAX_PERIOD_DAYS
 
 if TYPE_CHECKING:
@@ -254,4 +254,4 @@ def link_payload(box: SecretBox, plan_id: int) -> str:
 
 
 def link_token_valid(box: SecretBox, plan_id: int, token: str) -> bool:
-    return bool(token) and hmac.compare_digest(token, link_token(box, plan_id))
+    return bool(token) and const_eq(token, link_token(box, plan_id))

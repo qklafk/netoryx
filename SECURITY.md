@@ -1,3 +1,5 @@
+Русская версия: [SECURITY.ru.md](SECURITY.ru.md)
+
 # Security policy
 
 ## Reporting a vulnerability

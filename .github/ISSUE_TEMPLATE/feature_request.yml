@@ -5,26 +5,26 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please do not paste tokens, keys, subscription links or customer data.
+        Не публикуйте токены, ключи, ссылки подписок и данные клиентов. / Please do not paste tokens, keys, subscription links or customer data.
   - type: textarea
     id: problem
     attributes:
-      label: The problem
-      description: What are you trying to do that is hard or impossible today?
+      label: Проблема / The problem
+      description: Что вы пытаетесь сделать, а сейчас это сложно или невозможно? / What are you trying to do that is hard or impossible today?
     validations:
       required: true
   - type: textarea
     id: solution
     attributes:
-      label: Proposed solution
+      label: Предлагаемое решение / Proposed solution
     validations:
       required: true
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives considered
+      label: Рассмотренные альтернативы / Alternatives considered
   - type: textarea
     id: links
     attributes:
-      label: Links
-      description: API documentation for a new panel or payment provider, if relevant.
+      label: Ссылки / Links
+      description: Документация API новой панели или платёжной системы, если применимо. / API documentation for a new panel or payment provider, if relevant.

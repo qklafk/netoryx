@@ -28,6 +28,7 @@ from app.services.payments.base import (
     kop_to_plain,
     require,
 )
+from app.utils.security import const_eq
 
 if TYPE_CHECKING:
     from app.db.models import Payment, User
@@ -146,7 +147,7 @@ class PlisioGateway(HttpGateway):
     async def parse_webhook(self, raw: bytes, headers: Mapping[str, str], remote_ip: str | None) -> WebhookResult:
         data = json_body(raw)
         given = data.pop("verify_hash", None)
-        if not isinstance(given, str) or not hmac.compare_digest(signature(data, self._api_key), given.lower()):
+        if not isinstance(given, str) or not const_eq(signature(data, self._api_key), given.lower()):
             raise WebhookRejected("bad Plisio signature", 401)
         return WebhookResult(
             payment_ids=[str(data["order_number"])] if data.get("order_number") else [],

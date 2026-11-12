@@ -1342,7 +1342,8 @@ write_telemt_config() {
         printf "TLS_DOMAIN='%s'\n" "$TG_DOMAIN"
       } >"$creds"
     )
-    cat >"$cfg" <<EOF
+    # the file holds the API token and the users' secrets: never create it readable by others
+    (umask 077; cat >"$cfg") <<EOF
 [general]
 use_middle_proxy = true
 log_level = "normal"
@@ -1816,9 +1817,17 @@ wait_https() {
 
 install_helper() {
   run install -m 0755 "$INSTALL_DIR/deploy/netoryx" /usr/local/bin/netoryx
-  if [ "$INSTALL_DIR" != /opt/netoryx ] && [ "$DRY" = 0 ]; then
-    printf 'NETORYX_DIR=%s\n' "$INSTALL_DIR" >/etc/default/netoryx
+  if [ "$DRY" = 0 ]; then
+    helper_defaults >/etc/default/netoryx.new
+    if [ -s /etc/default/netoryx.new ]; then mv /etc/default/netoryx.new /etc/default/netoryx; else rm -f /etc/default/netoryx.new; fi
   fi
+}
+
+# Contents of /etc/default/netoryx (the helper sources it as root): non-default locations only, shell-quoted.
+helper_defaults() {
+  if [ "$INSTALL_DIR" != /opt/netoryx ]; then printf 'NETORYX_DIR=%q\n' "$INSTALL_DIR"; fi
+  if [ "$SECRETS_DIR" != /root/netoryx ]; then printf 'NETORYX_SECRETS_DIR=%q\n' "$SECRETS_DIR"; fi
+  return 0
 }
 
 hex_of() { printf '%s' "$1" | od -An -tx1 | tr -d ' \n'; }
@@ -1937,6 +1946,8 @@ main() {
   if [ "$DRY" = 0 ]; then
     mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null || true
     : >>"$LOG_FILE" 2>/dev/null || LOG_FILE="/dev/null"
+    # the log holds the output of every install command: readable by root only
+    [ "$LOG_FILE" = /dev/null ] || chmod 600 "$LOG_FILE" 2>/dev/null || true
   fi
   say "$M_X_HEADER$([ "$DRY" = 1 ] && echo " ($M_X_DRYRUN)")"
   if [ "$UPDATE_ONLY" = 1 ]; then

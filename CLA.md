@@ -1,3 +1,5 @@
+Русская версия: [CLA.ru.md](CLA.ru.md)
+
 # Netoryx Individual Contributor License Agreement
 
 Based on the Apache Software Foundation Individual Contributor License Agreement v2.2, adapted for the Netoryx project.

@@ -379,3 +379,67 @@ def test_russian_dry_run_has_no_english_detail_lines(panel: str) -> None:
     for phrase in english:
         assert phrase not in text, phrase
     assert "Состав: бот и веб-часть" in text
+
+
+def test_telemt_config_is_created_private() -> None:
+    # The config holds the API token: it is written inside a restrictive umask, not chmod-ed after the fact.
+    text = (ROOT / "install.sh").read_text(encoding="utf-8")
+    assert '(umask 077; cat >"$cfg")' in text
+
+
+def test_install_log_is_private() -> None:
+    text = (ROOT / "install.sh").read_text(encoding="utf-8")
+    assert 'chmod 600 "$LOG_FILE"' in text
+
+
+def test_helper_defaults_are_shell_quoted(tmp_path: Path) -> None:
+    evil = tmp_path / "dir $(touch pwned) x"
+    script = (
+        f"INSTALL_DIR='{evil.as_posix()}'; SECRETS_DIR='/root/netoryx'; "
+        f"helper_defaults >'{(tmp_path / 'd').as_posix()}'; "
+        f"cd '{tmp_path.as_posix()}'; . ./d; printf '%s' \"$NETORYX_DIR\""
+    )
+    done = _source(script, tmp_path)
+    assert done.returncode == 0, done.stderr
+    assert done.stdout == evil.as_posix()
+    assert not (tmp_path / "pwned").exists()
+    # the default location needs no file content; a custom secrets directory is remembered
+    custom = _source("INSTALL_DIR=/opt/netoryx; SECRETS_DIR=/srv/keys; helper_defaults", tmp_path)
+    assert custom.stdout.strip() == "NETORYX_SECRETS_DIR=/srv/keys"
+
+
+def _purge(tmp_path: Path, directory: str, secrets: str) -> subprocess.CompletedProcess[str]:
+    assert BASH is not None
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir(exist_ok=True)
+    calls = tmp_path / "calls.txt"
+    (bin_dir / "id").write_text("#!/bin/sh\necho 0\n", encoding="utf-8", newline="\n")
+    (bin_dir / "docker").write_text(f"#!/bin/sh\necho \"$@\" >>'{calls.as_posix()}'\n", encoding="utf-8", newline="\n")
+    script = (
+        f"export PATH=\"$(cygpath -u '{bin_dir.as_posix()}' 2>/dev/null || echo '{bin_dir.as_posix()}'):$PATH\"; "
+        f"export NETORYX_DIR='{directory}' NETORYX_SECRETS_DIR='{secrets}'; "
+        "echo yes | bash deploy/netoryx uninstall --purge"
+    )
+    return subprocess.run([BASH, "-c", script], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", timeout=60)
+
+
+@pytest.mark.parametrize("secrets", ["/", "/root", "/root/", "/root/../etc"])
+def test_purge_refuses_locations_that_are_not_a_dedicated_directory(tmp_path: Path, secrets: str) -> None:
+    keep = tmp_path / "install"
+    keep.mkdir()
+    done = _purge(tmp_path, keep.as_posix(), secrets)
+    assert done.returncode != 0 and "refusing to delete" in done.stderr, done.stderr
+    assert keep.exists()
+    assert not (tmp_path / "calls.txt").exists()  # nothing was stopped or removed
+
+
+def test_app_container_is_locked_down_and_needs_a_secret_key() -> None:
+    text = (ROOT / "docker-compose.yml").read_text(encoding="utf-8")
+    app = text.split("\n  app:\n", 1)[1].split("\n  db:\n", 1)[0]
+    assert "cap_drop: [ALL]" in app and "no-new-privileges:true" in app
+    assert "SECRET_KEY: ${SECRET_KEY:?" in app
+    # only the web entry points are published; everything else stays on loopback or inside the Docker network
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith('- "') and stripped.count(":") >= 2 and stripped.endswith('"'):
+            assert stripped.startswith(('- "80:', '- "443:', '- "127.0.0.1:')), stripped

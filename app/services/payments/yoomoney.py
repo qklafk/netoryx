@@ -105,9 +105,10 @@ class YooMoneyGateway:
         if not label or fields.get("currency") != RUB_CODE:
             return WebhookResult()  # dashboard test notifications have no label
         operation_id = fields.get("operation_id") or None
-        # Held by the receiver's balance limit, not credited yet; the payment service records it
-        # (``payment.held``) and keeps the payment from expiring until it is accepted and credited.
-        if fields.get("unaccepted") == "true":
+        # Held by the receiver's balance limit, or protected by a code the sender can still take back: not credited
+        # yet; the payment service records it (``payment.held``) and keeps the payment from expiring until an
+        # administrator credits it.
+        if fields.get("unaccepted") == "true" or fields.get("codepro") == "true":
             status = ProviderStatus(PaymentStatus.PENDING, None, operation_id)
         else:
             status = ProviderStatus(PaymentStatus.SUCCEEDED, _paid_kop(fields), operation_id)

@@ -27,6 +27,7 @@ from app.services.payments.base import (
     json_body,
     require,
 )
+from app.utils.security import const_eq
 
 if TYPE_CHECKING:
     from app.db.models import Payment, User
@@ -115,7 +116,7 @@ def verify_signature(
     except ValueError as exc:
         raise WebhookRejected("malformed Stripe-Signature", 400) from exc
     expected = compute_signature(secret, timestamp, raw)
-    if not any(hmac.compare_digest(expected, given) for given in signatures):
+    if not any(const_eq(expected, given) for given in signatures):
         raise WebhookRejected("bad Stripe signature", 401)
     if timestamp < now - tolerance:
         raise WebhookRejected("stale Stripe signature", 401)

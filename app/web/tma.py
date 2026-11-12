@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from urllib.parse import parse_qsl
 
+from app.utils.security import const_eq
+
 INIT_DATA_MAX_AGE = timedelta(hours=24)
 CLOCK_SKEW = timedelta(minutes=5)
 MAX_INIT_DATA_LENGTH = 8192
@@ -71,7 +73,7 @@ def validate_init_data(
     if not received_hash:
         raise InitDataError("hash is missing")
     expected = sign_init_data(fields, bot_token)
-    if not hmac.compare_digest(expected, received_hash.lower()):
+    if not const_eq(expected, received_hash.lower()):
         raise InitDataError("hash mismatch")
 
     try:

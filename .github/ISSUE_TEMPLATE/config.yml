@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Documentation
+  - name: Документация / Documentation
     url: https://github.com/qklafk/netoryx/tree/main/docs
-    about: Installation, configuration, panels, payments and troubleshooting guides
-  - name: Telegram channel
+    about: Установка, настройка, панели, платежи и решение проблем / Installation, configuration, panels, payments and troubleshooting guides
+  - name: Telegram-канал / Telegram channel
     url: https://t.me/netoryx
-    about: News and announcements
+    about: Новости и анонсы / News and announcements

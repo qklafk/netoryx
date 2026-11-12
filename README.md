@@ -6,285 +6,287 @@
   </picture>
 </p>
 
-<p align="center"><b>Your own VPN service in a Telegram bot.</b><br>Self-hosted · 6 panels · 28 payment methods · reliable on restrictive networks</p>
+<p align="center"><b>Свой VPN-сервис в Telegram-боте.</b><br>На вашем сервере · 6 панелей · 28 способов оплаты · стабильная работа в сетях с ограничениями</p>
 
 <p align="center">
-  <a href="https://github.com/qklafk/netoryx/releases"><img src="https://img.shields.io/badge/version-0.9.0--beta-blue" alt="Version 0.9.0-beta"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-green" alt="License AGPL-3.0"></a>
-  <a href="https://github.com/qklafk/netoryx/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/qklafk/netoryx/ci.yml?branch=main&label=CI" alt="CI status"></a>
-  <a href="https://github.com/qklafk/netoryx/pkgs/container/netoryx"><img src="https://img.shields.io/badge/image-ghcr.io-informational?logo=docker&logoColor=white" alt="GHCR image"></a>
-  <a href="https://github.com/qklafk/netoryx/stargazers"><img src="https://img.shields.io/github/stars/qklafk/netoryx?style=flat" alt="GitHub stars"></a>
+  <a href="https://github.com/qklafk/netoryx/releases"><img src="https://img.shields.io/badge/version-0.9.0--beta-blue" alt="Версия 0.9.0-beta"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-green" alt="Лицензия AGPL-3.0"></a>
+  <a href="https://github.com/qklafk/netoryx/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/qklafk/netoryx/ci.yml?branch=main&label=CI" alt="Статус CI"></a>
+  <a href="https://github.com/qklafk/netoryx/pkgs/container/netoryx"><img src="https://img.shields.io/badge/image-ghcr.io-informational?logo=docker&logoColor=white" alt="Образ в GHCR"></a>
+  <a href="https://github.com/qklafk/netoryx/stargazers"><img src="https://img.shields.io/github/stars/qklafk/netoryx?style=flat" alt="Звёзды на GitHub"></a>
 </p>
 
 <p align="center">
-  <b>English</b> | <a href="README.ru.md">Русский</a>
+  <b>Русский</b> | <a href="README.en.md">English</a>
 </p>
 
 <p align="center">
-  <a href="#quick-start">Quick start</a> ·
-  <a href="#documentation">Docs</a> ·
-  <a href="https://t.me/netoryx">Telegram channel</a> ·
-  <a href="https://qklafk.github.io/netoryx/">Website</a>
+  <a href="#быстрый-старт">Быстрый старт</a> ·
+  <a href="#документация">Документация</a> ·
+  <a href="https://t.me/netoryx">Telegram-канал</a> ·
+  <a href="https://qklafk.github.io/netoryx/">Сайт</a>
 </p>
 
-<p align="center"><img src="docs/images/demo-bot.gif" width="300" alt="The bot in action"></p>
+<p align="center"><img src="docs/images/demo-bot.ru.gif" width="300" alt="Бот в работе"></p>
 
-**Netoryx** is a self-hosted Telegram bot, web admin and Mini App for selling or sharing VPN access.
+**Netoryx** это self-hosted Telegram-бот, веб-админка и Mini App для продажи или раздачи доступа к VPN.
 
-- **Works with the panels you already run:** 3x-ui, Remnawave, Marzban, Marzneshin, PasarGuard, Hiddify, any mix of them.
-- **Sells for you:** 28 payment methods, plans, trials, auto-renew, referrals, one personal subscription link per customer.
-- **One command to install** on a fresh Linux server; also fine for yourself, family and friends (personal mode, no payments).
+- **Работает с панелями, которые у вас уже есть:** 3x-ui, Remnawave, Marzban, Marzneshin, PasarGuard, Hiddify, в любом сочетании.
+- **Продаёт за вас:** 28 способов оплаты, тарифы, пробный период, автопродление, рефералы, одна личная ссылка подписки на клиента.
+- **Ставится одной командой** на чистый Linux-сервер; подходит и для себя, семьи и друзей (личный режим, без платежей).
 
-> **Status: 0.9.0-beta.** The first public beta. It runs in production on a real server, but it has had little field
-> time compared with older projects. Back up before upgrading and report anything odd in the issues.
+> **Статус: 0.9.0-beta.** Первая публичная бета. Проект работает на реальном сервере, но наработки в бою у него пока
+> меньше, чем у старых проектов. Перед обновлением делайте резервную копию, о странностях пишите в Issues.
 
-## Quick start
+## Быстрый старт
 
-On a fresh server, as root:
+На чистом сервере от имени root:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/qklafk/netoryx/main/install.sh | sudo bash
 ```
 
-The installer asks for a bot token (from [@BotFather](https://t.me/BotFather)) and your Telegram ID. Non-interactive:
+Установщик спросит токен бота (его выдаёт [@BotFather](https://t.me/BotFather)) и ваш Telegram ID. Без вопросов:
 
 ```bash
-sudo bash install.sh --bot-token <token> --admin-id <your telegram id> --domain vpn.example.com --with-xui --yes
+sudo bash install.sh --bot-token <токен> --admin-id <ваш telegram id> --domain vpn.example.com --with-xui --yes
 ```
 
-Without `--domain` it uses `<ip-with-dashes>.sslip.io`, which gets a real HTTPS certificate with no DNS setup (the first
-certificate can take a minute or two). Optional flags: `--with-xui` (install a 3x-ui panel next to the bot),
-`--with-tgproxy` (Telegram MTProto proxy), `--with-socks` / `--socks-port 2080` (Telegram SOCKS5).
+Без `--domain` берётся `<ip-через-дефисы>.sslip.io`: настоящий HTTPS-сертификат без настройки DNS (первый сертификат
+может выпускаться минуту-две). Необязательные флаги: `--with-xui` (поставить панель 3x-ui рядом с ботом),
+`--with-tgproxy` (MTProto-прокси для Telegram), `--with-socks` и `--socks-port 2080` (SOCKS5 для Telegram).
 
-**What you get at the end:**
+**Что вы получите в конце:**
 
-- a one-time link to the web admin;
-- the bot's username and your subscription domain;
-- if enabled, your own Telegram proxy links with a QR code in the terminal;
-- everything in `/opt/netoryx`, managed by the `netoryx` command:
-  `netoryx status | logs [service] | update | backup | admin-link | restart | uninstall`.
+- одноразовую ссылку в веб-админку;
+- имя бота и домен подписок;
+- если включено, ваши ссылки на Telegram-прокси с QR-кодом в терминале;
+- всё в `/opt/netoryx`, управление командой `netoryx`:
+  `netoryx status | logs [сервис] | update | backup | admin-link | restart | uninstall`.
 
-| System | x86_64 | ARM64 | Status |
+| Система | x86_64 | ARM64 | Статус |
 |---|---|---|---|
-| Ubuntu 24.04 | yes | yes | tested on a real server |
-| Ubuntu 22.04, 26.04 | yes | yes | beta |
-| Debian 12, 13 | yes | yes | beta |
-| AlmaLinux 9, Rocky Linux 9 | yes | yes | beta |
+| Ubuntu 24.04 | да | да | проверена на реальном сервере |
+| Ubuntu 22.04, 26.04 | да | да | бета |
+| Debian 12, 13 | да | да | бета |
+| AlmaLinux 9, Rocky Linux 9 | да | да | бета |
 
-Minimum: root access, 2 vCPU / 2 GB RAM / 20 GB disk, a bot token, ports 80 and 443 open (one more only if you enable
-SOCKS5). A domain is recommended; without one `sslip.io` is used. Details, flags and what the installer changes:
-[docs/installation.md](docs/installation.md).
+Минимум: root-доступ, 2 vCPU / 2 ГБ ОЗУ / 20 ГБ диска, токен бота, открытые порты 80 и 443 (ещё один только при
+включённом SOCKS5). Домен желателен; без него используется `sslip.io`. Подробности, флаги и список изменений на
+сервере: [docs/installation.md](docs/installation.md).
 
-## Features
+## Возможности
 
 <table>
 <tr>
 <td width="33%" valign="top">
 
-**🧩 Panels**<br>
-3x-ui (2.x and 3.x), Remnawave 3.0+, Marzban, Marzneshin, PasarGuard, Hiddify, any number at once. Import of existing
-users, health alerts. [Docs](docs/panels.md)
+**🧩 Панели**<br>
+3x-ui (2.x и 3.x), Remnawave 3.0+, Marzban, Marzneshin, PasarGuard, Hiddify, сколько угодно одновременно. Импорт
+существующих пользователей, оповещения о здоровье. [Документация](docs/panels.md)
 
 </td>
 <td width="33%" valign="top">
 
-**💳 Payments, 28 methods**<br>
-Stars, 6 crypto (CryptoBot, Heleket, NOWPayments, Plisio, direct TON, direct USDT TRC-20), 17 Russian gateways (incl. RollyPay, cisPay, TabPay),
-Stripe, PayPal, manual card/SBP, custom HTTP. Credited exactly once. [Docs](docs/payments.md)
+**💳 Платежи, 28 способов**<br>
+Stars, 6 криптовариантов (CryptoBot, Heleket, NOWPayments, Plisio, прямые TON и USDT TRC-20), 17 российских шлюзов (включая RollyPay, cisPay, TabPay),
+Stripe, PayPal, ручной перевод по карте/СБП, универсальный HTTP-шлюз. Зачисление ровно один раз.
+[Документация](docs/payments.md)
 
 </td>
 <td width="33%" valign="top">
 
-**📱 Subscriptions and devices**<br>
-Several subscriptions per user, bot-side HWID device limit, add-ons, trials, gifts, promo codes, 3-mode referrals,
-auto-renew.
+**📱 Подписки и устройства**<br>
+Несколько подписок у пользователя, лимит устройств по HWID на стороне бота, докупки, пробный период, подарки,
+промокоды, рефералы в трёх режимах, автопродление.
 
 </td>
 </tr>
 <tr>
 <td valign="top">
 
-**✈️ Telegram proxies**<br>
-A personal MTProto proxy (telemt or 3x-ui) and a personal SOCKS5 account per user, with access rules.
-[Docs](docs/telegram-proxy.md)
+**✈️ Прокси для Telegram**<br>
+Личный MTProto-прокси (telemt или 3x-ui) и личный SOCKS5-аккаунт на каждого пользователя, с правилами доступа.
+[Документация](docs/ru/telegram-proxy.md)
 
 </td>
 <td valign="top">
 
-**🔒 Privacy**<br>
-No customer IPs in logs or the database by default, HWIDs stored only as a keyed hash, Xray access log off.
-[Docs](docs/privacy.md)
+**🔒 Приватность**<br>
+По умолчанию нет IP клиентов ни в журналах, ни в базе, HWID хранятся только как хеш с ключом, журнал доступа Xray
+выключен. [Документация](docs/privacy.md)
 
 </td>
 <td valign="top">
 
-**🖥 Admin, Mini App, cabinet**<br>
-React web admin with roles, Telegram Mini App, and a customer cabinet in a plain browser for when Telegram is
-unavailable. [Docs](docs/web-cabinet.md)
+**🖥 Админка, Mini App, кабинет**<br>
+Веб-админка на React с ролями, Telegram Mini App и кабинет клиента в обычном браузере на случай, когда Telegram недоступен.
+[Документация](docs/ru/web-cabinet.md)
 
 </td>
 </tr>
 <tr>
 <td valign="top">
 
-**🛡 Connection stability**<br>
-Everything on port 443 behind an SNI router, self-hosted Reality server name, compact TLS hello, "LTE" relay endpoints
-for mobile networks with restricted access.
+**🛡 Стабильность соединения**<br>
+Всё на порту 443 за SNI-маршрутизатором, собственное имя для Reality, компактный TLS-hello, релей-эндпоинты «LTE» для
+мобильных сетей с ограниченным доступом.
 
 </td>
 <td valign="top">
 
-**🚫 Ad blocking and YouTube exit**<br>
-Optional ad and tracker blocking in the Xray routing of 3x-ui panels, and an optional separate exit server for YouTube.
+**🚫 Блокировка рекламы и выход для YouTube**<br>
+По желанию блокировка рекламных и трекерных доменов в маршрутизации Xray на панелях 3x-ui и отдельный сервер-выход
+для YouTube.
 
 </td>
 <td valign="top">
 
-**🌍 7 languages**<br>
-Russian, English, Ukrainian, Kazakh, Uzbek, Persian, Chinese. Only Russian and English are reviewed by native
-speakers so far.
+**🌍 7 языков**<br>
+Русский, английский, украинский, казахский, узбекский, персидский, китайский. Носители языка проверили пока только
+русский и английский.
 
 </td>
 </tr>
 </table>
 
-More: multi-level referrals with withdrawals, win-back discounts, tariff audience rules, broadcasts with segments,
-tickets, text overrides (white-label), main-menu editor, audit log, encrypted backups, outgoing webhooks
-([docs/webhooks.md](docs/webhooks.md)), public API keys, "Мой налог" receipts for the self-employed.
+Ещё: многоуровневые рефералы с выводом, скидки для возврата ушедших, правила доступности тарифов, рассылки по
+сегментам, тикеты, переопределение текстов (white-label), редактор главного меню, журнал аудита, шифрованные резервные
+копии, исходящие вебхуки ([docs/webhooks.md](docs/webhooks.md)), публичные API-ключи, чеки «Мой налог» для самозанятых.
 
-## Screenshots
+## Скриншоты
 
 <p align="center">
-  <img src="docs/images/screen-bot.png" width="300" alt="The bot: main menu">
+  <img src="docs/images/screen-bot.ru.png" width="300" alt="Бот: главное меню">
 </p>
 
 <p align="center"><b>Mini App</b></p>
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: light)" srcset="docs/images/screen-miniapp-light.png">
-    <img src="docs/images/screen-miniapp.png" alt="Mini App">
+    <source media="(prefers-color-scheme: light)" srcset="docs/images/screen-miniapp-light.ru.png">
+    <img src="docs/images/screen-miniapp.ru.png" alt="Mini App">
   </picture>
 </p>
 
-<p align="center"><b>Web admin</b></p>
+<p align="center"><b>Веб-админка</b></p>
 <p align="center">
-  <img src="docs/images/screen-admin.png" alt="Web admin">
+  <img src="docs/images/screen-admin.ru.png" alt="Веб-админка">
 </p>
 
-## How it works
+## Как это устроено
 
 ```mermaid
 flowchart LR
-    C[Client apps<br/>Happ, INCY, v2RayTun, Hiddify] -->|":443"| E[HAProxy edge<br/>routes by TLS name]
-    T[Telegram users] -->|":443"| E
-    E --> W[Caddy<br/>automatic HTTPS]
+    C[Клиентские приложения<br/>Happ, INCY, v2RayTun, Hiddify] -->|":443"| E[HAProxy edge<br/>маршрут по имени TLS]
+    T[Пользователи Telegram] -->|":443"| E
+    E --> W[Caddy<br/>автоматический HTTPS]
     E --> X[Xray Reality]
-    E --> M[telemt<br/>MTProto proxy]
-    W --> A[Netoryx app<br/>bot, web admin, Mini App, /sub]
-    A --> P[Panels<br/>3x-ui, Remnawave, Marzban, ...]
+    E --> M[telemt<br/>MTProto-прокси]
+    W --> A[Приложение Netoryx<br/>бот, веб-админка, Mini App, /sub]
+    A --> P[Панели<br/>3x-ui, Remnawave, Marzban, ...]
     A --> D[(PostgreSQL)]
-    PAY[Payment providers] -->|webhooks| W
+    PAY[Платёжные системы] -->|вебхуки| W
 ```
 
 ## FAQ
 
 <details>
-<summary>Can I sell VPN subscriptions with it? What does the AGPL require?</summary>
+<summary>Можно ли продавать с ним VPN-подписки? Что требует AGPL?</summary>
 
-Yes, with no royalties or fees. The AGPL only asks for something if you modify the code and let users use that modified
-version over a network: then you must offer them its source under the same license. Changing settings, plans, prices,
-texts, languages and branding in the admin does not count, those live in the database and `.env`. Not legal advice; see
-[License](#license).
-
-</details>
-
-<details>
-<summary>What server do I need and what does it cost?</summary>
-
-A small VPS is enough to start: 2 vCPU, 2 GB RAM, 20 GB disk, Ubuntu 24.04 (the tested system). Prices vary by
-provider; the VPN traffic itself usually needs more bandwidth than CPU. Put the VPN node in a country that suits your
-customers; see [docs/installation.md](docs/installation.md) for the control-plane and VPN-node roles.
+Да, без роялти и отчислений. AGPL что-то требует, только если вы изменили код и даёте пользователям работать с
+изменённой версией по сети: тогда нужно предложить им её исходный код на той же лицензии. Правка настроек, тарифов,
+цен, текстов, языков и оформления в админке сюда не относится: всё это лежит в базе и `.env`. Это не юридическая
+консультация; см. [Лицензия](#лицензия).
 
 </details>
 
 <details>
-<summary>What about mobile networks that only allow connections to approved hosts?</summary>
+<summary>Какой сервер нужен и сколько это стоит?</summary>
 
-Foreign IPs are often not reachable there. Netoryx supports relay endpoints and a separate "LTE" profile, which you can point
-at a relay server inside the country. It cannot guarantee access, since that depends on what the operator allows. See
-[docs/panels.md](docs/panels.md).
-
-</details>
-
-<details>
-<summary>Can it remove YouTube ads?</summary>
-
-Ad and tracker blocking (`ADBLOCK_ENABLED`) covers many ad domains but not YouTube's own in-video ads. An optional
-"YouTube exit" (`YOUTUBE_EXIT_ENABLED`) routes YouTube through a separate server in another country. Both apply to
-3x-ui panels and are off by default.
+Для старта хватит небольшого VPS: 2 vCPU, 2 ГБ ОЗУ, 20 ГБ диска, Ubuntu 24.04 (проверенная система). Цены зависят от
+провайдера; самому VPN обычно важнее ширина канала, чем процессор. VPN-узел размещайте в стране, которая подходит
+вашим клиентам; про роли control-plane и vpn-node см. [docs/installation.md](docs/installation.md).
 
 </details>
 
 <details>
-<summary>Is it stable?</summary>
+<summary>Что с мобильными сетями, где разрешены только заранее одобренные адреса?</summary>
 
-It is a beta: the code is covered by several thousand offline tests and integration tests against real panels, and it
-runs on a real server, but it has little time in the field. Take a backup before every upgrade.
+Иностранные IP там часто недоступны. Netoryx умеет релей-эндпоинты и отдельный профиль «LTE», который можно
+направить на релей-сервер внутри страны. Гарантировать доступ нельзя: всё зависит от того, что разрешает оператор.
+См. [docs/panels.md](docs/panels.md).
 
 </details>
 
-## Documentation
+<details>
+<summary>Можно ли убрать рекламу в YouTube?</summary>
 
-| Topic | Pages |
+Блокировка рекламы и трекеров (`ADBLOCK_ENABLED`) закрывает многие рекламные домены, но не рекламу внутри видео
+YouTube. Необязательный «выход для YouTube» (`YOUTUBE_EXIT_ENABLED`) направляет YouTube через отдельный сервер в
+другой стране. Оба режима работают на панелях 3x-ui и по умолчанию выключены.
+
+</details>
+
+<details>
+<summary>Насколько это стабильно?</summary>
+
+Это бета: код покрыт несколькими тысячами офлайн-тестов и интеграционными тестами на реальных панелях и работает на
+реальном сервере, но в бою у него пока мало времени. Перед каждым обновлением делайте резервную копию.
+
+</details>
+
+## Документация
+
+| Тема | Страницы |
 |---|---|
-| Getting started | [Beginner's guide](docs/beginners.md), [Installation](docs/installation.md), [Configuration](docs/configuration.md), [Subscription formats](docs/subscriptions.md), [FAQ](docs/faq.md), [Troubleshooting](docs/troubleshooting.md) |
-| Operating | [Upgrading](docs/upgrading.md), [Backups](docs/backups.md), [Privacy](docs/privacy.md) |
-| Integrations | [Panels](docs/panels.md), [Payments](docs/payments.md), [Outgoing webhooks](docs/webhooks.md) |
-| Customers | [Telegram proxy](docs/telegram-proxy.md), [Web cabinet](docs/web-cabinet.md), ["Мой налог" receipts](docs/npd-receipts.md) |
-| Russian | [FAQ and quick start](docs/ru/faq.md), [Troubleshooting](docs/ru/troubleshooting.md), [Subscription formats](docs/ru/subscriptions.md), [Telegram proxy](docs/ru/telegram-proxy.md), [Web cabinet](docs/ru/web-cabinet.md), [Receipts](docs/ru/npd-receipts.md) |
-| Project | [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md), [Legal notice](LEGAL.md), [Terms and privacy templates](docs/legal/privacy-policy-template.md), [Changelog](CHANGELOG.md) |
+| Начало работы | [Руководство для новичков](docs/ru/beginners.md), [Установка](docs/installation.md), [Настройка](docs/configuration.md), [FAQ](docs/faq.md), [Решение проблем](docs/troubleshooting.md) |
+| Эксплуатация | [Обновление](docs/upgrading.md), [Резервные копии](docs/backups.md), [Приватность](docs/privacy.md) |
+| Интеграции | [Панели](docs/panels.md), [Платежи](docs/payments.md), [Исходящие вебхуки](docs/webhooks.md) |
+| Клиенты | [Прокси для Telegram](docs/ru/telegram-proxy.md), [Веб-кабинет](docs/ru/web-cabinet.md), [Чеки «Мой налог»](docs/ru/npd-receipts.md) |
+| По-русски | [Быстрый старт и FAQ](docs/ru/faq.md), [Решение проблем](docs/ru/troubleshooting.md) |
+| Проект | [Участие в проекте](CONTRIBUTING.ru.md), [Безопасность](SECURITY.ru.md), [Список изменений](CHANGELOG.md) |
 
-## Legal
+## Правовая информация
 
-Netoryx is software only: the authors run no VPN service, collect no data and the code has no telemetry. Whoever installs
-it is the operator and is responsible for complying with the laws that apply to their service and customers. See
-[LEGAL.md](LEGAL.md); templates for your terms of service and privacy policy are in [docs/legal](docs/legal/).
+Netoryx — только программное обеспечение: авторы не оказывают VPN-услуг, не собирают данные, а в коде нет телеметрии.
+Установивший его становится оператором и сам отвечает за соблюдение законов, применимых к его сервису и клиентам. См.
+[LEGAL.ru.md](LEGAL.ru.md); шаблоны условий использования и политики конфиденциальности: [docs/ru/legal](docs/ru/legal/).
 
-## Upgrading
+## Обновление
 
 ```bash
 sudo netoryx backup
 sudo netoryx update
 ```
 
-`netoryx update` fetches the new release and rebuilds only the application container, so active VPN sessions are not
-interrupted. Read [docs/upgrading.md](docs/upgrading.md) and the changelog first.
+`netoryx update` скачивает новый релиз и пересобирает только контейнер приложения, поэтому активные VPN-сессии не
+обрываются. Сначала прочитайте [docs/upgrading.md](docs/upgrading.md) и список изменений.
 
-## Support the project
+## Поддержать проект
 
-If Netoryx saves you time, the best help is a star on GitHub, a bug report or a pull request. More ways to support the
-project will be listed here later.
+Если Netoryx экономит вам время, лучшая помощь это звезда на GitHub, отчёт об ошибке или pull request. Другие способы
+поддержки появятся здесь позже.
 
-## Star history
+## История звёзд
 
 <a href="https://github.com/qklafk/netoryx/stargazers">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date&theme=dark">
-    <img src="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date" alt="Star history" width="600">
+    <img src="https://api.star-history.com/svg?repos=qklafk/netoryx&type=Date" alt="История звёзд" width="600">
   </picture>
 </a>
 
-## License
+## Лицензия
 
-Netoryx is licensed under the **GNU AGPL-3.0-or-later** (see [LICENSE](LICENSE)). In plain language, and not legal
-advice:
+Netoryx распространяется по лицензии **GNU AGPL-3.0-or-later** (см. [LICENSE](LICENSE)). Простыми словами, это не
+юридическая консультация:
 
-- You may use it, run it and **sell VPN subscriptions with it for free**. There are no royalties and no fees.
-- If you **modify the code** and let users interact with your modified version over a network, you must offer those
-  users the source of your modified version under the same license.
-- Running it unmodified, or only changing settings, texts, plans, prices, languages and branding in the admin, does not
-  oblige you to publish anything: those live in the database and the `.env`, not in the code.
-- Forking is fine; keep the license and the copyright notices.
+- Использовать, запускать и **продавать с ним VPN-подписки можно бесплатно**. Ни роялти, ни отчислений нет.
+- Если вы **изменили код** и даёте пользователям работать с изменённой версией по сети, вы обязаны предложить им
+  исходный код этой версии на тех же условиях.
+- Запуск без изменений или правка только настроек, текстов, тарифов, цен, языков и оформления в админке ничего
+  публиковать не обязывает: всё это лежит в базе и в `.env`, а не в коде.
+- Форки допустимы; сохраняйте лицензию и уведомления об авторских правах.
 
-Bugs and questions: GitHub Issues. Security problems: see [SECURITY.md](SECURITY.md), please do not open a public issue.
-Pull requests are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md).
+Ошибки и вопросы: GitHub Issues. Уязвимости: см. [SECURITY.ru.md](SECURITY.ru.md), пожалуйста, не открывайте для них
+публичные issue. Pull request'ы приветствуются, см. [CONTRIBUTING.ru.md](CONTRIBUTING.ru.md).

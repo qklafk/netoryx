@@ -39,6 +39,7 @@ from app.services.payments.base import (
     kop_to_str,
     require,
 )
+from app.utils.security import const_eq
 
 if TYPE_CHECKING:
     from app.db.models import Payment, User
@@ -220,7 +221,7 @@ class CloudPaymentsGateway(HttpGateway):
         if not self._secret:
             return False
         signed = get_header(headers, "Content-HMAC")
-        if signed and hmac.compare_digest(signed.strip(), body_signature(raw, self._secret)):
+        if signed and const_eq(signed.strip(), body_signature(raw, self._secret)):
             return True
         decoded_signed = get_header(headers, "X-Content-HMAC")
         if decoded_signed:
@@ -228,7 +229,7 @@ class CloudPaymentsGateway(HttpGateway):
                 decoded = unquote_plus(raw.decode()).encode()
             except UnicodeDecodeError:
                 return False
-            return hmac.compare_digest(decoded_signed.strip(), body_signature(decoded, self._secret))
+            return const_eq(decoded_signed.strip(), body_signature(decoded, self._secret))
         return False
 
     async def parse_webhook(self, raw: bytes, headers: Mapping[str, str], remote_ip: str | None) -> WebhookResult:
