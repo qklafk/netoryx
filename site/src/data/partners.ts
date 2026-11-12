@@ -46,7 +46,7 @@ export const providers: Provider[] = [
   },
   {
     name: 'Timeweb Cloud',
-    url: 'https://timeweb.com/ru/?i=150867&a=373',
+    url: 'https://timeweb.cloud/?i=150867&a=373',
     icon: 'partners/timeweb.png',
     description: { ru: 'Облачные серверы.', en: 'Cloud servers.' },
   },
