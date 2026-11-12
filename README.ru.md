@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-on-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="docs/images/logo-on-light.png">
-    <img src="docs/images/logo-on-light.png" alt="Netoryx" width="320">
+    <img src="docs/images/logo-on-light.png" alt="Netoryx" width="300">
   </picture>
 </p>
 
@@ -27,7 +27,7 @@
   <a href="https://qklafk.github.io/netoryx/">Сайт</a>
 </p>
 
-<!-- demo (включить, когда появится файл): <p align="center"><img src="docs/images/demo-bot.gif" width="320" alt="Бот в работе"></p> -->
+<p align="center"><img src="docs/images/demo-bot.gif" width="300" alt="Бот в работе"></p>
 
 **Netoryx** это self-hosted Telegram-бот, веб-админка и Mini App для продажи или раздачи доступа к VPN.
 
@@ -156,18 +156,22 @@ Stripe, PayPal, ручной перевод по карте/СБП, универ
 
 ## Скриншоты
 
-<!-- screenshots (включить, когда появятся файлы):
-<table>
-<tr><th>Бот</th><th>Mini App</th><th>Веб-админка</th></tr>
-<tr>
-<td><img src="docs/images/screen-bot.png" alt="Бот"></td>
-<td><img src="docs/images/screen-miniapp.png" alt="Mini App"></td>
-<td><img src="docs/images/screen-admin.png" alt="Веб-админка"></td>
-</tr>
-</table>
--->
+<p align="center">
+  <img src="docs/images/screen-bot.png" width="300" alt="Бот: главное меню">
+</p>
 
-Скриншоты появятся вместе с бетой.
+<p align="center"><b>Mini App</b></p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="docs/images/screen-miniapp-light.png">
+    <img src="docs/images/screen-miniapp.png" alt="Mini App">
+  </picture>
+</p>
+
+<p align="center"><b>Веб-админка</b></p>
+<p align="center">
+  <img src="docs/images/screen-admin.png" alt="Веб-админка">
+</p>
 
 ## Как это устроено
 

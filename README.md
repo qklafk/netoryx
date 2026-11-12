@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo-on-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="docs/images/logo-on-light.png">
-    <img src="docs/images/logo-on-light.png" alt="Netoryx" width="320">
+    <img src="docs/images/logo-on-light.png" alt="Netoryx" width="300">
   </picture>
 </p>
 
@@ -27,7 +27,7 @@
   <a href="https://qklafk.github.io/netoryx/">Website</a>
 </p>
 
-<!-- demo (enable when the file is added): <p align="center"><img src="docs/images/demo-bot.gif" width="320" alt="The bot in action"></p> -->
+<p align="center"><img src="docs/images/demo-bot.gif" width="300" alt="The bot in action"></p>
 
 **Netoryx** is a self-hosted Telegram bot, web admin and Mini App for selling or sharing VPN access.
 
@@ -154,18 +154,22 @@ tickets, text overrides (white-label), main-menu editor, audit log, encrypted ba
 
 ## Screenshots
 
-<!-- screenshots (enable when the files are added):
-<table>
-<tr><th>Bot</th><th>Mini App</th><th>Web admin</th></tr>
-<tr>
-<td><img src="docs/images/screen-bot.png" alt="Bot"></td>
-<td><img src="docs/images/screen-miniapp.png" alt="Mini App"></td>
-<td><img src="docs/images/screen-admin.png" alt="Web admin"></td>
-</tr>
-</table>
--->
+<p align="center">
+  <img src="docs/images/screen-bot.png" width="300" alt="The bot: main menu">
+</p>
 
-Screenshots are coming with the beta.
+<p align="center"><b>Mini App</b></p>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="docs/images/screen-miniapp-light.png">
+    <img src="docs/images/screen-miniapp.png" alt="Mini App">
+  </picture>
+</p>
+
+<p align="center"><b>Web admin</b></p>
+<p align="center">
+  <img src="docs/images/screen-admin.png" alt="Web admin">
+</p>
 
 ## How it works
 
