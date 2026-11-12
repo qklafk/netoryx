@@ -84,6 +84,9 @@ async def test_first_start_greets_and_offers_the_trial(make: Make) -> None:
     text = h.last_text()
     assert "Привет, Ann" in text and "TestVPN" in text
     assert "3 дня" in text  # trial length in the welcome
+    # offered once: the welcome mentions the trial, so the status line does not repeat it
+    assert h.t("core_user.menu.status_trial", trial="3 дня") not in text
+    assert text.count("3 дня") == 1
     buttons = h.button_texts()
     assert buttons[0] == h.t("menu.trial")
     assert h.t("menu.my_subscription") in buttons and h.t("menu.buy") in buttons

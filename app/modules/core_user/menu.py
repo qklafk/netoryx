@@ -116,7 +116,8 @@ def main_menu(
     lines: list[str] = [header, ""] if header else []
     lines.append(_("menu.title", brand=_.esc(settings.brand_name)))
     status = status_line(_, settings, state)
-    if status:
+    # the welcome header already offers the trial; do not repeat it in the status line
+    if status and not (header and state.status == Status.NONE and state.trial_available(settings)):
         lines += ["", status]
 
     def show(key: str, button: InlineKeyboardButton | None) -> InlineKeyboardButton | None:
