@@ -9,7 +9,7 @@
 <p align="center"><b>Свой VPN-сервис в Telegram-боте.</b><br>На вашем сервере · 6 панелей · 28 способов оплаты · стабильная работа в сетях с ограничениями</p>
 
 <p align="center">
-  <a href="https://github.com/qklafk/netoryx/releases"><img src="https://img.shields.io/badge/version-0.9.0--beta-blue" alt="Версия 0.9.0-beta"></a>
+  <a href="https://github.com/qklafk/netoryx/releases"><img src="https://img.shields.io/badge/version-0.9.1--beta-blue" alt="Версия 0.9.1-beta"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-green" alt="Лицензия AGPL-3.0"></a>
   <a href="https://github.com/qklafk/netoryx/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/qklafk/netoryx/ci.yml?branch=main&label=CI" alt="Статус CI"></a>
   <a href="https://github.com/qklafk/netoryx/pkgs/container/netoryx"><img src="https://img.shields.io/badge/image-ghcr.io-informational?logo=docker&logoColor=white" alt="Образ в GHCR"></a>
@@ -35,7 +35,7 @@
 - **Продаёт за вас:** 28 способов оплаты, тарифы, пробный период, автопродление, рефералы, одна личная ссылка подписки на клиента.
 - **Ставится одной командой** на чистый Linux-сервер; подходит и для себя, семьи и друзей (личный режим, без платежей).
 
-> **Статус: 0.9.0-beta.** Первая публичная бета. Проект работает на реальном сервере, но наработки в бою у него пока
+> **Статус: 0.9.1-beta.** Публичная бета. Проект работает на реальном сервере, но наработки в бою у него пока
 > меньше, чем у старых проектов. Перед обновлением делайте резервную копию, о странностях пишите в Issues.
 
 ## Быстрый старт

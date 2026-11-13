@@ -1,6 +1,6 @@
 [project]
 name = "vpn-bot"
-version = "0.9.0b0"
+version = "0.9.1b0"
 description = "Self-hosted Telegram bot for selling VPN subscriptions on 3x-ui and Remnawave: plans, trials, multi-server, Happ/INCY subscriptions, Stars/CryptoBot/Platega/YooKassa payments, web admin and Mini App"
 readme = "README.md"
 license = "AGPL-3.0-or-later"

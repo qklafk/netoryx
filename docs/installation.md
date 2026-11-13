@@ -97,8 +97,9 @@ The command above installs the newest code from the `main` branch. To install a 
 running it, download the installer and its checksums from the [releases page](https://github.com/qklafk/netoryx/releases):
 
 ```bash
-curl -fsSLO https://github.com/qklafk/netoryx/releases/latest/download/install.sh
-curl -fsSLO https://github.com/qklafk/netoryx/releases/latest/download/SHA256SUMS
+VERSION=v0.9.1-beta  # the tag of the release you install, from the releases page
+curl -fsSLO "https://github.com/qklafk/netoryx/releases/download/$VERSION/install.sh"
+curl -fsSLO "https://github.com/qklafk/netoryx/releases/download/$VERSION/SHA256SUMS"
 sha256sum --ignore-missing -c SHA256SUMS && sudo bash install.sh
 ```
 

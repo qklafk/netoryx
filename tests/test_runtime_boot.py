@@ -374,7 +374,9 @@ def test_cli_invalid_config(env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
 def test_cli_version(capsys: pytest.CaptureFixture[str]) -> None:
     with pytest.raises(SystemExit):
         cli.main(["--version"])
-    assert "0.9.0b0" in capsys.readouterr().out
+    from app.core import __version__
+
+    assert f"Netoryx {__version__}" in capsys.readouterr().out
 
 
 def test_cli_admin_link(env: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:

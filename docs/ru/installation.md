@@ -98,8 +98,9 @@ netoryx status | logs [service] | update | backup | admin-link | tg-link | resta
 запуском, скачайте установщик и контрольные суммы со [страницы релизов](https://github.com/qklafk/netoryx/releases):
 
 ```bash
-curl -fsSLO https://github.com/qklafk/netoryx/releases/latest/download/install.sh
-curl -fsSLO https://github.com/qklafk/netoryx/releases/latest/download/SHA256SUMS
+VERSION=v0.9.1-beta  # тег релиза, который ставите, со страницы релизов
+curl -fsSLO "https://github.com/qklafk/netoryx/releases/download/$VERSION/install.sh"
+curl -fsSLO "https://github.com/qklafk/netoryx/releases/download/$VERSION/SHA256SUMS"
 sha256sum --ignore-missing -c SHA256SUMS && sudo bash install.sh
 ```
 

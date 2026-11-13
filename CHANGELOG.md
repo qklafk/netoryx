@@ -5,6 +5,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.9.1-beta] - 2026-11-13
+
 ### Added
 
 - Shared Telegram-only link (`/sub/tg/<token>`, Happ and v2RayTun) with a public landing page at `/tg`: only Telegram goes

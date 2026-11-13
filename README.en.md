@@ -9,7 +9,7 @@
 <p align="center"><b>Your own VPN service in a Telegram bot.</b><br>Self-hosted · 6 panels · 28 payment methods · reliable on restrictive networks</p>
 
 <p align="center">
-  <a href="https://github.com/qklafk/netoryx/releases"><img src="https://img.shields.io/badge/version-0.9.0--beta-blue" alt="Version 0.9.0-beta"></a>
+  <a href="https://github.com/qklafk/netoryx/releases"><img src="https://img.shields.io/badge/version-0.9.1--beta-blue" alt="Version 0.9.1-beta"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-green" alt="License AGPL-3.0"></a>
   <a href="https://github.com/qklafk/netoryx/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/qklafk/netoryx/ci.yml?branch=main&label=CI" alt="CI status"></a>
   <a href="https://github.com/qklafk/netoryx/pkgs/container/netoryx"><img src="https://img.shields.io/badge/image-ghcr.io-informational?logo=docker&logoColor=white" alt="GHCR image"></a>
@@ -35,7 +35,7 @@
 - **Sells for you:** 28 payment methods, plans, trials, auto-renew, referrals, one personal subscription link per customer.
 - **One command to install** on a fresh Linux server; also fine for yourself, family and friends (personal mode, no payments).
 
-> **Status: 0.9.0-beta.** The first public beta. It runs in production on a real server, but it has had little field
+> **Status: 0.9.1-beta.** A public beta. It runs in production on a real server, but it has had little field
 > time compared with older projects. Back up before upgrading and report anything odd in the issues.
 
 ## Quick start
