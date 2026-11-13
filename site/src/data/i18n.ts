@@ -221,7 +221,10 @@ export const faq: T<{ title: string; more: string; items: { q: string; a: string
       { q: 'Как клиенты подключаются?', a: 'Открывают бота, берут пробный период или тариф и нажимают кнопку подключения: ссылка откроется в Happ, INCY, v2RayTun или Hiddify и импортирует подписку.' },
       { q: 'Отключит ли клиентов обновление?', a: 'Нет. «netoryx update» пересобирает только контейнер приложения. Перезапуск edge, caddy или панели соединения разорвёт.' },
       { q: 'Что записывается о трафике клиентов?', a: 'Никаких посещённых сайтов и содержимого, а по умолчанию и IP-адресов. Подробности на странице о приватности.' },
-      { q: 'Можно ли продавать подписки?', a: 'Да. Лицензия AGPL-3.0-or-later разрешает коммерческое использование, отчислений и комиссий нет.' },
+      { q: 'Какую панель выбрать?', a: 'По умолчанию 3x-ui: на ней работает всё. Remnawave, Marzban, PasarGuard и Marzneshin тоже ставятся одной командой и проверены на живом сервере.' },
+      { q: 'Что такое «Доступ к Telegram»?', a: 'Одна общая ссылка и страница /tg: через VPN идёт только Telegram, остальное напрямую. Её можно публиковать — сервер не пускает этого клиента никуда, кроме Telegram.' },
+      { q: 'Как переехать на другой сервер?', a: '«netoryx backup --full» сохраняет весь сервер одним архивом, «netoryx restore» возвращает его на новом сервере с той же панелью. Ссылки клиентов продолжают работать.' },
+      { q: 'Можно ли продавать подписки?', a: 'Да. Лицензия AGPL-3.0-or-later разрешает коммерческое использование, отчислений и комиссий нет. За соблюдение законов отвечает тот, кто запускает сервис.' },
     ],
   },
   en: {
@@ -233,7 +236,10 @@ export const faq: T<{ title: string; more: string; items: { q: string; a: string
       { q: 'How do customers connect?', a: 'They open the bot, start a trial or buy a plan and tap the connect button: the link opens in Happ, INCY, v2RayTun or Hiddify and imports the subscription.' },
       { q: 'Does updating disconnect customers?', a: '"netoryx update" rebuilds only the application container, so no. Restarting edge, caddy or the panel does.' },
       { q: "Is anything logged about customers' traffic?", a: 'No visited sites, no content and, by default, no IP addresses. See the privacy page for details.' },
-      { q: 'Can I sell subscriptions?', a: 'Yes. The AGPL-3.0-or-later license allows commercial use. There are no royalties or fees.' },
+      { q: 'Which panel should I pick?', a: '3x-ui by default: everything works on it. Remnawave, Marzban, PasarGuard and Marzneshin are also installed by one command and were tested on a live server.' },
+      { q: 'What is Telegram access?', a: 'One shared link and a /tg page: only Telegram goes through the VPN, the rest is direct. It is safe to publish: the server lets that client reach nothing but Telegram.' },
+      { q: 'How do I move to another server?', a: '"netoryx backup --full" saves the whole server in one archive and "netoryx restore" puts it back on a new server with the same panel. Links of existing customers keep working.' },
+      { q: 'Can I sell subscriptions?', a: 'Yes. The AGPL-3.0-or-later license allows commercial use. There are no royalties or fees. Whoever runs the service is responsible for complying with the law.' },
     ],
   },
 };
