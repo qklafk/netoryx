@@ -734,6 +734,25 @@ class Settings(BaseSettings):
             raise ValueError("BRAND_LOGO_URL must be an https:// URL")
         return v
 
+    @field_validator("channel_url", "support_url", "terms_url", "privacy_url", "required_channel_url")
+    @classmethod
+    def _check_public_link(cls, v: str | None) -> str | None:
+        """These links end up in hrefs and buttons: only web and Telegram schemes (never ``javascript:``).
+
+        A link written without a scheme keeps working: ``t.me/x`` becomes ``https://t.me/x`` and ``@x`` a t.me link.
+        """
+        if v is None or not v.strip():
+            return None if v is None else v
+        value = v.strip()
+        if value.startswith("@") and len(value) > 1:
+            value = f"https://t.me/{value[1:]}"
+        elif not value.startswith("//") and ":" not in value.split("/", 1)[0]:
+            value = f"https://{value}"
+        scheme, sep, rest = value.partition(":")
+        if scheme.lower() not in ("http", "https", "tg") or not sep or not rest.removeprefix("//"):
+            raise ValueError("use an http(s):// or tg:// link")
+        return value
+
     @field_validator("public_base_url", "xui_host", "remnawave_url")
     @classmethod
     def _strip_slash(cls, v: str | None) -> str | None:

@@ -304,6 +304,11 @@ async def _export_rows(conn: AsyncConnection, table: Table) -> AsyncIterator[lis
             return
 
 
+def _private_file(path: Path) -> None:
+    """Create ``path`` empty and readable by its owner only, before any data is written to it (blocking)."""
+    os.close(os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600))
+
+
 def _open_gzip_writer(path: Path) -> gzip.GzipFile:
     return gzip.open(path, "wb", 6)
 
@@ -383,6 +388,7 @@ async def create(
     rows: dict[str, int] = {}
     partial = plain.with_name(plain.name + ".part")
     try:
+        await asyncio.to_thread(_private_file, partial)
         if sqlite_path:
             await asyncio.to_thread(_sqlite_snapshot, sqlite_path, partial)
         else:
@@ -390,6 +396,7 @@ async def create(
         final = plain
         if password:
             final = plain.with_name(plain.name + ENCRYPTED_SUFFIX)
+            await asyncio.to_thread(_private_file, final)
             await asyncio.to_thread(encrypt_file, partial, final, password)
             await asyncio.to_thread(partial.unlink)
         else:

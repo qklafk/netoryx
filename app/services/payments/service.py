@@ -47,6 +47,7 @@ from app.services.payments.base import GatewayError, PaymentGateway, ProviderSta
 log = logging.getLogger(__name__)
 
 OPEN_STATUSES = (PaymentStatus.CREATED, PaymentStatus.PENDING)
+MAX_OPEN_PAYMENTS_PER_USER = 20  # a user cannot flood the provider and the reconciler with unpaid invoices
 # Statuses a provider-confirmed payment may be credited from (late payments included).
 CREDITABLE_STATUSES = (*OPEN_STATUSES, PaymentStatus.EXPIRED, PaymentStatus.CANCELED)
 _TRANSITIONS: dict[PaymentStatus, tuple[PaymentStatus, ...]] = {
@@ -193,6 +194,13 @@ async def _insert_payment(session_factory: SessionFactory, payment: Payment) -> 
 
             if await subscriptions.get_for_user(s, user.tg_id, payment.subscription_id) is None:
                 raise ValueError("subscription does not belong to the payer")
+        open_count = await s.scalar(
+            select(func.count())
+            .select_from(Payment)
+            .where(Payment.user_id == user.tg_id, Payment.status.in_(OPEN_STATUSES))
+        )
+        if (open_count or 0) >= MAX_OPEN_PAYMENTS_PER_USER:
+            raise ValueError("too many unpaid payments")
         s.add(payment)
     return payment, user
 

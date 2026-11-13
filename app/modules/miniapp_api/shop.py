@@ -255,6 +255,7 @@ async def list_plans(
     user: MiniAppUser,
     db: ReadDb,
     plan_id: Annotated[int | None, Query(description="Also show this hidden plan (deep link)")] = None,
+    plan_token: Annotated[str, Query(max_length=64, description="Signed token of the hidden plan's link")] = "",
 ) -> PlansOut:
     settings: Settings = ctx.settings
     active = await plans_service.list_active(db)
@@ -265,7 +266,10 @@ async def list_plans(
         for plan in active
         if db_user is not None
         and plans_service.available_to(plan, db_user, paid=paid)
-        and (not plan.is_hidden or plan.id == plan_id)
+        and (
+            not plan.is_hidden
+            or (plan.id == plan_id and plans_service.link_token_valid(ctx.secret_box, plan.id, plan_token))
+        )
     ]
     personal = await promo.personal_discount(db, user.tg_id)
     prices = {plan.id: personal.price(plan.price_kop) for plan in visible}
@@ -333,6 +337,9 @@ async def buy_plan(plan_id: int, body: BuyIn, request: Request, ctx: Ctx, user: 
         or not plan.is_active
         or not plans_service.available_to(plan, db_user, paid=paid)
     ):
+        raise error(ctx, user, 404, "plan_not_found")
+    # Hidden plans are sold only through their signed link, and never as gifts.
+    if plan.is_hidden and (body.gift or not plans_service.link_token_valid(ctx.secret_box, plan.id, body.plan_token)):
         raise error(ctx, user, 404, "plan_not_found")
     # A group discount belongs to the buyer's own tariff.  Gift codes retain the full tariff value for the recipient.
     if body.gift:

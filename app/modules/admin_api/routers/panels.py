@@ -264,6 +264,8 @@ async def test_panel(body: PanelTestIn, actor: Admin) -> PanelTestOut:
     else:
         if body.kind is None or not body.url:
             raise bad_request("missing_fields", "kind and url are required")
+        # A free-form target makes this server connect anywhere (internal addresses included): owner-only, like adding.
+        actor.require(Permission.SETTINGS_SECRETS)
         panel = Panel(
             name="test",
             kind=body.kind,

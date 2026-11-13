@@ -72,7 +72,8 @@ async def test_plans_list(env: Env) -> None:
         "quick_amounts_kop": [150_00, 300_00, 500_00, 1000_00],
     }
 
-    with_hidden = (await env.get("/plans", params={"plan_id": ids["hidden"]})).json()
+    token = plans.link_token(env.ctx.secret_box, ids["hidden"])
+    with_hidden = (await env.get("/plans", params={"plan_id": ids["hidden"], "plan_token": token})).json()
     assert ids["hidden"] in [p["id"] for p in with_hidden["plans"]]
     assert next(p for p in with_hidden["plans"] if p["id"] == ids["hidden"])["hidden"] is True
     archived = (await env.get("/plans", params={"plan_id": ids["archived"]})).json()

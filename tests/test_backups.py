@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -175,6 +176,20 @@ async def test_sqlite_snapshot_encrypted(
     report = await backups.restore(_engine(target), info.path, password="pw")
     assert report.kind == "sqlite"
     assert await _dump(target) == await _dump(session_factory)
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX file modes")
+@pytest.mark.parametrize("password", [None, "pw"])
+async def test_backup_files_are_private_to_their_owner(
+    session_factory: SessionFactory, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, password: str | None
+) -> None:
+    monkeypatch.setattr(backups, "_SCRYPT_N", 2**10)
+    old_umask = os.umask(0o022)
+    try:
+        info = await backups.create(_engine(session_factory), tmp_path / "bk", password=password, now=NOW)
+    finally:
+        os.umask(old_umask)
+    assert info.path.stat().st_mode & 0o077 == 0
 
 
 async def test_unknown_tables_are_skipped_and_truncated_files_rejected(target: SessionFactory, tmp_path: Path) -> None:

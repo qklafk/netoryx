@@ -361,12 +361,20 @@ def sniffing_update(raw: Any) -> dict[str, Any] | None:
         current = parsed if isinstance(parsed, dict) else {}
     override = current.get("destOverride")
     override = [str(x) for x in override] if isinstance(override, list) else []
-    if current.get("enabled") is True and {"http", "tls"} <= set(override):
+    # routeOnly must stay off: with it the sniffed name only picks the route while the connection still goes to the
+    # address the client asked for, so a Telegram-only client could reach any host by faking a Telegram TLS name.
+    if (
+        current.get("enabled") is True
+        and {"http", "tls"} <= set(override)
+        and current.get("routeOnly") is not True
+        and current.get("metadataOnly") is not True
+    ):
         return None
     merged = list(dict.fromkeys([*override, "http", "tls", "quic"]))
-    if current.get("enabled") is True:
-        return {**current, "destOverride": merged}
-    return {**current, "enabled": True, "destOverride": merged, "routeOnly": True}
+    updated = {**current, "enabled": True, "destOverride": merged, "routeOnly": False}
+    if "metadataOnly" in current:
+        updated["metadataOnly"] = False
+    return updated
 
 
 # ---------------------------------------------------------------------------------------------

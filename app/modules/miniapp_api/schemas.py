@@ -251,6 +251,7 @@ class BuyIn(_In):
     save_card: bool = False  # keep the card for auto-renewal (providers with saved cards only)
     # One id per button press makes a retried or doubled purchase from the balance charge once.
     request_id: str | None = Field(default=None, pattern=r"^[A-Za-z0-9_-]{8,32}$")
+    plan_token: str = Field(default="", max_length=64)  # signed token of a hidden plan's link
 
 
 class ChainTransferOut(BaseModel):

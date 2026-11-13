@@ -10,10 +10,12 @@ from aiogram.types import Message
 
 from app.core import __version__
 from app.core.context import AppContext
+from app.core.filters import IsPrivate
 from app.core.permissions import HasPermission, Permission
 from app.modules.system.texts import t
 
 router = Router(name="system_admin")
+router.message.filter(IsPrivate())
 
 
 def format_uptime(delta: timedelta) -> str:

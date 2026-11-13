@@ -194,3 +194,15 @@ def test_parse_int_bounds() -> None:
     assert parse_int("-3", signed=True) == -3
     assert parse_int("101", maximum=100) is None
     assert parse_int("abc") is None
+
+
+async def test_status_is_not_sent_in_groups(make: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    async def fake_status(ctx: Any, lang: str) -> str:
+        return "status"
+
+    monkeypatch.setattr("app.modules.system.admin_bot.build_status", fake_status)
+    h = make(modules=load_modules(("system",)))
+    await h.feed(message_update(OWNER, "/status", chat_id=-100500, chat_type="supergroup"))
+    assert not h.calls(SendMessage)
+    await h.feed(message_update(OWNER, "/status"))
+    assert h.calls(SendMessage)

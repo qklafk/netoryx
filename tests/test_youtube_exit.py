@@ -296,15 +296,23 @@ def test_nothing_to_remove_is_unchanged() -> None:
 def test_sniffing_update_rules() -> None:
     assert sniffing_update(json.dumps({"enabled": True, "destOverride": ["http", "tls"]})) is None
     assert sniffing_update({"enabled": True, "destOverride": ["http", "tls", "quic"], "routeOnly": False}) is None
-    assert sniffing_update("") == {"enabled": True, "destOverride": ["http", "tls", "quic"], "routeOnly": True}
+    assert sniffing_update("") == {"enabled": True, "destOverride": ["http", "tls", "quic"], "routeOnly": False}
     assert sniffing_update({"enabled": False, "destOverride": ["fakedns"], "metadataOnly": False}) == {
         "enabled": True,
         "destOverride": ["fakedns", "http", "tls", "quic"],
         "metadataOnly": False,
-        "routeOnly": True,
+        "routeOnly": False,
     }
     partial = sniffing_update({"enabled": True, "destOverride": ["http"], "routeOnly": False})
     assert partial == {"enabled": True, "destOverride": ["http", "tls", "quic"], "routeOnly": False}
+
+
+def test_sniffing_update_turns_route_only_off() -> None:
+    """With routeOnly the sniffed name does not change where the connection goes: a fake TLS name would pass."""
+    fixed = sniffing_update({"enabled": True, "destOverride": ["http", "tls", "quic"], "routeOnly": True})
+    assert fixed is not None and fixed["routeOnly"] is False
+    meta = sniffing_update({"enabled": True, "destOverride": ["http", "tls"], "metadataOnly": True})
+    assert meta is not None and meta["metadataOnly"] is False
 
 
 # ---------------------------------------------------------------------------------------------
@@ -389,7 +397,7 @@ async def test_backend_sniffing_touches_only_vless_inbounds_that_need_it(
     assert json.loads(fake.inbounds[1]["sniffing"]) == {
         "enabled": True,
         "destOverride": ["http", "tls", "quic"],
-        "routeOnly": True,
+        "routeOnly": False,
     }
     assert fake.inbounds[2] == before[2] and fake.inbounds[3] == before[3]
     assert await backend.ensure_sniffing() == 0

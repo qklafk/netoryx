@@ -1398,3 +1398,12 @@ async def test_bot_cancels_unlinked_stars_subscription() -> None:
         {"user_id": USER_ID, "telegram_payment_charge_id": "ch-old", "is_canceled": True},
         {"user_id": USER_ID, "telegram_payment_charge_id": "gone", "is_canceled": True},
     ]
+
+
+async def test_create_refuses_a_flood_of_unpaid_payments(db: SessionFactory) -> None:
+    gw = FakeGateway(session_factory=db)
+    for _ in range(service.MAX_OPEN_PAYMENTS_PER_USER):
+        await service.create_payment(db, SETTINGS, gw, USER_ID, 15000)
+    with pytest.raises(ValueError):
+        await service.create_payment(db, SETTINGS, gw, USER_ID, 15000)
+    assert len(gw.seen_on_create) == service.MAX_OPEN_PAYMENTS_PER_USER

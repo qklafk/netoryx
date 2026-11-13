@@ -43,6 +43,17 @@ All notable changes to this project are documented here. The format follows
 
 - Security hardening pass: the Docker stack no longer starts with a missing or empty `SECRET_KEY`, so stored panel passwords
   and API keys are always encrypted with a key you control.
+- The shared Telegram-only link could reach any host by sending a Telegram server name in the TLS handshake (the sniffed
+  name only chose the route). Sniffing now overrides the destination, so that client really reaches only Telegram; the
+  servers are corrected on the next sync.
+- Hidden plans can no longer be listed or bought from the Mini App without their signed link, and are never sold as gifts.
+- Testing a connection to a free-form panel address in the web admin is owner-only (it lets the server connect anywhere).
+- A user can have at most 20 unpaid invoices at a time, so the payment providers cannot be flooded through the bot.
+- `/status` answers only in private chats.
+- Support, channel, terms and privacy links accept only `http(s)://` and `tg://` links; a link without a scheme gets
+  `https://`.
+- Database backup files are created readable by their owner only.
+- GitHub Actions from third parties are pinned to commit hashes.
 
 ## [0.9.0-beta] - 2026-11-12
 

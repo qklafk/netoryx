@@ -229,6 +229,15 @@ async def test_panel_test_new_target_needs_owner(api: Api, fake_backends: list[A
     assert owner_try.json()["ok"] is True and fake_backends[-1].url == "https://other.example"
 
 
+async def test_panel_test_arbitrary_url_is_owner_only(api: Api, fake_backends: list[Any]) -> None:
+    admin = await as_role(api, AdminRole.ADMIN)
+    built = len(fake_backends)
+    body = {"kind": "remnawave", "url": "http://169.254.169.254", "api_token": "t"}
+    assert (await admin.post("/panels/test", json=body)).status_code == 403
+    assert len(fake_backends) == built  # nothing was contacted
+    assert (await api.post("/panels/test", json=body)).json()["ok"] is True
+
+
 class _ProxyCapablePanel(FakeCapablePanel):
     async def delete_proxy_user(self, target: int | None, name: str) -> None:
         self.calls.append(("delete_proxy", target, name))
