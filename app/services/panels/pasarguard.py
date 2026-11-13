@@ -194,11 +194,14 @@ class PasarGuardBackend:
         current = await self.get_account(target, spec.email)
         payload = self._payload(spec)
         if current is None:
-            payload["username"] = spec.email
-            payload["proxy_settings"] = {"vmess": {"id": spec.uuid}, "vless": {"id": spec.uuid}}
+            # PasarGuard creates users only as active (or on hold): a disabled one is created, then switched off
+            created = {**payload, "status": "active", "username": spec.email}
+            created["proxy_settings"] = {"vmess": {"id": spec.uuid}, "vless": {"id": spec.uuid}}
             if self._group_ids:
-                payload["group_ids"] = self._group_ids
-            data = await self._request("POST", "/api/user", json=payload)
+                created["group_ids"] = self._group_ids
+            data = await self._request("POST", "/api/user", json=created)
+            if not spec.enabled:
+                data = await self._request("PUT", f"/api/user/{quote(spec.email, safe='')}", json=payload)
         else:
             data = await self._request("PUT", f"/api/user/{quote(spec.email, safe='')}", json=payload)
         if not isinstance(data, Mapping):

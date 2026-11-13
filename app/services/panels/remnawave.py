@@ -812,12 +812,12 @@ class RemnawaveBackend:
             stats = None
         return parse_system_stats(stats if isinstance(stats, Mapping) else {}, nodes)
 
-    async def restart_core(self) -> None:
+    async def restart_core(self, *, force: bool = False) -> None:
         """Restart Xray on every node (``POST /api/nodes/actions/restart-all``); no enabled nodes is not an error."""
         await self._ensure_supported()
         try:
             await self._request(
-                "POST", "/api/nodes/actions/restart-all", json_body={"forceRestart": False}, idempotent=False
+                "POST", "/api/nodes/actions/restart-all", json_body={"forceRestart": force}, idempotent=False
             )
         except RemnawaveApiError as exc:
             if exc.code != ERR_ENABLED_NODES_NOT_FOUND:
@@ -839,11 +839,12 @@ class RemnawaveBackend:
                         result.add(str(inbound["profileUuid"]))
         return result
 
-    async def _edit_profiles(self, matching: Mapping[str, list[str]] | None) -> None:
+    async def _edit_profiles(self, matching: Mapping[str, list[str]] | None) -> bool:
         """Write the Telegram-only rules into the config profiles named in ``matching`` (profile uuid -> ``user``
-        entries) and remove them from every other profile. One PATCH per changed profile (its nodes restart)."""
+        entries) and remove them from every other profile. One PATCH per changed profile; True if any changed."""
         data = await self._request("GET", "/api/config-profiles")
         profiles = data.get("configProfiles", []) if isinstance(data, Mapping) else []
+        edited = False
         for profile in profiles:
             if not isinstance(profile, Mapping) or not isinstance(profile.get("config"), dict):
                 continue
@@ -856,10 +857,13 @@ class RemnawaveBackend:
                 await self._request(
                     "PATCH", "/api/config-profiles", json_body={"uuid": str(profile["uuid"]), "config": updated}
                 )
+                edited = True
+        return edited
 
     async def ensure_tg_only(self, spec: AccountSpec) -> TgOnlyAccess:
         """Remnawave names the Xray client after the numeric user id: the user is created disabled, its id goes into
-        the config profiles' rules, then the user is enabled."""
+        the config profiles' rules, then the user is enabled. A node that is still restarting after the profile
+        change can miss the user being enabled, so the nodes are restarted once more after any change."""
         await self._ensure_supported()
         squads = await self._target_squads()
         profiles = await self._profile_uuids_of_squads(squads)
@@ -869,9 +873,11 @@ class RemnawaveBackend:
         fresh = current is None or str(current.get("vlessUuid", "")).lower() != spec.uuid.lower()
         account = await self.upsert_account(None, replace(spec, enabled=spec.enabled and not fresh))
         entries = [str(account.remote_id)]
-        await self._edit_profiles({uuid: entries for uuid in profiles})
+        edited = await self._edit_profiles({uuid: entries for uuid in profiles})
         if fresh and spec.enabled:
             account = await self.upsert_account(None, spec)
+        if edited or fresh:
+            await self.restart_core(force=True)
         return TgOnlyAccess(tuple(await self.get_links(account)))
 
     async def remove_tg_only(self, email: str) -> None:

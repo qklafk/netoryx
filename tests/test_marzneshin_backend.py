@@ -76,7 +76,10 @@ class FakeMarzneshin:
             if request.method == "GET":
                 return web.json_response(row)
             if request.method == "PUT":
-                row.update(await request.json())
+                body = await request.json()
+                if body.get("username") != username:  # the real panel validates the full user model on update
+                    return web.json_response({"detail": {"username": "Field required"}}, status=422)
+                row.update(body)
                 return web.json_response(row)
             if request.method == "DELETE":
                 del self.users[username]

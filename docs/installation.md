@@ -51,7 +51,7 @@ in brackets; yes/no questions show `[Y/n]`.
 
 The run is nine numbered steps, each ending with a check mark. If one fails, the installer names the step, the log
 (`/var/log/netoryx-install.log`) and the command to run again; repeating is always safe. At the end a summary lists
-the one-time admin link, the bot, the subscription address, the shared Telegram link (the `/tg` page and the subscription link, with a QR code) (3x-ui; see [telegram-only.md](telegram-only.md)), where the credentials are stored (paths only), how to open
+the one-time admin link, the bot, the subscription address, the shared Telegram link (the `/tg` page and the subscription link, with a QR code; see [telegram-only.md](telegram-only.md)), where the credentials are stored (paths only), how to open
 the panel through an SSH tunnel, the next steps and the `netoryx` commands. `--yes` turns every question off for
 automation (values then come from the flags).
 
@@ -254,7 +254,7 @@ sees the panel. Administrator login and password are in `/root/netoryx/<panel>-c
 `127.0.0.1` only (open it through `ssh -L`, or publish it as described below). Image tags are pinned; update them in
 `deploy/panels/<name>/compose.yml` on purpose.
 
-Limits with other panels: the shared Telegram access link is 3x-ui only for now; the legacy SOCKS5 for Telegram and Shadowsocks-2022 need 3x-ui and are skipped with a notice; ad
+Limits with other panels: the shared Telegram access link works with every panel except Hiddify; the legacy SOCKS5 for Telegram and Shadowsocks-2022 need 3x-ui and are skipped with a notice; ad
 blocking and the YouTube exit rewrite the 3x-ui Xray template and are 3x-ui only; the MTProto proxy (telemt) works with
 any panel. The compact Reality client hello (`REALITY_COMPACT_HELLO`) is applied to 3x-ui links; for the other
 panels the installer sets the `firefox` fingerprint on the host it creates. Additional inbounds on other ports need a

@@ -207,7 +207,10 @@ class MarzneshinBackend:
             if not spec.enabled:
                 data = await self._request("POST", f"/api/users/{quote(spec.email, safe='')}/disable")
         else:
-            data = await self._request("PUT", f"/api/users/{quote(spec.email, safe='')}", json=body)
+            # the panel validates the whole user model on update, so the username is required here too
+            data = await self._request(
+                "PUT", f"/api/users/{quote(spec.email, safe='')}", json={**body, "username": spec.email}
+            )
             if current.enabled != spec.enabled:
                 data = await self._request(
                     "POST", f"/api/users/{quote(spec.email, safe='')}/{'enable' if spec.enabled else 'disable'}"

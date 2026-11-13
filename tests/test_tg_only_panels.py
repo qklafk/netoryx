@@ -335,6 +335,9 @@ class FakeRemnawave(FakePanelServer):
             self.users.pop(int(match.group(1)), None)
             self.events.append("user:delete")
             return web.Response(status=204)
+        if path == "/api/nodes/actions/restart-all" and method == "POST":
+            self.events.append(f"nodes:restart:force={body['forceRestart']}")
+            return self._ok({"eventSent": True})
         match = re.fullmatch(r"/api/subscriptions/connection-keys/(\d+)", path)
         if match:
             user = self.users[int(match.group(1))]
@@ -355,7 +358,13 @@ async def test_remnawave_rules_match_the_numeric_user_id(remnawave: tuple[FakeRe
     fake, backend = remnawave
     assert isinstance(backend, TgOnlyManaged) and not isinstance(backend, TgOnlyRouting)
     access = await backend.ensure_tg_only(spec())
-    assert fake.events == ["user:create:DISABLED", "config:rules:user=DISABLED", "user:active"]
+    # the nodes reload once more after the user is enabled (a node still restarting can miss it otherwise)
+    assert fake.events == [
+        "user:create:DISABLED",
+        "config:rules:user=DISABLED",
+        "user:active",
+        "nodes:restart:force=True",
+    ]
     assert_confined(fake.config, ["101"])  # the Xray client is named after the user id (node handler: id.toString())
     assert access.links == (LINK.format(uid=CLIENT),)
     assert fake.other_writes == 0 and not tg_rules(fake.other_config)  # a profile outside the squads is not touched
@@ -367,8 +376,10 @@ async def test_remnawave_is_idempotent_and_follows_a_recreated_user(
     fake, backend = remnawave
     await backend.ensure_tg_only(spec())
     writes = fake.config_writes
+    fake.events.clear()
     await backend.ensure_tg_only(spec())
     assert fake.config_writes == writes and len(fake.users) == 1
+    assert not any(e.startswith("nodes:restart") for e in fake.events)  # nothing changed: no restart
     other = str(uuidlib.UUID(int=9))
     await backend.ensure_tg_only(spec(uuid=other))  # a new client id recreates the user: the rule follows its new id
     assert list(fake.users) == [102] and fake.users[102]["status"] == "ACTIVE"
@@ -433,6 +444,8 @@ class FakePasarGuard(FakePanelServer):
             self.events.append(f"config:{'rules' if tg_rules(body['config']) else 'clean'}:user={user['status']}")
             return web.json_response({"id": 1})
         if path == "/api/user" and method == "POST":
+            if body["status"] not in ("active", "on_hold"):  # the real panel refuses to create a disabled user
+                return web.json_response({"detail": {"status": "status must be in active, on_hold"}}, status=422)
             self.next_id += 1
             row = {"id": self.next_id, "username": body["username"], "proxy_settings": body["proxy_settings"]}
             row.update(status=body["status"], data_limit=body["data_limit"], used_traffic=0, expire=None, hwid_limit=0)
@@ -467,7 +480,7 @@ async def test_pasarguard_rules_match_the_numeric_user_id(pasarguard: tuple[Fake
     fake, backend = pasarguard
     assert isinstance(backend, TgOnlyManaged) and not isinstance(backend, TgOnlyRouting)
     access = await backend.ensure_tg_only(spec())
-    assert fake.events == ["user:create:disabled", "config:rules:user=disabled", "user:active"]
+    assert fake.events == ["user:create:active", "user:disabled", "config:rules:user=disabled", "user:active"]
     assert_confined(fake.config, ["7"])  # node.user email = str(user.id)
     assert fake.restart_nodes == ["true"] and access.links == (LINK.format(uid=CLIENT),)
     writes = fake.config_writes

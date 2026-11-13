@@ -12,7 +12,7 @@ All notable changes to this project are documented here. The format follows
   Optional monthly traffic limit and a daily traffic alert, a bot admin screen and a web admin page with "new link";
   the installer prints the page and link instead of a proxy link. See `docs/telegram-only.md`.
   It uses a `leastPing` balancer over eligible servers (`TG_ONLY_EXCLUDED_COUNTRIES` keeps some countries out), works with
-  3x-ui only for now, and `netoryx tg-link` prints the link again.
+  3x-ui, Remnawave, Marzban, PasarGuard and Marzneshin, and `netoryx tg-link` prints the link again.
 - Certificate expiry alerts: the app checks the TLS certificate of `PUBLIC_BASE_URL` (and `TLS_WATCH_HOSTS`) every 12 hours,
   warns the owner and admins in time, and shows the state in the web admin under System, Certificates. See
   `docs/troubleshooting.md`.
@@ -26,6 +26,12 @@ All notable changes to this project are documented here. The format follows
 - `docker-compose.yml` requires `SECRET_KEY` in `.env`; manual installs must set it before updating (see
   `docs/upgrading.md`). The installer already generates it.
 - Shadowsocks-2022 is optional and may be unreliable on some networks; VLESS Reality on 443 stays the recommended default.
+
+### Fixed
+
+- Marzneshin: changes to existing users (renewal, limits, enabling) were refused by the panel with HTTP 422.
+- PasarGuard: users that must start disabled (for example the Telegram-only account) could not be created.
+- Remnawave: the nodes now reload after the Telegram-only account changes, so the link works without a manual node restart.
 
 ### Security
 
