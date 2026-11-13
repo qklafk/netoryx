@@ -54,7 +54,7 @@ can reach their subscription without the bot. Publish the [Telegram access link]
 **What if my customers' mobile networks only allow approved hosts?** Use relay endpoints with the LTE profile
 ([panels.md](panels.md)).
 
-**How do I back up?** `sudo netoryx backup`, plus the automatic daily backup to Telegram. Set `BACKUP_PASSWORD`.
+**How do I back up?** `sudo netoryx backup`, plus the automatic daily backup to Telegram; `sudo netoryx backup --full` copies the whole server, and `netoryx restore` moves it to another one. Set `BACKUP_PASSWORD`.
 See [backups.md](backups.md).
 
 **How do I remove it?** `sudo netoryx uninstall`. Take a backup first.

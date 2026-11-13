@@ -202,6 +202,8 @@ Run them on the server (over SSH):
 | `netoryx logs [service]` | follows the log (default: the `app` service); leave with `Ctrl+C` |
 | `netoryx update` | fetches the new version and restarts only the application; VPN connections are not interrupted |
 | `netoryx backup` | creates a database backup now |
+| `netoryx backup --full` | backs up the whole server (panel, certificates, settings) to `/root/netoryx-backups`; see [backups](backups.md) |
+| `netoryx restore <file>` | puts a full backup back, also on a new server |
 | `netoryx admin-link` | prints a one-time login link for the web admin |
 | `netoryx restart [service]` | restarts everything or the named services (restarting `edge`, `caddy` or the panel drops VPN connections for a few seconds) |
 | `netoryx uninstall [--purge]` | stops Netoryx; data stays. With `--purge` data, code and secrets are deleted |

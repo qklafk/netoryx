@@ -17,7 +17,13 @@ All notable changes to this project are documented here. The format follows
   warns the owner and admins in time, and shows the state in the web admin under System, Certificates. See
   `docs/troubleshooting.md`.
 
+- Full server backup and restore: `netoryx backup --full` saves the database, the VPN panel's data, certificates, settings
+  and credentials into one archive, and `netoryx restore <file>` puts it back on the same or a new server (installed with
+  the same panel). See `docs/backups.md`.
+
 ### Changed
+
+- The public pages (`/tg`, `/open`, gift and payment pages) follow the visitor's light or dark system theme.
 
 - The Telegram MTProto and SOCKS5 proxies are legacy and off by default (`TG_PROXY_ACCESS=off`, `TG_SOCKS_ENABLED=false`);
   the installer no longer asks about them (`--with-tgproxy` and `--with-socks` still work) and the menu button and Mini App

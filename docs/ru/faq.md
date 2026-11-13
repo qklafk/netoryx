@@ -57,7 +57,7 @@ HWID обслуживаются, если не включено `HWID_REQUIRED=t
 
 **В мобильных сетях работают только белые списки.** Используйте релейные эндпоинты с профилем LTE ([panels.md](../panels.md)).
 
-**Бэкапы?** `sudo netoryx backup` и ежедневная автоматическая копия в Telegram. Задайте `BACKUP_PASSWORD`
+**Бэкапы?** `sudo netoryx backup` и ежедневная автоматическая копия в Telegram; `sudo netoryx backup --full` копирует весь сервер, а `netoryx restore` переносит его на другой. Задайте `BACKUP_PASSWORD`
 ([backups.md](../backups.md)).
 
 ## Лицензия простыми словами

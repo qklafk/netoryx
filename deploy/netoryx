@@ -8,7 +8,10 @@ if [ -r /etc/default/netoryx ]; then
 fi
 DIR="${NETORYX_DIR:-/opt/netoryx}"
 SECRETS_DIR="${NETORYX_SECRETS_DIR:-/root/netoryx}"
+BACKUP_ROOT="${NETORYX_BACKUP_DIR:-/root/netoryx-backups}"
+HELPER_IMAGE="${NETORYX_HELPER_IMAGE:-alpine:3}"
 PY=/app/.venv/bin/python
+work=""  # temporary directory of a backup or restore (removed on exit)
 
 usage() {
   cat <<'EOF'
@@ -17,7 +20,10 @@ Usage: netoryx <command>
   status              containers and the health of the application
   logs [service]      follow the logs (default service: app)
   update              fetch the latest version and restart only the application
-  backup              create a database backup now
+  backup              create a database backup now (kept by the application, downloadable in the web admin)
+  backup --full [dir] back up the whole server: database, VPN panel data, certificates, settings and secrets
+                      (default dir: /root/netoryx-backups; open VPN connections drop for a moment)
+  restore <file>      put a full backup back (on this server, or on a new one installed with the same panel)
   admin-link          print a one-time login link for the web admin
   tg-link             print the shared Telegram-only link
   restart [service]   restart everything or the named services
@@ -36,13 +42,155 @@ need_root() {
   fi
 }
 
+env_value() {
+  sed -n "s/^$1=//p" .env 2>/dev/null | tail -n 1 | tr -d "'\""
+}
+
+# The Compose project name: its volumes are called <project>_<name>.
+project() {
+  local name="${COMPOSE_PROJECT_NAME:-$(env_value COMPOSE_PROJECT_NAME)}"
+  name="${name:-$(basename "$DIR")}"
+  printf '%s' "$name" | tr 'A-Z' 'a-z' | tr -cd 'a-z0-9_-'
+}
+
+panel_name() {
+  local panel
+  panel="$(env_value NETORYX_PANEL)"
+  printf '%s' "${panel:-xui}"
+}
+
+# Server-specific files that are not part of the code (written by the installer or by hand).
+local_files() {
+  local f
+  shopt -s nullglob
+  for f in .env deploy/haproxy/sni.map deploy/telemt deploy/caddy-sites/*.caddy deploy/panels/*/*.env \
+    deploy/panels/*/certs deploy/panels/marzneshin/marznode; do
+    [ -e "$f" ] && printf '%s\n' "$f"
+  done
+  shopt -u nullglob
+}
+
+# Every member of a tar archive must be a plain file or a directory whose relative path stays inside the target
+# and, when a pattern is given, matches it.
+safe_members() {
+  local archive="$1" pattern="$2" kind name
+  while IFS=$'\t' read -r kind name; do
+    case "$kind" in
+      -* | d*) ;;
+      *) echo "netoryx: $(basename "$archive"): '$name' is not a plain file" >&2; return 1 ;;
+    esac
+    case "/$name/" in
+      */../* | //*) echo "netoryx: $(basename "$archive"): unsafe path '$name'" >&2; return 1 ;;
+    esac
+    if [ -n "$pattern" ] && ! printf '%s\n' "$name" | grep -Eq "$pattern"; then
+      echo "netoryx: $(basename "$archive"): unexpected entry '$name'" >&2
+      return 1
+    fi
+  done < <(tar -tvzf "$archive" | awk '{ kind = $1; $1 = $2 = $3 = $4 = $5 = ""; sub(/^ +/, ""); print kind "\t" $0 }')
+}
+
+full_backup() {
+  local dest="$1" proj stamp out volume name
+  proj="$(project)"
+  umask 077
+  mkdir -p "$dest"
+  stamp="$(date -u +%Y%m%d-%H%M%S)"
+  out="$dest/netoryx-full-$stamp.tar.gz"
+  work="$(mktemp -d)"
+  trap 'rm -rf "$work"' EXIT
+  mkdir "$work/volumes"
+  {
+    echo "format=1"
+    echo "created=$stamp"
+    echo "panel=$(panel_name)"
+    echo "commit=$(git -C "$DIR" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+  } >"$work/manifest"
+  local_files | tar -czf "$work/files.tar.gz" -T -
+  if [ -d "$SECRETS_DIR" ]; then
+    tar -czf "$work/secrets.tar.gz" -C "$SECRETS_DIR" .
+  fi
+  echo "Stopping the services for a consistent copy (VPN connections drop for a moment)..."
+  docker compose stop >/dev/null
+  # whatever happens while copying, the services come back
+  trap 'docker compose up -d >/dev/null 2>&1 || true; rm -rf "$work"' EXIT
+  for volume in $(docker volume ls -q --filter "label=com.docker.compose.project=$proj"); do
+    name="${volume#"${proj}_"}"
+    docker run --rm -v "$volume:/v:ro" -v "$work/volumes:/b" "$HELPER_IMAGE" tar -czf "/b/$name.tar.gz" -C /v .
+  done
+  docker compose up -d >/dev/null
+  trap 'rm -rf "$work"' EXIT
+  (cd "$work" && tar -czf "$out" manifest files.tar.gz volumes $([ -f secrets.tar.gz ] && echo secrets.tar.gz))
+  chmod 600 "$out"
+  echo "Full backup: $out ($(du -h "$out" | cut -f1))"
+  echo "It holds passwords and keys: keep it private and copy it off this server (for example with scp)."
+}
+
+full_restore() {
+  local file="$1" confirmed="$2" proj panel volume name known answer
+  proj="$(project)"
+  [ -f "$file" ] || { echo "netoryx: no such file: $file" >&2; exit 1; }
+  safe_members "$file" '^(\./)?(manifest|files\.tar\.gz|secrets\.tar\.gz|volumes/?|volumes/[a-z0-9][a-z0-9_.-]*\.tar\.gz)$' ||
+    exit 1
+  work="$(mktemp -d)"
+  trap 'rm -rf "$work"' EXIT
+  tar -xzf "$file" -C "$work" --no-same-owner
+  if [ "$(sed -n 's/^format=//p' "$work/manifest" 2>/dev/null)" != 1 ]; then
+    echo "netoryx: $file is not a full backup made by 'netoryx backup --full'" >&2
+    exit 1
+  fi
+  panel="$(sed -n 's/^panel=//p' "$work/manifest")"
+  if [ "$panel" != "$(panel_name)" ]; then
+    echo "netoryx: the backup comes from a server with the '$panel' panel, this one runs '$(panel_name)'." >&2
+    echo "Install with the same panel first (install.sh --panel $panel), then restore." >&2
+    exit 1
+  fi
+  safe_members "$work/files.tar.gz" \
+    '^(\./)?(\.env|deploy/?|deploy/haproxy/?|deploy/haproxy/sni\.map|deploy/telemt(/.*)?|deploy/caddy-sites/?|deploy/caddy-sites/[^/]+\.caddy|deploy/panels/?|deploy/panels/[a-z]+/?|deploy/panels/[a-z]+/[^/]+\.env|deploy/panels/[a-z]+/certs(/.*)?|deploy/panels/marzneshin/marznode(/.*)?)$' ||
+    exit 1
+  if [ -f "$work/secrets.tar.gz" ]; then
+    safe_members "$work/secrets.tar.gz" '' || exit 1
+  fi
+  known=" $(docker compose config --volumes 2>/dev/null | tr '\n' ' ') "
+  for volume in "$work"/volumes/*.tar.gz; do
+    [ -e "$volume" ] || continue
+    name="$(basename "$volume" .tar.gz)"
+    case "$known" in
+      *" $name "*) ;;
+      *) echo "netoryx: the backup has a volume this installation does not use: '$name'" >&2; exit 1 ;;
+    esac
+  done
+  echo "Backup of $(sed -n 's/^created=//p' "$work/manifest") UTC (panel: $panel)."
+  echo "This REPLACES all data of this installation: database, panel data, certificates, settings and secrets."
+  if [ "$confirmed" != 1 ]; then
+    read -r -p "Type 'yes' to continue: " answer
+    [ "$answer" = "yes" ] || { echo "cancelled"; exit 1; }
+  fi
+  docker compose down --remove-orphans >/dev/null
+  tar -xzf "$work/files.tar.gz" -C "$DIR" --no-same-owner
+  if [ -f "$work/secrets.tar.gz" ]; then
+    mkdir -p "$SECRETS_DIR"
+    chmod 700 "$SECRETS_DIR"
+    tar -xzf "$work/secrets.tar.gz" -C "$SECRETS_DIR" --no-same-owner
+  fi
+  for volume in "$work"/volumes/*.tar.gz; do
+    [ -e "$volume" ] || continue
+    name="$(basename "$volume" .tar.gz)"
+    docker volume create --label "com.docker.compose.project=$proj" --label "com.docker.compose.volume=$name" \
+      "${proj}_$name" >/dev/null
+    docker run --rm -v "${proj}_$name:/v" -v "$work/volumes:/b:ro" "$HELPER_IMAGE" \
+      sh -c "find /v -mindepth 1 -delete && tar -xzf '/b/$name.tar.gz' -C /v"
+  done
+  docker compose up -d
+  echo "Restored. If the server address changed, point the domain's DNS record to this server."
+  echo "If the application does not start, the backup may be newer than this code: run 'netoryx update'."
+}
+
 command="${1:-help}"
 [ $# -gt 0 ] && shift
 
 case "$command" in
   status)
-    panel="$(sed -n 's/^NETORYX_PANEL=//p' .env 2>/dev/null | tail -n 1)"
-    echo "panel: ${panel:-xui}"
+    echo "panel: $(panel_name)"
     docker compose ps
     if docker compose exec -T app "$PY" -c \
       "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=4)" >/dev/null 2>&1; then
@@ -59,8 +207,19 @@ case "$command" in
     exec bash "$DIR/install.sh" --update
     ;;
   backup)
-    docker compose exec -T app "$PY" -m app backup
-    echo "The backup is stored in the application's data volume (BACKUP_DIR); download it from the web admin."
+    if [ "${1:-}" = "--full" ]; then
+      need_root
+      full_backup "${2:-$BACKUP_ROOT}"
+    else
+      docker compose exec -T app "$PY" -m app backup
+      echo "The backup is stored in the application's data volume (BACKUP_DIR); download it from the web admin."
+      echo "For the whole server (panel data, certificates, settings): netoryx backup --full"
+    fi
+    ;;
+  restore)
+    need_root
+    [ -n "${1:-}" ] || { echo "usage: netoryx restore <file> [--yes]" >&2; exit 2; }
+    full_restore "$1" "$([ "${2:-}" = "--yes" ] && echo 1 || echo 0)"
     ;;
   admin-link)
     docker compose exec -T app "$PY" -m app create-admin-link
@@ -85,6 +244,7 @@ case "$command" in
     [ "${1:-}" = "--purge" ] && purge=1
     if [ "$purge" = 1 ]; then
       echo "This stops Netoryx and DELETES its database, the VPN panel's data (containers and volumes), certificates, $DIR and $SECRETS_DIR."
+      echo "Full backups in $BACKUP_ROOT are kept."
     else
       echo "This stops Netoryx. Data volumes, $DIR and the secrets stay, so it can be started again."
     fi
