@@ -84,9 +84,9 @@ LIST_FILTERS = ("recent", "active", "banned")
 VALUE_ACTIONS: dict[str, Permission] = {
     "bal": Permission.USERS_MONEY,
     "pbal": Permission.USERS_MONEY,
-    "days": Permission.USERS_EDIT,
-    "dev": Permission.USERS_EDIT,
-    "traf": Permission.USERS_EDIT,
+    "days": Permission.SUBS_GRANT,
+    "dev": Permission.SUBS_GRANT,
+    "traf": Permission.SUBS_GRANT,
 }
 
 
@@ -301,6 +301,7 @@ def card_keyboard(_: Translator, settings: Settings, role: AdminRole, card: ops.
     sub = card.subscription
     money = has_permission(role, Permission.USERS_MONEY)
     edit = has_permission(role, Permission.USERS_EDIT)
+    grant = edit and has_permission(role, Permission.SUBS_GRANT)
     main_balance = money and (settings.app_mode == "shop" or user.balance_kop != 0)
     partner_balance = money and (settings.referral_reward_mode == "partner" or user.referral_balance_kop != 0)
 
@@ -313,10 +314,10 @@ def card_keyboard(_: Translator, settings: Settings, role: AdminRole, card: ops.
             btn("admin_users.btn.balance", "bal", main_balance),
             btn("admin_users.btn.partner_balance", "pbal", partner_balance),
         ],
-        [btn("admin_users.btn.days", "days", edit), btn("admin_users.btn.plan", "plan", edit and has_sub)],
+        [btn("admin_users.btn.days", "days", grant), btn("admin_users.btn.plan", "plan", grant and has_sub)],
         [
-            btn("admin_users.btn.devices_limit", "dev", edit and has_sub),
-            btn("admin_users.btn.traffic", "traf", edit and has_sub),
+            btn("admin_users.btn.devices_limit", "dev", grant and has_sub),
+            btn("admin_users.btn.traffic", "traf", grant and has_sub),
         ],
     ]
     if sub is not None:
@@ -512,7 +513,7 @@ async def _audit(session: AsyncSession, actor: int, action: str, uid: int, **det
     await audit.log(session, actor, action, "user", uid, "bot", None, **details)
 
 
-@router.callback_query(UserCb.filter(F.a == "days_ok"), HasPermission(Permission.USERS_EDIT))
+@router.callback_query(UserCb.filter(F.a == "days_ok"), HasPermission(Permission.SUBS_GRANT))
 async def apply_days(
     callback: CallbackQuery, callback_data: UserCb, ctx: AppContext, _: Translator, admin_role: AdminRole
 ) -> None:
@@ -547,7 +548,7 @@ async def apply_days(
 # --- plan ------------------------------------------------------------------------------------------------------------
 
 
-@router.callback_query(UserCb.filter(F.a == "plan"), HasPermission(Permission.USERS_EDIT))
+@router.callback_query(UserCb.filter(F.a == "plan"), HasPermission(Permission.SUBS_GRANT))
 async def choose_plan(callback: CallbackQuery, callback_data: UserCb, ctx: AppContext, _: Translator) -> None:
     uid = callback_data.uid
     async with read_session(ctx.session_factory) as session, session.begin():
@@ -564,7 +565,7 @@ async def choose_plan(callback: CallbackQuery, callback_data: UserCb, ctx: AppCo
     await render(callback, Screen(text, kb(rows)))
 
 
-@router.callback_query(UserCb.filter(F.a == "setplan"), HasPermission(Permission.USERS_EDIT))
+@router.callback_query(UserCb.filter(F.a == "setplan"), HasPermission(Permission.SUBS_GRANT))
 async def apply_plan(
     callback: CallbackQuery, callback_data: UserCb, ctx: AppContext, _: Translator, admin_role: AdminRole
 ) -> None:

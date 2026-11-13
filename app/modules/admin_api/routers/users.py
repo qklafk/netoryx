@@ -96,6 +96,8 @@ Viewer = Annotated[Actor, Depends(require(Permission.USERS_VIEW))]
 Editor = Annotated[Actor, Depends(require(Permission.USERS_VIEW, Permission.USERS_EDIT))]
 Cashier = Annotated[Actor, Depends(require(Permission.USERS_VIEW, Permission.USERS_MONEY))]
 Manager = Annotated[Actor, Depends(require(Permission.USERS_EDIT, Permission.USERS_MONEY))]
+# Free service (days, a later expiry, higher limits) is not a support task: it needs its own permission.
+Granter = Annotated[Actor, Depends(require(Permission.USERS_VIEW, Permission.USERS_EDIT, Permission.SUBS_GRANT))]
 Exporter = Annotated[Actor, Depends(require(Permission.USERS_VIEW, Permission.SUBS_BULK))]
 BulkEditor = Annotated[Actor, Depends(require(Permission.USERS_EDIT, Permission.SUBS_BULK))]
 
@@ -438,7 +440,7 @@ async def _stop_stars_renewal(ctx: Any, user_id: int, subscription_id: int | Non
 
 @router.post("/{user_id}/days", response_model=SubscriptionOut)
 async def grant_days(
-    user_id: UserId, body: DaysIn, actor: Editor, subscription_id: int | None = None
+    user_id: UserId, body: DaysIn, actor: Granter, subscription_id: int | None = None
 ) -> SubscriptionOut:
     """Add free days (creates the subscription if needed); optionally with a plan's limits."""
     ctx = actor.ctx
@@ -531,7 +533,7 @@ async def remove_days(
 
 @router.put("/{user_id}/expiry", response_model=SubscriptionOut)
 async def set_expiry(
-    user_id: UserId, body: ExpiryIn, actor: Editor, subscription_id: int | None = None
+    user_id: UserId, body: ExpiryIn, actor: Granter, subscription_id: int | None = None
 ) -> SubscriptionOut:
     """Set the exact end of the subscription."""
     return await _set_expiry(
@@ -541,7 +543,7 @@ async def set_expiry(
 
 @router.put("/{user_id}/limits", response_model=SubscriptionOut)
 async def set_limits(
-    user_id: UserId, body: LimitsIn, actor: Editor, subscription_id: int | None = None
+    user_id: UserId, body: LimitsIn, actor: Granter, subscription_id: int | None = None
 ) -> SubscriptionOut:
     """Change the plan and/or device and traffic limits of the subscription."""
     ctx = actor.ctx

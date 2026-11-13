@@ -162,6 +162,7 @@ async def test_full_flow(session_factory: SessionFactory, crypto_server: tuple[F
         xui_device_limit="ip",
         referral_enabled=True,
         referral_invitee_bonus_rub=50,
+        referral_invitee_requires_payment=False,
         referral_inviter_bonus_rub=50,
         referral_inviter_requires_payment=True,
         referral_inviter_percent=10,

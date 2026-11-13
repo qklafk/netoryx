@@ -305,7 +305,7 @@ async def refund_stars(payment_id: PaymentId, body: RefundIn, actor: Editor) -> 
         )
     except TelegramAPIError as exc:
         raise conflict("telegram_refused", str(exc)[:300]) from None
-    await payments_service.mark_status(ctx.session_factory, payment_id, PaymentStatus.REFUNDED)
+    await payments_service.mark_status(ctx.session_factory, payment_id, PaymentStatus.REFUNDED, claw_back=False)
     debited = 0
     async with ctx.session_factory.begin() as session:
         if body.debit_wallet and not payment.is_donation:

@@ -91,6 +91,20 @@ never wiped. `netoryx uninstall` stops the stack and keeps the data; `--purge` a
 Generated credentials live in `/root/netoryx` (mode 0600): `xui-credentials` and `telemt-credentials`. The installer
 log is `/var/log/netoryx-install.log`; it never contains secrets.
 
+### Installing a checked release
+
+The command above installs the newest code from the `main` branch. To install a fixed release and check the file before
+running it, download the installer and its checksums from the [releases page](https://github.com/qklafk/netoryx/releases):
+
+```bash
+curl -fsSLO https://github.com/qklafk/netoryx/releases/latest/download/install.sh
+curl -fsSLO https://github.com/qklafk/netoryx/releases/latest/download/SHA256SUMS
+sha256sum --ignore-missing -c SHA256SUMS && sudo bash install.sh
+```
+
+The installer from a release installs that release's code. `netoryx update` later moves to the newest version; to stay on
+a release, run it as `sudo NETORYX_REF=<tag> netoryx update`.
+
 ## Advanced: manual setup
 
 The rest of this page describes the pieces the installer automates, for people who prefer to set things up by hand.
@@ -237,7 +251,7 @@ method may stop working. Xray restarts once when the setting changes.
 
 | Panel | What the installer does | Status |
 | --- | --- | --- |
-| 3x-ui (`xui`, default) | `ghcr.io/mhsanaei/3x-ui` on the host network (profile `xui`), random login and web base path, Reality inbound created through its API | verified on a live server |
+| 3x-ui (`xui`, default) | `ghcr.io/mhsanaei/3x-ui` (a tested version, `XUI_VERSION` in `.env` changes it) on the host network (profile `xui`), random login and web base path, Reality inbound created through its API | verified on a live server |
 | Remnawave (`remnawave`) | `remnawave/backend:3.4.10` with PostgreSQL 18 and Valkey, node `remnawave/node:3.4.5`; registers the first administrator and an API token, creates a config profile with the Reality inbound, a node, a host and adds the inbound to the first internal squad | verified on a live server |
 | Marzban (`marzban`) | `gozargah/marzban:v0.8.4` with a newer Xray core (the image's own core is too old for current Reality clients); administrator from the environment, Reality inbound written to the core configuration through the API, a host for it | verified on a live server |
 | PasarGuard (`pasarguard`) | `pasarguard/panel:v5.6.0` and `pasarguard/node:v0.5.7`; the owner account and the node certificate are created automatically, then core configuration, group, node, host and an API key through the API | verified on a live server |

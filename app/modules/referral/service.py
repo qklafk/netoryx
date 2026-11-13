@@ -79,7 +79,8 @@ def terms(_: Translator, settings: Settings, *, withdrawals: bool) -> list[str]:
             )
     else:
         if settings.referral_invitee_bonus_kop > 0:
-            lines.append(_("referral.terms.invitee_money", amount=_.money(settings.referral_invitee_bonus_kop)))
+            key = "invitee_money_paid" if settings.referral_invitee_requires_payment else "invitee_money"
+            lines.append(_(f"referral.terms.{key}", amount=_.money(settings.referral_invitee_bonus_kop)))
         if settings.referral_inviter_bonus_kop > 0:
             lines.append(
                 _("referral.terms.inviter_money", amount=_.money(settings.referral_inviter_bonus_kop), after=after)

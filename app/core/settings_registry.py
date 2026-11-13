@@ -583,6 +583,12 @@ _SPECS: list[SettingSpec] = [
         "Inviter bonus after the first payment",
     ),
     _spec(
+        "referral_invitee_requires_payment",
+        "referral",
+        "Бонус приглашённому (₽) после его первой оплаты",
+        "Invitee money bonus after their first payment",
+    ),
+    _spec(
         "referral_inviter_percent",
         "referral",
         "Процент пригласившему (устар.)",

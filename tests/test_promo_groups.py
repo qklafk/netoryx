@@ -7,7 +7,7 @@ from datetime import timedelta
 from sqlalchemy import select
 
 from app.config import Settings
-from app.db.models import PromoGroup, PromoGroupMember, WinbackOffer
+from app.db.models import Plan, PromoGroup, PromoGroupMember, WinbackOffer
 from app.db.session import SessionFactory
 from app.services import promo, subscriptions, winback
 from app.utils.time import utcnow
@@ -110,3 +110,33 @@ async def test_single_use_winback_offer_is_spent_by_a_discounted_purchase(
 
 async def test_period_winback_offer_stays_until_it_expires(session_factory: SessionFactory, settings: Settings) -> None:
     assert await _offer_and_buy(session_factory, settings.model_copy(update={"winback_usage": "period"}), 5) == 30
+
+
+async def _invoice_price(session_factory: SessionFactory, settings: Settings, tg_id: int, locked: int) -> int:
+    async with session_factory() as session:
+        plan = await session.scalar(select(Plan).order_by(Plan.id.desc()))
+        assert plan is not None
+        return await winback.invoice_price(session, settings, tg_id, plan, locked)
+
+
+async def test_single_use_offer_does_not_discount_a_second_invoice(
+    session_factory: SessionFactory, settings: Settings
+) -> None:
+    # two invoices made while the offer was active: the first purchase spends it, the second pays the full price
+    once = settings.model_copy(update={"winback_usage": "once"})
+    await _offer_and_buy(session_factory, once, 6)
+    assert await _invoice_price(session_factory, once, 6, 14_000) == 20_000
+    period = settings.model_copy(update={"winback_usage": "period"})
+    assert await _invoice_price(session_factory, period, 6, 14_000) == 14_000
+
+
+async def test_offer_that_ran_out_of_time_keeps_the_discount_of_an_invoice_made_in_time(
+    session_factory: SessionFactory, settings: Settings
+) -> None:
+    once = settings.model_copy(update={"winback_usage": "once"})
+    now = utcnow()
+    async with session_factory.begin() as session:
+        await add_user(session, 7)
+        await add_plan(session, price_kop=20_000)
+        session.add(WinbackOffer(user_id=7, kind="churned", discount_percent=30, expires_at=now - timedelta(minutes=1)))
+    assert await _invoice_price(session_factory, once, 7, 14_000) == 14_000

@@ -226,6 +226,9 @@ class Settings(BaseSettings):
     referral_invitee_bonus_rub: int = 50
     referral_inviter_bonus_rub: int = 50
     referral_inviter_requires_payment: bool = True  # reward inviter after invitee's first payment
+    # The invitee's money bonus also waits for their first payment: otherwise new accounts could collect it and move it
+    # to one account (gifts). Bonus days in "days" mode are always granted at once (like a trial).
+    referral_invitee_requires_payment: bool = True
     referral_inviter_percent: int = 0  # legacy single-level % (prefer REFERRAL_LEVELS_PERCENT)
     # How recurring referral rewards are paid:
     #   "days"    - inviter gets subscription days: % of the days the referral bought (no money involved)

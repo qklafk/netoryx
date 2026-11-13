@@ -445,3 +445,13 @@ def test_app_container_is_locked_down_and_needs_a_secret_key() -> None:
         stripped = line.strip()
         if stripped.startswith('- "') and stripped.count(":") >= 2 and stripped.endswith('"'):
             assert stripped.startswith(('- "80:', '- "443:', '- "127.0.0.1:')), stripped
+
+
+def test_the_3x_ui_image_is_a_tested_release() -> None:
+    text = (ROOT / "docker-compose.yml").read_text(encoding="utf-8")
+    assert "ghcr.io/mhsanaei/3x-ui:${XUI_VERSION:-v" in text and "3x-ui:latest" not in text
+
+
+def test_release_workflow_can_pin_the_installer() -> None:
+    # the release job rewrites this exact line to install the tagged release; keep it in this form
+    assert 'REPO_REF="${NETORYX_REF:-main}"' in (ROOT / "install.sh").read_text(encoding="utf-8").splitlines()

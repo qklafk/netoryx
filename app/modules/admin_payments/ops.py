@@ -176,7 +176,7 @@ async def refund_stars(ctx: AppContext, payment_id: str, actor_id: int, *, debit
         )
     except TelegramBadRequest as exc:
         raise PaymentOpError("refund_failed", str(exc)[:200]) from exc
-    await payment_service.mark_status(ctx.session_factory, payment_id, PaymentStatus.REFUNDED)
+    await payment_service.mark_status(ctx.session_factory, payment_id, PaymentStatus.REFUNDED, claw_back=False)
     debited = 0
     async with ctx.session_factory.begin() as session:
         if debit and not payment.is_donation:

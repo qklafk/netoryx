@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 
-from sqlalchemy import exists, select
+from sqlalchemy import exists, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import Settings
-from app.db.models import Purchase, PurchaseKind, Subscription, SubscriptionStatus, User, WinbackOffer
+from app.db.models import Plan, Purchase, PurchaseKind, Subscription, SubscriptionStatus, User, WinbackOffer
 from app.db.session import SessionFactory
 from app.utils.time import utcnow
 
@@ -63,6 +63,38 @@ async def consume(session: AsyncSession, settings: Settings, user_id: int, now: 
     )
     for offer in offers:
         offer.expires_at = now
+
+
+async def invoice_price(session: AsyncSession, settings: Settings, user_id: int, plan: Plan, locked_kop: int) -> int:
+    """The price to charge for a paid invoice whose price was locked at ``locked_kop`` when it was created.
+
+    A single-use offer is spent by the first discounted purchase. Several invoices created while it was active must not
+    all get it: once a discounted purchase followed the offer, an invoice priced below what the buyer is entitled to now
+    (their group discount, if any) is charged that price instead (the payment stays on the balance if it does not
+    cover it). An offer that merely ran out of time does not take the discount away from an invoice made in time.
+    """
+    from app.services import promo  # local: promo imports the models this module uses
+
+    if settings.winback_usage != "once" or locked_kop >= plan.price_kop:
+        return locked_kop
+    entitled = (await promo.personal_discount(session, user_id)).price(plan.price_kop)
+    if locked_kop >= entitled:
+        return locked_kop
+    offer_sent = await session.scalar(select(func.max(WinbackOffer.sent_at)).where(WinbackOffer.user_id == user_id))
+    if offer_sent is None:
+        return locked_kop
+    discounted_since = await session.scalar(
+        select(
+            exists().where(
+                Purchase.user_id == user_id,
+                Purchase.created_at >= offer_sent,
+                Purchase.price_kop > 0,
+                Purchase.plan_id == Plan.id,
+                Purchase.price_kop < Plan.price_kop,
+            )
+        )
+    )
+    return entitled if discounted_since else locked_kop
 
 
 async def _trial_users(session: AsyncSession, now: datetime, wait_days: int) -> list[int]:

@@ -39,10 +39,21 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import Settings
-from app.db.models import Payment, PaymentStatus, TxKind, User
+from app.db.models import (
+    LedgerAccount,
+    Payment,
+    PaymentStatus,
+    Purchase,
+    ReferralReward,
+    Subscription,
+    SubscriptionStatus,
+    TxKind,
+    User,
+)
 from app.db.session import SessionFactory, read_session
 from app.services import events, referrals, tax_receipts, wallet
 from app.services.payments.base import GatewayError, PaymentGateway, ProviderStatus, WebhookResult
+from app.services.referrals import payment_source_ref
 
 log = logging.getLogger(__name__)
 
@@ -208,11 +219,14 @@ async def _insert_payment(session_factory: SessionFactory, payment: Payment) -> 
 # ---------------------------------------------------------------------------------------------
 # Status changes
 # ---------------------------------------------------------------------------------------------
-async def mark_status(session_factory: SessionFactory, payment_id: str, status: PaymentStatus) -> bool:
+async def mark_status(
+    session_factory: SessionFactory, payment_id: str, status: PaymentStatus, *, claw_back: bool = True
+) -> bool:
     """Move a payment to ``status`` if the transition is allowed; returns whether it changed.
 
     Allowed: CREATED -> PENDING; CREATED/PENDING -> CANCELED/EXPIRED; SUCCEEDED -> REFUNDED.
-    SUCCEEDED is reachable only through :func:`credit`.
+    SUCCEEDED is reachable only through :func:`credit`. A refund or chargeback takes back what the payment gave
+    (:func:`_claw_back`) unless ``claw_back`` is off (an admin's refund decides that itself).
     """
     sources = _TRANSITIONS.get(status)
     if sources is None:
@@ -228,6 +242,7 @@ async def mark_status(session_factory: SessionFactory, payment_id: str, status: 
             await tax_receipts.on_refund(s, payment_id)
             payment = await s.get(Payment, payment_id)
             if payment is not None:
+                taken = await _claw_back(s, payment) if claw_back else {}
                 await events.track(
                     s,
                     "payment.refunded",
@@ -235,10 +250,76 @@ async def mark_status(session_factory: SessionFactory, payment_id: str, status: 
                     payment.amount_kop,
                     provider=payment.provider,
                     payment_id=payment_id,
+                    **taken,
                 )
     if changed:
         log.info("payment %s -> %s", payment_id, status)
     return changed
+
+
+async def _claw_back(s: AsyncSession, payment: Payment) -> dict[str, int]:
+    """Take back what a refunded payment gave, as far as it is still there (runs in the caller's transaction).
+
+    The days of plans bought with it are removed (the subscription may end now), what is left of its money on the
+    balance is debited, and the referral commissions paid from it are debited from the beneficiaries (never below
+    zero). Idempotent: every debit has a fixed ledger ref.
+    """
+    if payment.is_donation:
+        return {}
+    now = _now()
+    days = spent = 0
+    for purchase in await s.scalars(select(Purchase).where(Purchase.payment_id == payment.id)):
+        spent += purchase.price_kop
+        if purchase.subscription_id is None or purchase.days <= 0:
+            continue
+        sub = await s.get(Subscription, purchase.subscription_id, with_for_update=True)
+        if sub is None:
+            continue
+        sub.expires_at = max(now, sub.expires_at - timedelta(days=purchase.days)).replace(microsecond=0)
+        if sub.expires_at <= now and sub.status == SubscriptionStatus.ACTIVE:
+            sub.status = SubscriptionStatus.EXPIRED
+        sub.revision += 1
+        days += purchase.days
+    if days:
+        from app.services import provisioning  # local: provisioning imports the payment models
+
+        for purchase in await s.scalars(select(Purchase).where(Purchase.payment_id == payment.id)):
+            sub = await s.get(Subscription, purchase.subscription_id) if purchase.subscription_id else None
+            if sub is not None:
+                await provisioning.ensure_provisions(s, sub)
+    debited = await _debit_up_to(
+        s, payment.user_id, max(0, payment.amount_kop - spent), f"refund:{payment.id}", LedgerAccount.MAIN
+    )
+    commissions = 0
+    rewards = await s.scalars(
+        select(ReferralReward).where(
+            ReferralReward.source_ref == payment_source_ref(payment.id), ReferralReward.amount_kop > 0
+        )
+    )
+    for reward in rewards:
+        commissions += await _debit_up_to(
+            s,
+            reward.beneficiary_id,
+            reward.amount_kop,
+            f"refund:{payment.id}:L{reward.level}",
+            reward.account or LedgerAccount.MAIN,
+        )
+    log.info("payment %s refunded: -%d days, -%d kop, -%d kop commissions", payment.id, days, debited, commissions)
+    return {"clawed_days": days, "clawed_kop": debited, "clawed_commissions_kop": commissions}
+
+
+async def _debit_up_to(s: AsyncSession, user_id: int, amount_kop: int, ref: str, account: LedgerAccount) -> int:
+    """Debit at most ``amount_kop`` (never more than the balance of ``account``); returns what was debited now."""
+    if amount_kop <= 0:
+        return 0
+    user = await s.get(User, user_id, with_for_update=True)
+    if user is None:
+        return 0
+    balance = user.referral_balance_kop if account == LedgerAccount.REFERRAL else user.balance_kop
+    amount = min(amount_kop, max(0, balance))
+    if amount <= 0:
+        return 0
+    return -(await wallet.apply(s, user_id, -amount, TxKind.REFUND, ref, account=account) or 0)
 
 
 # ---------------------------------------------------------------------------------------------

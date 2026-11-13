@@ -19,6 +19,7 @@ class Permission(StrEnum):
     USERS_EDIT = "users_edit"
     USERS_MONEY = "users_money"
     SUBS_BULK = "subs_bulk"
+    SUBS_GRANT = "subs_grant"  # give service without payment: add days, move the expiry, raise limits, change plan
     PLANS = "plans"
     PANELS = "panels"
     PAYMENTS_VIEW = "payments_view"

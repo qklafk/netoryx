@@ -75,12 +75,17 @@ async def test_permissions_per_role(api: Api) -> None:
     assert (await viewer.post("/plans", json={"title": "x", "duration_days": 1, "price_kop": 0})).status_code == 403
 
     support = await as_role(api, AdminRole.SUPPORT, tg_id=2001)
-    assert (await support.post("/users/10/days", json={"days": 3})).status_code == 200
+    # support helps users but does not give free service: days, a later expiry and higher limits need an admin
+    assert (await support.post("/users/10/days", json={"days": 3})).status_code == 403
+    assert (await support.put("/users/10/expiry", json={"expires_at": "2099-01-01T00:00:00Z"})).status_code == 403
+    assert (await support.put("/users/10/limits", json={"device_limit": 0})).status_code == 403
+    assert (await support.post("/users/10/resync")).status_code == 200
     money = await support.post("/users/10/balance", json={"amount_kop": 100, "reason": "bonus"})
     assert money.status_code == 403
     assert (await support.get("/settings")).status_code == 403
 
     admin = await as_role(api, AdminRole.ADMIN, tg_id=2002)
+    assert (await admin.post("/users/10/days", json={"days": 3})).status_code == 200
     assert (await admin.get("/admins")).status_code == 403  # owner only
     assert (await admin.get("/settings")).status_code == 200
 

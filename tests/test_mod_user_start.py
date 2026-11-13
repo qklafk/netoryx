@@ -126,7 +126,12 @@ async def add_subscription_for_new_user(sf: SessionFactory, uid: int) -> None:
 
 
 async def test_start_with_referral_link_links_and_rewards(make: Make) -> None:
-    h = make(referral_invitee_bonus_rub=50, referral_inviter_requires_payment=False, referral_inviter_bonus_rub=30)
+    h = make(
+        referral_invitee_bonus_rub=50,
+        referral_invitee_requires_payment=False,
+        referral_inviter_requires_payment=False,
+        referral_inviter_bonus_rub=30,
+    )
     await h.send("/start", uid=7001)
     inviter = await get_user(h.sf, 7001)
     await h.send(f"/start ref_{inviter.referral_code}")

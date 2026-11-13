@@ -81,11 +81,19 @@ jobs:
           PY
       - name: Build source archive
         run: git archive --format=tar.gz --prefix="netoryx-${GITHUB_REF_NAME#v}/" -o "netoryx-${GITHUB_REF_NAME#v}.tar.gz" "$GITHUB_REF_NAME"
+      - name: Installer pinned to this release, and checksums
+        run: |
+          mkdir dist
+          # the release's installer installs this release unless NETORYX_REF says otherwise
+          sed "s/^REPO_REF=\"\${NETORYX_REF:-main}\"\$/REPO_REF=\"\${NETORYX_REF:-$GITHUB_REF_NAME}\"/" install.sh >dist/install.sh
+          grep -qx "REPO_REF=\"\${NETORYX_REF:-$GITHUB_REF_NAME}\"" dist/install.sh || { echo "::error::install.sh not pinned"; exit 1; }
+          mv "netoryx-${GITHUB_REF_NAME#v}.tar.gz" dist/
+          (cd dist && sha256sum install.sh "netoryx-${GITHUB_REF_NAME#v}.tar.gz" >SHA256SUMS && cat SHA256SUMS)
       - name: Publish the release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           flags=()
           case "$GITHUB_REF_NAME" in *-*) flags+=(--prerelease) ;; esac
-          gh release create "$GITHUB_REF_NAME" "netoryx-${GITHUB_REF_NAME#v}.tar.gz" \
+          gh release create "$GITHUB_REF_NAME" "dist/netoryx-${GITHUB_REF_NAME#v}.tar.gz" dist/install.sh dist/SHA256SUMS \
             --title "Netoryx ${GITHUB_REF_NAME#v}" --notes-file release-notes.md "${flags[@]}"

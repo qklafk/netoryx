@@ -189,6 +189,19 @@ async def test_support_cannot_change_money(make: Builder, session_factory: Sessi
     assert user is not None and user.balance_kop == 0
 
 
+async def test_support_cannot_give_free_days(make: Builder, session_factory: SessionFactory) -> None:
+    h = make()
+    await add_admin(session_factory, 2003, AdminRole.SUPPORT)
+    await add_user(session_factory)
+    await h.press(f"admu:days:{USER}:", uid=2003)
+    assert any(h.popups())  # refused with an alert
+    await h.message("30", uid=2003)
+    texts = [str(getattr(call, "text", "") or "") for call in h.api.calls]
+    assert not any("Добавить к подписке" in t for t in texts)  # no confirmation screen to grant from
+    async with session_factory() as s:
+        assert await s.scalar(select(func.count(Purchase.id))) == 0
+
+
 # --- days, plan, limits ----------------------------------------------------------------------------------------------
 
 

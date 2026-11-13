@@ -29,7 +29,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.models import Payment, Plan, PurchaseKind, ReferralReward, TxKind, User
 from app.db.session import read_session
 from app.keyboards.callbacks import MENU, Nav
-from app.services import kv, notifications, promo, provisioning, referrals, subscriptions, wallet
+from app.services import kv, notifications, promo, provisioning, referrals, subscriptions, wallet, winback
 from app.services.notify import safe_send
 from app.services.subscriptions import SubErrorCode, SubscriptionError
 from app.utils.time import utcnow
@@ -141,6 +141,12 @@ async def _buy(
     payment = await session.get(Payment, result.payment_id)
     if payment is None:
         return
+    # The price locked on the invoice, but never above the plan's current price, and a single-use offer only once.
+    price_kop = None
+    if payment.plan_price_kop is not None:
+        price_kop = await winback.invoice_price(
+            session, ctx.settings, user.tg_id, plan, min(payment.plan_price_kop, plan.price_kop)
+        )
     try:
         async with session.begin_nested():
             purchase = await subscriptions.purchase_plan(
@@ -153,8 +159,7 @@ async def _buy(
                 subscription_id=payment.subscription_id,
                 new_subscription=payment.new_subscription,
                 label=payment.subscription_label,
-                # The price locked on the invoice, but never above the plan's current price.
-                price_kop=None if payment.plan_price_kop is None else min(payment.plan_price_kop, plan.price_kop),
+                price_kop=price_kop,
             )
     except SubscriptionError as exc:
         outcome.error = exc.code

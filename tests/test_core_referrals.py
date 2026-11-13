@@ -38,6 +38,7 @@ def _settings(**overrides: Any) -> Settings:
         "referral_invitee_bonus_rub": 50,
         "referral_inviter_bonus_rub": 30,
         "referral_inviter_requires_payment": False,
+        "referral_invitee_requires_payment": False,
         "referral_inviter_percent": 0,
     }
     base.update(overrides)
@@ -433,6 +434,24 @@ async def test_deferred_inviter_bonus_needs_a_full_payment_of_at_least_min_topup
             3_000,
         )
     assert (await _balances(session_factory))[INVITER] == 3_000
+
+
+async def test_invitee_money_bonus_waits_for_their_first_full_payment(session_factory: SessionFactory) -> None:
+    # by default new accounts get nothing spendable at sign-up: farming the bonus with throwaway accounts is pointless
+    settings = _settings(referral_invitee_requires_payment=True, referral_levels_percent=[])
+    code = await _inviter_code(session_factory, settings)
+    result = await _join(session_factory, settings, INVITEE, code)
+    assert result.outcome == ReferralOutcome.APPLIED and result.invitee_bonus_kop == 0
+    assert (await _balances(session_factory))[INVITEE] == 0
+    async with session_factory.begin() as s:  # underpaid, then below MIN_TOPUP: still locked
+        await referrals.on_invitee_payment(s, settings, INVITEE, "p1", 200, expected_kop=5_000)
+        await referrals.on_invitee_payment(s, settings, INVITEE, "p2", 4_999)
+    assert (await _balances(session_factory))[INVITEE] == 0
+    async with session_factory.begin() as s:
+        await referrals.on_invitee_payment(s, settings, INVITEE, "p3", 5_000, expected_kop=5_000)
+    async with session_factory.begin() as s:  # once only
+        await referrals.on_invitee_payment(s, settings, INVITEE, "p4", 5_000, expected_kop=5_000)
+    assert (await _balances(session_factory))[INVITEE] == 5_000
 
 
 async def test_underpaid_provider_payment_does_not_unlock_inviter_bonus(session_factory: SessionFactory) -> None:

@@ -54,6 +54,17 @@ All notable changes to this project are documented here. The format follows
   `https://`.
 - Database backup files are created readable by their owner only.
 - GitHub Actions from third parties are pinned to commit hashes.
+- A refund or chargeback reported by the payment provider takes back what the payment gave: the days of the plan bought
+  with it, what is left of it on the balance and the referral commissions paid from it (never below zero). Refunds made
+  by an admin keep their own "debit the balance" choice.
+- New permission `subs_grant` for free service (adding days, a later expiry, higher limits, changing the plan): admins
+  and the owner have it, the support role no longer does.
+- The referral sign-up bonus in rubles reaches the invited user after their first payment
+  (`REFERRAL_INVITEE_REQUIRES_PAYMENT`, on by default), so throwaway accounts cannot collect it.
+- A single-use win-back offer (`WINBACK_USAGE=once`) discounts one purchase even if several invoices were created while
+  it was active.
+- The 3x-ui image is pinned to a tested release (`XUI_VERSION`). Releases carry `install.sh` (installing that release)
+  and `SHA256SUMS`; see "Installing a checked release" in `docs/installation.md`.
 
 ## [0.9.0-beta] - 2026-11-12
 

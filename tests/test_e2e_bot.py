@@ -263,7 +263,8 @@ async def test_shop_flow_from_referral_link_to_admin_and_web(start_app: Any) -> 
     assert sub.expires_at - trial_expiry >= timedelta(days=29)
     assert await count(app, Purchase, Purchase.kind == PurchaseKind.PURCHASE) == 1
     user = await one(app, User, User.tg_id == USER)
-    assert user.balance_kop == 0
+    # the balance paid its part of the plan; the friend's sign-up bonus arrived with this first payment
+    assert user.balance_kop == app.ctx.settings.referral_invitee_bonus_kop
 
     # Subscription URL for apps: links + subscription headers; a browser gets the landing page.
     resp = await app.web.get(f"/sub/{user.sub_token}", headers={"user-agent": "v2rayNG/1.9.0"})

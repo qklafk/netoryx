@@ -5,8 +5,9 @@
 * Self-referral and codes of banned users are rejected.
 * One-time bonuses on registration: rubles (``REFERRAL_INVITEE_BONUS_RUB`` / ``REFERRAL_INVITER_BONUS_RUB``) or,
   in ``REFERRAL_REWARD_MODE=days``, subscription days (``REFERRAL_*_BONUS_DAYS``). With
-  ``REFERRAL_INVITER_REQUIRES_PAYMENT`` the inviter's bonus waits for the invitee's first payment that was paid in
-  full and is at least ``MIN_TOPUP_RUB``, which makes farming with fake accounts pointless.
+  ``REFERRAL_INVITER_REQUIRES_PAYMENT`` the inviter's bonus, and with ``REFERRAL_INVITEE_REQUIRES_PAYMENT`` the
+  invitee's money bonus, wait for the invitee's first payment that was paid in full and is at least
+  ``MIN_TOPUP_RUB``, which makes farming with fake accounts pointless.
 * Recurring rewards (``REFERRAL_LEVELS_PERCENT``, one percentage per level up the ``referred_by`` chain):
   modes ``balance`` (main wallet) and ``partner`` (partner ``REFERRAL`` account) pay that share of every credited
   REAL payment (:func:`on_invitee_payment`; never donations, never wallet-funded purchases, so bonus, promo, admin
@@ -176,14 +177,15 @@ async def apply_on_registration(
                 session, settings, inviter, settings.referral_inviter_bonus_days, inviter_source
             )
     else:
-        invitee_kop = await _credit(
-            session,
-            invitee.tg_id,
-            settings.referral_invitee_bonus_kop,
-            TxKind.REFERRAL_INVITEE,
-            INVITEE_REF,
-            invitee_source,
-        )
+        if not settings.referral_invitee_requires_payment:
+            invitee_kop = await _credit(
+                session,
+                invitee.tg_id,
+                settings.referral_invitee_bonus_kop,
+                TxKind.REFERRAL_INVITEE,
+                INVITEE_REF,
+                invitee_source,
+            )
         if inviter_now:
             inviter_kop = await _credit(
                 session,
@@ -323,9 +325,10 @@ async def on_invitee_payment(
 ) -> tuple[int, int] | None:
     """Reward the upline for a credited real (non-donation) invitee payment of ``amount_kop``.
 
-    * The deferred one-time inviter bonus (``REFERRAL_INVITER_REQUIRES_PAYMENT``; rubles, or days in days mode),
-      only for a payment paid in full (``amount_kop >= expected_kop``, the invoice amount) of at least
-      ``MIN_TOPUP_RUB``; until then it stays locked, so a later full payment still unlocks it.
+    * The deferred one-time inviter bonus (``REFERRAL_INVITER_REQUIRES_PAYMENT``; rubles, or days in days mode) and
+      the invitee's deferred money bonus (``REFERRAL_INVITEE_REQUIRES_PAYMENT``), only for a payment paid in full
+      (``amount_kop >= expected_kop``, the invoice amount) of at least ``MIN_TOPUP_RUB``; until then they stay
+      locked, so a later full payment still unlocks them.
     * ``REFERRAL_LEVELS_PERCENT`` commissions up the chain (balance / partner mode; days mode rewards purchases,
       see :func:`on_invitee_purchase`), each rounded down.
     * The legacy ``REFERRAL_INVITER_PERCENT`` of ``amount_kop`` (rounded down).
@@ -341,13 +344,23 @@ async def on_invitee_payment(
     level_one = 0
     if not _days_mode(settings) and amount_kop > 0:
         level_one = await _payment_commissions(session, settings, invitee_id, payment_id, amount_kop)
+    paid_in_full = expected_kop is None or amount_kop >= expected_kop
+    qualifies = paid_in_full and amount_kop >= settings.min_topup_kop
+    if settings.referral_invitee_requires_payment and qualifies and not _days_mode(settings):
+        await _credit(
+            session,
+            invitee_id,
+            settings.referral_invitee_bonus_kop,
+            TxKind.REFERRAL_INVITEE,
+            INVITEE_REF,
+            (invitee_id, BONUS_LEVEL, bonus_source_ref("invitee", invitee_id)),
+        )
     inviter = await session.get(User, inviter_id)
     if inviter is None or inviter.is_banned:
         return None
 
     total, days = level_one, 0
-    paid_in_full = expected_kop is None or amount_kop >= expected_kop
-    if settings.referral_inviter_requires_payment and paid_in_full and amount_kop >= settings.min_topup_kop:
+    if settings.referral_inviter_requires_payment and qualifies:
         source = (invitee_id, BONUS_LEVEL, bonus_source_ref("inviter", invitee_id))
         if _days_mode(settings):
             days = await _grant_days(session, settings, inviter, settings.referral_inviter_bonus_days, source)
