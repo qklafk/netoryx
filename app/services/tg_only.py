@@ -2,14 +2,17 @@
 
 A shared Xray JSON subscription (``/sub/tg/<token>``, introduced by the landing page ``/tg``) whose config sends
 only Telegram through the VPN servers and connects everything else directly. The server enforces the same: on every
-eligible 3x-ui panel one dedicated client (``tg-only``) lives on a VLESS inbound, and the panel's Xray template routes
-that client to Telegram's addresses and domains and blocks the rest
-(:func:`app.services.panels.xray_template.set_tg_only`), so the link cannot be used as a general VPN.
+eligible panel one dedicated client lives on a VLESS inbound, and the panel's Xray routing sends that client to
+Telegram's addresses and domains and blocks the rest (:func:`app.services.panels.xray_template.set_tg_only`), so the
+link cannot be used as a general VPN. On 3x-ui the client (``tg-only``) and the rules in the Xray template are written
+directly (capability :class:`TgOnlyRouting`); Remnawave, Marzban, PasarGuard and Marzneshin choose the Xray email
+themselves, so the panel backend does both in the right order (capability :class:`TgOnlyManaged`) and hands back the
+client links that the panel serves.
 
 Which servers are offered: active 3x-ui panels whose first suitable inbound (VLESS with Reality or TLS) sits in a
-location whose country (taken from the location's flag emoji) is not in ``TG_ONLY_EXCLUDED_COUNTRIES``. A location
-without a recognisable flag is left out unless ``TG_ONLY_ALLOW_UNKNOWN_COUNTRY`` is on. Other panel kinds do not
-support it yet.
+location whose country (taken from the location's flag emoji) is not in ``TG_ONLY_EXCLUDED_COUNTRIES``, and active
+panels of the other four kinds whose configured location (panel option ``location_id``) is not excluded. A location
+without a recognisable flag is left out unless ``TG_ONLY_ALLOW_UNKNOWN_COUNTRY`` is on.
 
 State lives in ``kv``: the subscription token (``tgonly:token``), one client id per panel (``tgonly:uuid:<panel>``)
 and what was applied on each panel (``tgonly:panel:<panel>``). A panel is offered only after the template rules are in
@@ -26,17 +29,32 @@ import json
 import logging
 import re
 import uuid as uuid_lib
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Any, Final
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from sqlalchemy import select
 
 from app.db.models import Endpoint, EndpointProfile, Inbound, KeyValue, Location, Panel, PanelKind
 from app.db.session import read_session
 from app.services import kv, tg_only_config
-from app.services.links import build_vless, compact_reality_hello, effective_params, location_title
-from app.services.panels.base import AccountSpec, PanelBackend, PanelError, TgOnlyRouting
+from app.services.links import (
+    COMPACT_FINGERPRINT,
+    build_vless,
+    compact_reality_hello,
+    effective_params,
+    location_title,
+)
+from app.services.panels.base import (
+    TG_ONLY_USERNAME,
+    AccountSpec,
+    PanelBackend,
+    PanelError,
+    TgOnlyManaged,
+    TgOnlyRouting,
+)
 from app.services.provisioning import account_flow, derive_sub_id, parse_params
 from app.utils.security import random_token
 from app.utils.time import utcnow
@@ -51,7 +69,10 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-EMAIL: Final = "tg-only"  # the client's email on every panel (unique per panel by construction)
+EMAIL: Final = "tg-only"  # the client's email on every 3x-ui panel (unique per panel by construction)
+MANAGED_EMAIL: Final = TG_ONLY_USERNAME  # the user name on panels that build the Xray email themselves
+MANAGED_KINDS: Final = (PanelKind.REMNAWAVE, PanelKind.MARZBAN, PanelKind.PASARGUARD, PanelKind.MARZNESHIN)
+MAX_LINKS: Final = 16
 COMMENT: Final = "Telegram-only"
 TOKEN_KEY: Final = "tgonly:token"
 NOTIFIED_PREFIX: Final = "tgonly:notified:"
@@ -106,22 +127,27 @@ class EndpointInfo:
 
 @dataclass(frozen=True, slots=True)
 class Server:
-    """One eligible 3x-ui server: the panel, the inbound that carries the client and how to reach it."""
+    """One eligible server: the panel and, on 3x-ui, the inbound that carries the client and how to reach it."""
 
     panel_id: int
     panel_name: str
-    inbound_id: int
-    remote_id: int  # inbound id inside 3x-ui
+    inbound_id: int  # 0 on panels that choose the links themselves
+    remote_id: int | None  # inbound id inside 3x-ui; None on the other panels
     flow: str  # client flow ("" where Vision cannot run)
     location_id: int | None
     title: str
     country: str | None
     endpoints: tuple[EndpointInfo, ...]
+    managed: bool = False  # Remnawave / Marzban / PasarGuard / Marzneshin: links come from the panel
+
+    @property
+    def email(self) -> str:
+        return MANAGED_EMAIL if self.managed else EMAIL
 
 
 @dataclass(frozen=True, slots=True)
 class Skipped:
-    """A 3x-ui server that is not offered, with the reason (shown to admins)."""
+    """A server that is not offered, with the reason (shown to admins)."""
 
     panel_id: int
     panel_name: str
@@ -137,14 +163,16 @@ def _usable_inbound(inbound: Inbound) -> dict[str, Any] | None:
 
 
 async def load_servers(session_factory: SessionFactory, settings: Settings) -> tuple[list[Server], list[Skipped]]:
-    """Eligible servers and the 3x-ui servers left out (with the reason). Empty when the feature is off."""
+    """Eligible servers and the servers left out (with the reason). Empty when the feature is off."""
     if not settings.tg_only_enabled:
         return [], []
     excluded = {c.upper() for c in settings.tg_only_excluded_countries}
     async with read_session(session_factory) as session:
         panels = list(
             await session.scalars(
-                select(Panel).where(Panel.kind == PanelKind.XUI, Panel.is_active.is_(True)).order_by(Panel.id)
+                select(Panel)
+                .where(Panel.kind.in_((PanelKind.XUI, *MANAGED_KINDS)), Panel.is_active.is_(True))
+                .order_by(Panel.id)
             )
         )
         locations = {loc.id: loc for loc in await session.scalars(select(Location))}
@@ -170,6 +198,30 @@ async def load_servers(session_factory: SessionFactory, settings: Settings) -> t
     servers: list[Server] = []
     skipped: list[Skipped] = []
     for panel in panels:
+        if panel.kind != PanelKind.XUI:
+            location = locations.get(panel_location_id(panel) or 0)
+            if location is not None and not location.is_active:
+                location = None
+            country = country_of_flag(location.flag) if location is not None else None
+            reason = _country_verdict(country, excluded, settings)
+            if reason is not None:
+                skipped.append(Skipped(panel.id, panel.name, reason, country))
+                continue
+            servers.append(
+                Server(
+                    panel_id=panel.id,
+                    panel_name=panel.name,
+                    inbound_id=0,
+                    remote_id=None,
+                    flow="",
+                    location_id=location.id if location is not None else None,
+                    title=location_title(location, settings) if location is not None else panel.name,
+                    country=country,
+                    endpoints=(),
+                    managed=True,
+                )
+            )
+            continue
         chosen = next(
             ((ib, params) for ib in inbounds if ib.panel_id == panel.id and (params := _usable_inbound(ib))), None
         )
@@ -180,11 +232,9 @@ async def load_servers(session_factory: SessionFactory, settings: Settings) -> t
         eps = by_inbound.get(inbound.id, [])
         location = _location_of(inbound, eps, locations)
         country = country_of_flag(location.flag) if location is not None else None
-        if country is None and not settings.tg_only_allow_unknown_country:
-            skipped.append(Skipped(panel.id, panel.name, "unknown_country"))
-            continue
-        if country is not None and country in excluded:
-            skipped.append(Skipped(panel.id, panel.name, "country", country))
+        reason = _country_verdict(country, excluded, settings)
+        if reason is not None:
+            skipped.append(Skipped(panel.id, panel.name, reason, country))
             continue
         infos = _endpoint_infos(params, eps, settings)
         if not infos:
@@ -204,6 +254,23 @@ async def load_servers(session_factory: SessionFactory, settings: Settings) -> t
             )
         )
     return servers, skipped
+
+
+def _country_verdict(country: str | None, excluded: set[str], settings: Settings) -> str | None:
+    """Why a server in ``country`` is left out (``"unknown_country"`` / ``"country"``), else ``None`` (offered)."""
+    if country is None:
+        return None if settings.tg_only_allow_unknown_country else "unknown_country"
+    return "country" if country in excluded else None
+
+
+def panel_location_id(panel: Panel) -> int | None:
+    """The location a panel without inbound rows (every kind but 3x-ui) was assigned in its options."""
+    try:
+        options = json.loads(panel.options) if panel.options else {}
+    except ValueError:
+        return None
+    value = options.get("location_id") if isinstance(options, dict) else None
+    return value if isinstance(value, int) and not isinstance(value, bool) else None
 
 
 def _location_of(inbound: Inbound, endpoints: list[Endpoint], locations: dict[int, Location]) -> Location | None:
@@ -290,6 +357,7 @@ class PanelState:
     ok: bool = False
     error: str | None = None
     at: str | None = None
+    links: tuple[str, ...] = ()  # client links handed out by the panel (panels that build the Xray email themselves)
 
 
 @dataclass(slots=True)
@@ -319,8 +387,13 @@ async def load_states(session_factory: SessionFactory, panel_ids: list[int]) -> 
                 ok=data.get("ok") is True,
                 error=data["error"] if isinstance(data.get("error"), str) else None,
                 at=data["at"] if isinstance(data.get("at"), str) else None,
+                links=_links_of(data.get("links")),
             )
     return states
+
+
+def _links_of(raw: Any) -> tuple[str, ...]:
+    return tuple(x for x in raw if isinstance(x, str))[:MAX_LINKS] if isinstance(raw, list) else ()
 
 
 async def _save_state(session_factory: SessionFactory, state: PanelState | None, panel_id: int) -> None:
@@ -328,7 +401,9 @@ async def _save_state(session_factory: SessionFactory, state: PanelState | None,
         if state is None:
             await kv.delete(session, _panel_key(panel_id))
             return
-        payload = {"remote_id": state.remote_id, "ok": state.ok, "error": state.error, "at": state.at}
+        payload: dict[str, Any] = {"remote_id": state.remote_id, "ok": state.ok, "error": state.error, "at": state.at}
+        if state.links:
+            payload["links"] = list(state.links)
         await kv.set(session, _panel_key(panel_id), json.dumps(payload))
 
 
@@ -378,15 +453,30 @@ async def _apply_server(
     """Rules first, then the client. Returns an error text, or ``None`` when the server is ready."""
     previous = (await load_states(session_factory, [server.panel_id])).get(server.panel_id)
     state = PanelState(server.panel_id, server.remote_id, previous.ok if previous else False)
+    if previous is not None:
+        state.links = previous.links
     try:
         backend = await registry.get(server.panel_id)
-        if not isinstance(backend, TgOnlyRouting):
-            raise PanelError("this panel type does not support the Telegram-only subscription")
         client_id = await _client_uuid(session_factory, server.panel_id)
-        async with asyncio.timeout(PANEL_TIMEOUT_SEC):
-            await backend.apply_tg_only([EMAIL])
-            await backend.ensure_sniffing()
-            await _upsert_client(backend, server, client_id, settings, session_factory)
+        if server.managed:
+            if not isinstance(backend, TgOnlyManaged):
+                raise PanelError("this panel type does not support the Telegram-only subscription")
+            async with asyncio.timeout(PANEL_TIMEOUT_SEC):
+                spec = await _spec(backend, server, client_id, settings, session_factory)
+                access = await backend.ensure_tg_only(spec)
+            links = _usable_links(access.links, settings.reality_compact_hello)
+            if not links:
+                raise PanelError("the panel returned no usable VLESS link for the Telegram-only account")
+            state.links = links
+        else:
+            if not isinstance(backend, TgOnlyRouting):
+                raise PanelError("this panel type does not support the Telegram-only subscription")
+            async with asyncio.timeout(PANEL_TIMEOUT_SEC):
+                await backend.apply_tg_only([EMAIL])
+                await backend.ensure_sniffing()
+                await backend.upsert_account(
+                    server.remote_id, await _spec(backend, server, client_id, settings, session_factory)
+                )
         state.ok, state.error = True, None
     except (Exception, TimeoutError) as exc:
         log.warning("Telegram-only: panel %s: %s", server.panel_id, exc)
@@ -399,28 +489,55 @@ async def _apply_server(
     return state.error
 
 
-async def _upsert_client(
+def _usable_links(links: Sequence[str], compact: bool) -> tuple[str, ...]:
+    """The panel's VLESS links that Xray can use as an outbound (compact Reality hello applied when asked)."""
+    usable: list[str] = []
+    for link in links:
+        if not link.lower().startswith("vless://"):
+            continue
+        if compact:
+            link = compact_link(link)
+        try:
+            outbound_from_link(link, "probe")
+        except LinkError:
+            continue
+        usable.append(link)
+    return tuple(usable[:MAX_LINKS])
+
+
+def compact_link(link: str) -> str:
+    """``link`` with a Firefox fingerprint when it is a Reality link (see ``REALITY_COMPACT_HELLO``)."""
+    parts = urlsplit(link)
+    query = parse_qsl(parts.query, keep_blank_values=True)
+    if dict(query).get("security") != "reality":
+        return link
+    query = [(k, v) for k, v in query if k not in ("fp", "support-x25519mlkem768")]
+    query += [("fp", COMPACT_FINGERPRINT), ("support-x25519mlkem768", "false")]
+    return urlunsplit(parts._replace(query=urlencode(query, safe="/,:")))
+
+
+async def _spec(
     backend: PanelBackend, server: Server, client_id: str, settings: Settings, session_factory: SessionFactory
-) -> None:
-    """Create or update the client; its traffic limit follows ``TG_ONLY_MONTHLY_LIMIT_GB`` (no Xray restart)."""
+) -> AccountSpec:
+    """The account to keep on the panel; its traffic limit follows ``TG_ONLY_MONTHLY_LIMIT_GB`` (no Xray restart)."""
+    email = server.email
     limit = max(0, settings.tg_only_monthly_limit_gb) * GIB
     used = 0
     if limit:
         await _monthly_reset(backend, server, session_factory)
-        used = await backend.get_used_bytes(server.remote_id, EMAIL) or 0
-    spec = AccountSpec(
-        email=EMAIL,
+        used = await backend.get_used_bytes(server.remote_id, email) or 0
+    return AccountSpec(
+        email=email,
         uuid=client_id,
         enabled=not limit or used < limit,  # 3x-ui switches an exhausted client off; do not switch it back on
         expires_at=None,
         device_limit=0,
         traffic_limit_bytes=limit,
         tg_id=0,
-        sub_id=derive_sub_id(client_id, EMAIL),
+        sub_id=derive_sub_id(client_id, email),
         comment=COMMENT,
         flow=server.flow,
     )
-    await backend.upsert_account(server.remote_id, spec)
 
 
 async def _monthly_reset(backend: PanelBackend, server: Server, session_factory: SessionFactory) -> None:
@@ -432,7 +549,7 @@ async def _monthly_reset(backend: PanelBackend, server: Server, session_factory:
     if last == month:
         return
     if last is not None:
-        await backend.reset_traffic(server.remote_id, EMAIL)
+        await backend.reset_traffic(server.remote_id, server.email)
     async with session_factory.begin() as session:
         await kv.set(session, key, month)
 
@@ -443,10 +560,13 @@ async def _remove_panel(session_factory: SessionFactory, registry: PanelSource, 
     try:
         backend = await registry.get(panel_id)
         async with asyncio.timeout(PANEL_TIMEOUT_SEC):
-            if state is not None and state.remote_id is not None:
-                await backend.delete_account(state.remote_id, EMAIL, "")
-            if isinstance(backend, TgOnlyRouting):
-                await backend.apply_tg_only([])
+            if isinstance(backend, TgOnlyManaged):
+                await backend.remove_tg_only(MANAGED_EMAIL)
+            else:
+                if state is not None and state.remote_id is not None:
+                    await backend.delete_account(state.remote_id, EMAIL, "")
+                if isinstance(backend, TgOnlyRouting):
+                    await backend.apply_tg_only([])
     except (Exception, TimeoutError) as exc:
         log.warning("Telegram-only: removing from panel %s failed: %s", panel_id, exc)
         return (str(exc) or type(exc).__name__)[:300]
@@ -535,8 +655,17 @@ async def render_configs(session_factory: SessionFactory, settings: Settings, la
         state = states.get(server.panel_id)
         if state is None or not state.ok:
             continue  # rules and client are not in place yet: never hand out a half-restricted client
-        client_id = await _client_uuid(session_factory, server.panel_id)
         built = 0
+        if server.managed:
+            for link in state.links:
+                try:
+                    outbounds.append(outbound_from_link(link, f"proxy-{len(outbounds) + 1}"))
+                    built += 1
+                except LinkError as exc:
+                    log.info("Telegram-only: a link of panel %s is left out: %s", server.panel_id, exc)
+            used += 1 if built else 0
+            continue
+        client_id = await _client_uuid(session_factory, server.panel_id)
         for endpoint in server.endpoints:
             link = build_vless(client_id, endpoint.address, endpoint.port, endpoint.params, EMAIL, None, server.flow)
             try:
@@ -595,7 +724,7 @@ async def check_daily_traffic(
         try:
             backend = await registry.get(server.panel_id)
             async with asyncio.timeout(PANEL_TIMEOUT_SEC):
-                total += await backend.get_used_bytes(server.remote_id, EMAIL) or 0
+                total += await backend.get_used_bytes(server.remote_id, server.email) or 0
         except (Exception, TimeoutError) as exc:
             log.info("Telegram-only: traffic of panel %s is unreadable: %s", server.panel_id, type(exc).__name__)
             return None

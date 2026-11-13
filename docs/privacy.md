@@ -29,9 +29,9 @@ describes the defaults of this release; the code is open, so every statement can
 - E-mail addresses, only for customers who choose e-mail login to the web cabinet.
 - Backups of all of the above (see [backups.md](backups.md)).
 
-## Telegram proxy
+## Telegram proxy (legacy)
 
-The MTProto proxy (telemt) and the SOCKS5 inbound see connecting addresses at the network level. The proxy server enforces
+Only if you enabled the legacy proxies. The MTProto proxy (telemt) and the SOCKS5 inbound see connecting addresses at the network level. The proxy server enforces
 its own cap on simultaneous source IPs per account to detect link sharing; Netoryx reads the resulting usage, rotates the
 link on abuse, and does not store customer addresses.
 

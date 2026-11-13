@@ -269,7 +269,7 @@ async def test_excluded_and_unknown_countries(session_factory: SessionFactory) -
     await seed(session_factory, panel_id=1, location_id=1, flag="🇩🇪")
     await seed(session_factory, panel_id=2, location_id=2, flag="🇷🇺")
     await seed(session_factory, panel_id=3, location_id=3, flag="🌍")
-    await seed(session_factory, panel_id=4, location_id=4, flag="🇳🇱", kind=PanelKind.REMNAWAVE)
+    await seed(session_factory, panel_id=4, location_id=4, flag="🇳🇱", kind=PanelKind.HIDDIFY)  # no routing API
     await seed(session_factory, panel_id=5, location_id=5, flag="🇳🇱", active=False)
     servers, skipped = await tg_only.load_servers(session_factory, settings())
     assert [s.panel_id for s in servers] == [1] and servers[0].country == "DE" and servers[0].flow == "xtls-rprx-vision"
@@ -663,11 +663,13 @@ async def test_nothing_is_sent_before_a_server_is_ready(session_factory: Session
 # ---------------------------------------------------------------------------------------------
 # Panels that cannot do it
 # ---------------------------------------------------------------------------------------------
-def test_only_3x_ui_backends_support_the_rules() -> None:
+def test_only_3x_ui_backends_write_the_template_rules() -> None:
+    from app.services.panels.hiddify import HiddifyBackend
     from app.services.panels.remnawave import RemnawaveBackend
     from app.services.panels.xui import XuiBackend
 
     assert hasattr(XuiBackend, "apply_tg_only") and not hasattr(RemnawaveBackend, "apply_tg_only")
+    assert hasattr(RemnawaveBackend, "ensure_tg_only") and not hasattr(HiddifyBackend, "ensure_tg_only")
     with pytest.raises(PanelError):
         raise PanelError("x")
 

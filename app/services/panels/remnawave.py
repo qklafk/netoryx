@@ -28,7 +28,7 @@ import logging
 import re
 import time
 from collections.abc import Awaitable, Callable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import UTC, datetime, timedelta
 from typing import TYPE_CHECKING, Any, Final, TypeVar
 from urllib.parse import quote, urlsplit
@@ -45,7 +45,9 @@ from app.services.panels.base import (
     PanelUnsupportedError,
     RemoteAccount,
     ServerStatus,
+    TgOnlyAccess,
 )
+from app.services.panels.xray_template import TemplateError, set_tg_only_config
 
 if TYPE_CHECKING:
     from app.services.devices import DeviceInfo
@@ -821,6 +823,61 @@ class RemnawaveBackend:
             if exc.code != ERR_ENABLED_NODES_NOT_FOUND:
                 raise
             logger.info("Remnawave %s: no enabled nodes to restart", self.base_url)
+
+    # ------------------------------------------------------------------ Telegram-only account
+
+    async def _profile_uuids_of_squads(self, squads: list[str]) -> set[str]:
+        """Config profiles that carry the inbounds of ``squads`` (where a user of those squads gets its Xray client)."""
+        data = await self._request("GET", "/api/internal-squads")
+        items = data.get("internalSquads", []) if isinstance(data, Mapping) else []
+        wanted = set(squads)
+        result: set[str] = set()
+        for squad in items:
+            if isinstance(squad, Mapping) and str(squad.get("uuid")) in wanted:
+                for inbound in squad.get("inbounds") or []:
+                    if isinstance(inbound, Mapping) and inbound.get("profileUuid"):
+                        result.add(str(inbound["profileUuid"]))
+        return result
+
+    async def _edit_profiles(self, matching: Mapping[str, list[str]] | None) -> None:
+        """Write the Telegram-only rules into the config profiles named in ``matching`` (profile uuid -> ``user``
+        entries) and remove them from every other profile. One PATCH per changed profile (its nodes restart)."""
+        data = await self._request("GET", "/api/config-profiles")
+        profiles = data.get("configProfiles", []) if isinstance(data, Mapping) else []
+        for profile in profiles:
+            if not isinstance(profile, Mapping) or not isinstance(profile.get("config"), dict):
+                continue
+            users = (matching or {}).get(str(profile.get("uuid")), [])
+            try:
+                updated, changed = set_tg_only_config(dict(profile["config"]), users)
+            except TemplateError as exc:
+                raise PanelError(f"Remnawave config profile {profile.get('name')!r}: {exc}") from exc
+            if changed:
+                await self._request(
+                    "PATCH", "/api/config-profiles", json_body={"uuid": str(profile["uuid"]), "config": updated}
+                )
+
+    async def ensure_tg_only(self, spec: AccountSpec) -> TgOnlyAccess:
+        """Remnawave names the Xray client after the numeric user id: the user is created disabled, its id goes into
+        the config profiles' rules, then the user is enabled."""
+        await self._ensure_supported()
+        squads = await self._target_squads()
+        profiles = await self._profile_uuids_of_squads(squads)
+        if not profiles:
+            raise PanelError("Remnawave: the user's squads have no inbounds to carry a Telegram-only client")
+        current = await self._find_user(spec.email)
+        fresh = current is None or str(current.get("vlessUuid", "")).lower() != spec.uuid.lower()
+        account = await self.upsert_account(None, replace(spec, enabled=spec.enabled and not fresh))
+        entries = [str(account.remote_id)]
+        await self._edit_profiles({uuid: entries for uuid in profiles})
+        if fresh and spec.enabled:
+            account = await self.upsert_account(None, spec)
+        return TgOnlyAccess(tuple(await self.get_links(account)))
+
+    async def remove_tg_only(self, email: str) -> None:
+        """Delete the user first, then the rules."""
+        await self.delete_account(None, email, "")
+        await self._edit_profiles(None)
 
     async def _for_user(self, account: RemoteAccount, op: Callable[[int], Awaitable[T]]) -> T | None:
         """Run ``op(user_id)`` using the cached remote id, falling back to a username lookup.

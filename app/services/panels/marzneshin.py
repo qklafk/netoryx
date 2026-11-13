@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 from collections.abc import Mapping
+from dataclasses import replace
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import quote, urlsplit
@@ -21,7 +22,9 @@ from app.services.panels.base import (
     PanelError,
     PanelUnsupportedError,
     RemoteAccount,
+    TgOnlyAccess,
 )
+from app.services.panels.xray_template import TemplateError, set_tg_only_config
 
 PAGE_SIZE = 100
 MAX_USERS = 100_000
@@ -246,3 +249,66 @@ class MarzneshinBackend:
         except MarzneshinApiError as exc:
             if exc.status != 404:
                 raise
+
+    # --- optional capability: Telegram-only account (node Xray config rules) -------------------------
+    async def _xray_nodes(self) -> list[tuple[int, str]]:
+        """``(node id, backend name)`` of every enabled node's Xray backend."""
+        found: list[tuple[int, str]] = []
+        for page in range(1, MAX_USERS // PAGE_SIZE + 1):
+            data = await self._request("GET", "/api/nodes", params={"page": page, "size": PAGE_SIZE})
+            items = data.get("items") if isinstance(data, Mapping) else None
+            if not isinstance(items, list):
+                raise PanelError("Marzneshin returned an invalid node list")
+            for node in items:
+                if not isinstance(node, Mapping) or node.get("status") == "disabled" or node.get("id") is None:
+                    continue
+                for backend in node.get("backends") or []:
+                    if isinstance(backend, Mapping) and backend.get("backend_type") == "xray" and backend.get("name"):
+                        found.append((int(node["id"]), str(backend["name"])))
+            pages = data.get("pages") if isinstance(data, Mapping) else None
+            if not items or (isinstance(pages, int) and page >= pages) or len(items) < PAGE_SIZE:
+                return found
+        return found
+
+    async def _edit_nodes(self, users: list[str]) -> None:
+        """Write the Telegram-only rules (matching ``users``, the Xray emails) into every node's Xray config, or
+        remove them when ``users`` is empty. A changed config is saved through the node, which restarts Xray."""
+        for node_id, backend in await self._xray_nodes():
+            path = f"/api/nodes/{node_id}/{quote(backend, safe='')}/config"
+            data = await self._request("GET", path)
+            try:
+                config = json.loads(str(data.get("config") or "")) if isinstance(data, Mapping) else None
+            except ValueError:
+                config = None
+            if not isinstance(config, dict):
+                raise PanelError(f"Marzneshin node {node_id}: the Xray config is not JSON")
+            try:
+                updated, changed = set_tg_only_config(config, users)
+            except TemplateError as exc:
+                raise PanelError(f"Marzneshin node {node_id}: {exc}") from exc
+            if changed:
+                body = {"config": json.dumps(updated, ensure_ascii=False, indent=2), "format": 1}
+                await self._request("PUT", path, json=body)
+
+    async def ensure_tg_only(self, spec: AccountSpec) -> TgOnlyAccess:
+        """marznode names the Xray client ``<id>.<username>``: the user is created disabled, then the nodes get the
+        rules for that exact name, then the user is enabled."""
+        current = await self.get_account(None, spec.email)
+        if current is not None and current.uuid.lower() != spec.uuid.lower():  # rotated id: the user is recreated
+            await self.delete_account(None, spec.email, current.uuid)
+            current = None
+        fresh = current is None
+        account = await self.upsert_account(None, replace(spec, enabled=spec.enabled and not fresh))
+        if not account.remote_id:
+            raise PanelError("Marzneshin returned a user without an id")
+        await self._edit_nodes([f"{account.remote_id}.{account.email}"])
+        if fresh and spec.enabled:
+            account = await self.upsert_account(None, spec)
+        return TgOnlyAccess(tuple(await self.get_links(account)))
+
+    async def remove_tg_only(self, email: str) -> None:
+        """Delete the user first, then the rules."""
+        account = await self.get_account(None, email)
+        if account is not None:
+            await self.delete_account(None, email, account.uuid)
+        await self._edit_nodes([])

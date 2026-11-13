@@ -11,12 +11,26 @@ All notable changes to this project are documented here. The format follows
   through the VPN, everything else connects directly, and the 3x-ui server refuses that client anything but Telegram.
   Optional monthly traffic limit and a daily traffic alert, a bot admin screen and a web admin page with "new link";
   the installer prints the page and link instead of a proxy link. See `docs/telegram-only.md`.
+  It uses a `leastPing` balancer over eligible servers (`TG_ONLY_EXCLUDED_COUNTRIES` keeps some countries out), works with
+  3x-ui only for now, and `netoryx tg-link` prints the link again.
+- Certificate expiry alerts: the app checks the TLS certificate of `PUBLIC_BASE_URL` (and `TLS_WATCH_HOSTS`) every 12 hours,
+  warns the owner and admins in time, and shows the state in the web admin under System, Certificates. See
+  `docs/troubleshooting.md`.
 
 ### Changed
 
 - The Telegram MTProto and SOCKS5 proxies are legacy and off by default (`TG_PROXY_ACCESS=off`, `TG_SOCKS_ENABLED=false`);
   the installer no longer asks about them (`--with-tgproxy` and `--with-socks` still work) and the menu button and Mini App
   screen stay hidden until they are turned on.
+- The Russian README is now the primary one (`README.md`); the English version is `README.en.md`.
+- `docker-compose.yml` requires `SECRET_KEY` in `.env`; manual installs must set it before updating (see
+  `docs/upgrading.md`). The installer already generates it.
+- Shadowsocks-2022 is optional and may be unreliable on some networks; VLESS Reality on 443 stays the recommended default.
+
+### Security
+
+- Security hardening pass: the Docker stack no longer starts with a missing or empty `SECRET_KEY`, so stored panel passwords
+  and API keys are always encrypted with a key you control.
 
 ## [0.9.0-beta] - 2026-11-12
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping
+from dataclasses import replace
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import quote, urlsplit
@@ -20,7 +21,9 @@ from app.services.panels.base import (
     PanelError,
     PanelUnsupportedError,
     RemoteAccount,
+    TgOnlyAccess,
 )
+from app.services.panels.xray_template import TemplateError, set_tg_only_config
 
 MAX_RESPONSE_BYTES = 16 * 1024 * 1024
 
@@ -241,3 +244,54 @@ class PasarGuardBackend:
         except PasarGuardApiError as exc:
             if exc.status != 404:
                 raise
+
+    # --- optional capability: Telegram-only account (core config rules) -----------------------------
+    async def _edit_cores(self, users: list[str]) -> None:
+        """Write the Telegram-only rules (matching ``users``, the Xray emails) into every Xray core, or remove them
+        when ``users`` is empty. A changed core is saved with ``restart_nodes`` (routing edits apply live)."""
+        data = await self._request("GET", "/api/cores")
+        cores = data.get("cores") if isinstance(data, Mapping) else None
+        if not isinstance(cores, list):
+            raise PanelError("PasarGuard returned an invalid core list")
+        for core in cores:
+            if not isinstance(core, Mapping) or not isinstance(core.get("config"), dict):
+                continue
+            if core.get("type") not in (None, "xray"):
+                continue
+            try:
+                updated, changed = set_tg_only_config(dict(core["config"]), users)
+            except TemplateError as exc:
+                raise PanelError(f"PasarGuard core {core.get('name')!r}: {exc}") from exc
+            if not changed:
+                continue
+            body = {
+                "name": core.get("name"),
+                "config": updated,
+                "type": core.get("type"),
+                "exclude_inbound_tags": list(core.get("exclude_inbound_tags") or []),
+                "fallbacks_inbound_tags": list(core.get("fallbacks_inbound_tags") or []),
+            }
+            await self._request("PUT", f"/api/core/{int(core['id'])}", params={"restart_nodes": "true"}, json=body)
+
+    async def ensure_tg_only(self, spec: AccountSpec) -> TgOnlyAccess:
+        """PasarGuard names the Xray client after the numeric user id: the user is created disabled, its id goes into
+        the cores' rules, then the user is enabled."""
+        current = await self.get_account(None, spec.email)
+        if current is not None and current.uuid.lower() != spec.uuid.lower():  # rotated id: the user is recreated
+            await self.delete_account(None, spec.email, current.uuid)
+            current = None
+        fresh = current is None
+        account = await self.upsert_account(None, replace(spec, enabled=spec.enabled and not fresh))
+        if account.remote_id is None:
+            raise PanelError("PasarGuard returned a user without an id")
+        await self._edit_cores([account.remote_id])
+        if fresh and spec.enabled:
+            account = await self.upsert_account(None, spec)
+        return TgOnlyAccess(tuple(await self.get_links(account)))
+
+    async def remove_tg_only(self, email: str) -> None:
+        """Delete the user first, then the rules."""
+        account = await self.get_account(None, email)
+        if account is not None:
+            await self.delete_account(None, email, account.uuid)
+        await self._edit_cores([])

@@ -34,7 +34,7 @@ profile and re-import the subscription (or press the subscription refresh while 
 override in the admin (`fp`, `support-x25519mlkem768`) takes precedence over the setting.
 
 **Cause 2: non-standard ports are not reachable.** Home and mobile ISPs often drop or throttle everything except 443. Put the
-VPN, the website and the Telegram proxy on 443 behind the `edge` HAProxy (the default Docker stack does this; see
+VPN, the website and (optionally) the legacy Telegram proxy on 443 behind the `edge` HAProxy (the default Docker stack does this; see
 [panels.md](panels.md)). Be careful testing from your own PC: some networks answer TCP connects on any port through a
 transparent proxy, so "port open" tests prove nothing. Test with a real client.
 
@@ -52,7 +52,10 @@ add a relay endpoint (an L4 forward on an approved address pointing at your real
 profile; see [panels.md](panels.md). Relay endpoints that fail their health check are hidden from subscriptions
 automatically.
 
-## Telegram proxy does not connect
+## Legacy Telegram proxy does not connect
+
+These proxies are legacy, off by default and may not work in some countries; consider the shared
+[Telegram access link](telegram-only.md) instead.
 
 - MTProto on 443 needs its `tls_domain` listed in `deploy/haproxy/sni.map` as `tgproxy` and `public_port = 443` in the
   proxy config; restart `edge` after changing the map.

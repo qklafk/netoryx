@@ -83,6 +83,7 @@ from app.services.panels.xray_template import (
     parse_template,
     set_ad_blocking,
     set_tg_only,
+    sniffing_update,
     tg_only_enabled,
     youtube_exit_enabled,
 )
@@ -1969,19 +1970,6 @@ class XuiBackend:
 
     async def delete_socks_user(self, target: int | None, name: str) -> None:
         await self.apply_socks_users(target, {}, [name])
-
-
-def sniffing_update(raw: Any) -> dict[str, Any] | None:
-    """The sniffing object an inbound needs for domain routing, or None when it already sniffs http and tls."""
-    current = _as_dict(raw)
-    override = current.get("destOverride")
-    override = [str(x) for x in override] if isinstance(override, list) else []
-    if current.get("enabled") is True and {"http", "tls"} <= set(override):
-        return None
-    merged = list(dict.fromkeys([*override, "http", "tls", "quic"]))
-    if current.get("enabled") is True:
-        return {**current, "destOverride": merged}
-    return {**current, "enabled": True, "destOverride": merged, "routeOnly": True}
 
 
 def _socks_update_body(

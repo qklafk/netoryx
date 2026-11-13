@@ -5,7 +5,8 @@ from __future__ import annotations
 import asyncio
 import json
 import re
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
+from dataclasses import replace
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import quote, urlsplit
@@ -22,6 +23,13 @@ from app.services.panels.base import (
     PanelUnsupportedError,
     RemoteAccount,
     ServerStatus,
+    TgOnlyAccess,
+)
+from app.services.panels.xray_template import (
+    TemplateError,
+    marzban_user_match,
+    regexp_user_supported,
+    set_tg_only_config,
 )
 
 USERNAME_RE = re.compile(r"^[a-zA-Z0-9_@.\-]{3,32}$")
@@ -303,3 +311,50 @@ class MarzbanBackend:
 
     async def restart_core(self) -> None:
         await self._request("POST", "/api/core/restart")
+
+    # --- optional capability: Telegram-only account (core config rules) -----------------------------
+    async def _require_regexp_users(self) -> None:
+        """Marzban's Xray email is ``<id>.<username>`` and the id is not exposed: the rule uses a ``regexp:`` user
+        match, which only Xray >= 24.10.16 understands. Refuse to proceed on an older core (here or on a node)."""
+        core = await self._request("GET", "/api/core")
+        versions = [str(core.get("version") or "") if isinstance(core, Mapping) else ""]
+        nodes = await self._request("GET", "/api/nodes")
+        for node in nodes if isinstance(nodes, list) else []:
+            if isinstance(node, Mapping) and node.get("status") != "disabled":
+                versions.append(str(node.get("xray_version") or ""))
+        old = [v for v in versions if not regexp_user_supported(v)]
+        if old:
+            raise PanelError(
+                f"Marzban: the Xray core ({old[0] or 'unknown version'}) is older than 24.10.16; "
+                "update it to use the Telegram-only subscription"
+            )
+
+    async def _edit_core_config(self, editor: Callable[[dict[str, Any]], tuple[dict[str, Any], bool]]) -> bool:
+        """Read the core config, apply ``editor``, save it when it changed (the core restarts); returns the change."""
+        config = await self._request("GET", "/api/core/config")
+        if not isinstance(config, dict):
+            raise PanelError("Marzban returned an invalid core config")
+        try:
+            updated, changed = editor(config)
+        except TemplateError as exc:
+            raise PanelError(f"Marzban: {exc}") from exc
+        if changed:
+            await self._request("PUT", "/api/core/config", json=updated)
+        return changed
+
+    async def ensure_tg_only(self, spec: AccountSpec) -> TgOnlyAccess:
+        """The user is created disabled, the rules go into the core config, then the user is enabled."""
+        await self._require_regexp_users()
+        if await self.get_account(None, spec.email) is None:
+            await self.upsert_account(None, replace(spec, enabled=False))
+        match = marzban_user_match(spec.email)
+        await self._edit_core_config(lambda config: set_tg_only_config(config, [match]))
+        account = await self.upsert_account(None, spec)
+        return TgOnlyAccess(tuple(await self.get_links(account)))
+
+    async def remove_tg_only(self, email: str) -> None:
+        """Delete the user first, then the rules."""
+        account = await self.get_account(None, email)
+        if account is not None:
+            await self.delete_account(None, email, account.uuid)
+        await self._edit_core_config(lambda config: set_tg_only_config(config, []))

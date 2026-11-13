@@ -15,7 +15,7 @@ container** (`docker compose up -d --build --no-deps app`). Database migrations 
 (`AUTO_MIGRATE=true`). VPN sessions are not interrupted, because the VPN, `edge` and `caddy` are not touched. The rebuild
 takes a couple of minutes on a small server; the bot is unavailable for a few seconds while the new container starts.
 
-If a release changes the `edge`, `caddy`, panel or Telegram proxy containers (the update tells you), restart them
+If a release changes the `edge`, `caddy`, panel or legacy Telegram proxy containers (the update tells you), restart them
 deliberately at a quiet hour, one at a time, for example `docker compose up -d --no-deps edge`. That drops open
 connections; most clients reconnect, some need the VPN toggled off and on.
 
@@ -30,6 +30,13 @@ docker compose logs -f app
 
 Your `.env`, `deploy/haproxy/sni.map` and `deploy/caddy-sites/*.caddy` are per-server files; compare `.env.example` with
 your `.env` for new options.
+
+## Required settings
+
+`docker-compose.yml` now refuses to start without `SECRET_KEY` in `.env` (the installer generates it, so installs made by
+`install.sh` are unaffected). If you run a manual or older Docker install and it is missing, add one before updating:
+`SECRET_KEY=$(openssl rand -hex 32)`. Reuse the existing value if you already have one: changing it makes stored panel
+passwords and API keys unreadable.
 
 ## Checking after an upgrade
 

@@ -71,7 +71,7 @@ Many networks drop or throttle non-standard ports, so the Docker stack puts ever
 the TLS server name of each connection and passes it on untouched:
 
 - names listed in `deploy/haproxy/sni.map` go to `reality` (the 3x-ui inbound on `REALITY_PORT`) or `tgproxy` (the
-  Telegram proxy);
+  optional legacy Telegram proxy);
 - every other name goes to Caddy (web admin, Mini App, subscriptions).
 
 The most robust Reality setup is "self-steal": the inbound borrows a real site on your own server, so the name, the

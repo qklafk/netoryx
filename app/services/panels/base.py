@@ -222,6 +222,35 @@ class TgOnlyRouting(Protocol):
     async def ensure_sniffing(self) -> int: ...
 
 
+#: Username of the shared Telegram-only account on panels that choose the Xray email themselves (valid on all of them).
+TG_ONLY_USERNAME = "tgonly"
+
+
+@dataclass(frozen=True, slots=True)
+class TgOnlyAccess:
+    """What a panel hands out for the Telegram-only account: its client links, as the panel serves them."""
+
+    links: tuple[str, ...]
+
+
+@runtime_checkable
+class TgOnlyManaged(Protocol):
+    """Optional backend capability: a Telegram-only account on a panel that builds the Xray email itself.
+
+    Remnawave, Marzban, PasarGuard and Marzneshin name a user in Xray from their own ids, so the routing rules can
+    only be written once the account exists. Implementations keep the account disabled until its rules are in the
+    panel's core config, and remove the account before the rules.
+    """
+
+    async def ensure_tg_only(self, spec: AccountSpec) -> TgOnlyAccess:
+        """Create or update the account, put its routing rules in place, enable it; returns its links."""
+        ...
+
+    async def remove_tg_only(self, email: str) -> None:
+        """Delete the account (if present), then the rules. Safe to repeat."""
+        ...
+
+
 @runtime_checkable
 class PanelBackend(Protocol):
     kind: PanelKind

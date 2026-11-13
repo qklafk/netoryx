@@ -21,6 +21,7 @@ const sidebar = [
       ...(hasBeginners ? [item('beginners', 'Для новичков', 'For beginners')] : []),
       item('choosing-a-vps', 'Где арендовать сервер', 'Choosing a VPS'),
       item('configuration', 'Настройка', 'Configuration'),
+      item('subscriptions', 'Форматы подписки', 'Subscription formats'),
       item('faq', 'FAQ', 'FAQ'),
       item('troubleshooting', 'Решение проблем', 'Troubleshooting'),
     ],

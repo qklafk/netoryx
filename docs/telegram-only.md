@@ -70,9 +70,10 @@ Because the link is public, you can cap what it carries:
 
 A server is offered when all of these hold:
 
-- the panel is **3x-ui** and active (other panel kinds are not supported yet);
-- it has an active VLESS inbound with Reality or TLS and at least one active standard endpoint;
-- the **country** of its location is not in `TG_ONLY_EXCLUDED_COUNTRIES`.
+- the panel is active and is **3x-ui**, **Remnawave**, **Marzban**, **PasarGuard** or **Marzneshin** (see below);
+- on 3x-ui: it has an active VLESS inbound with Reality or TLS and at least one active standard endpoint;
+- the **country** of its location (on the other panels: the panel's configured location) is not in
+  `TG_ONLY_EXCLUDED_COUNTRIES`.
 
 The country is read from the location's flag emoji (🇩🇪 → `DE`). Default exclusions: `RU,BY,CN,IR,KP,TM,VN`: countries
 where Telegram is blocked or restricted, so a Telegram-only exit there would not work. A location without a country flag
@@ -104,8 +105,15 @@ Runtime settings, web admin → Settings, group "Telegram access".
 
 ## Limitations
 
-- 3x-ui only for now. Remnawave, Marzban, PasarGuard, Marzneshin and Hiddify servers are not offered: they manage
-  their Xray configuration themselves and have no per-client routing hook we can use.
+- Hiddify servers are not offered: they have no API for per-client routing.
+- Supported panels and how it works on each: on **3x-ui** the bot edits the Xray template. On **Remnawave**, **Marzban**,
+  **PasarGuard** and **Marzneshin** the bot creates a user named `tgonly` (kept disabled until its rules exist) and adds
+  the same three rules to the Xray config through the panel's API: config profiles of the user's squads (Remnawave),
+  `/api/core/config` (Marzban), the cores (PasarGuard) or every enabled node's Xray config (Marzneshin). The rules match
+  the Xray name the panel gives that user. Marzban needs an Xray core 24.10.16 or newer (also on its nodes) because its
+  names cannot be matched exactly; older cores are reported as an error and nothing is created. Changing a core config
+  restarts Xray on that panel once, like any edit of it. The client links come from the panel itself, so the panel must
+  have a host for the inbound.
 - The page answers `503` with a short friendly text while no server is ready, and `404` when the feature is off.
 - Telegram's address list can change; update `app/services/tg_only_data.py` from the page above when it does.
 - A server whose public address is a relay (an endpoint of kind "relay") is used as configured; the country check looks

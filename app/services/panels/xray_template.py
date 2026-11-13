@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Final
@@ -345,3 +346,66 @@ def set_tg_only(template: dict[str, Any], emails: Sequence[str]) -> tuple[dict[s
 def tg_only_enabled(template: dict[str, Any], emails: Sequence[str]) -> bool:
     """True when the template already holds exactly the rules ``emails`` ask for."""
     return not set_tg_only(template, emails)[1]
+
+
+def sniffing_update(raw: Any) -> dict[str, Any] | None:
+    """The sniffing object an inbound needs for domain routing, or None when it already sniffs http and tls."""
+    current: dict[str, Any] = {}
+    if isinstance(raw, dict):
+        current = raw
+    elif isinstance(raw, str) and raw.strip():
+        try:
+            parsed = json.loads(raw)
+        except ValueError:
+            parsed = None
+        current = parsed if isinstance(parsed, dict) else {}
+    override = current.get("destOverride")
+    override = [str(x) for x in override] if isinstance(override, list) else []
+    if current.get("enabled") is True and {"http", "tls"} <= set(override):
+        return None
+    merged = list(dict.fromkeys([*override, "http", "tls", "quic"]))
+    if current.get("enabled") is True:
+        return {**current, "destOverride": merged}
+    return {**current, "enabled": True, "destOverride": merged, "routeOnly": True}
+
+
+# ---------------------------------------------------------------------------------------------
+# Telegram-only clients on panels that own the Xray config (Remnawave, Marzban, PasarGuard, Marzneshin)
+# ---------------------------------------------------------------------------------------------
+# Marzban names a user in Xray "<database id>.<username>" and its API never reveals the id, so the rule matches the
+# username part with a regular expression. Xray understands ``regexp:`` in ``user`` since 24.10.16 (older cores take
+# the text literally, which would match nobody and leave the client unrestricted).
+REGEXP_USER_MIN_VERSION: Final = (24, 10, 16)
+
+
+def marzban_user_match(username: str) -> str:
+    """The ``user`` entry that matches the Xray email of the Marzban user ``username``."""
+    return r"regexp:^[0-9]+\." + re.escape(username) + "$"
+
+
+def xray_version(text: str | None) -> tuple[int, ...] | None:
+    """``(major, minor, patch)`` out of a version text such as ``Xray 25.1.30`` or ``v26.10.31``, else ``None``."""
+    match = re.search(r"(\d+)\.(\d+)\.(\d+)", text or "")
+    return tuple(int(part) for part in match.groups()) if match else None
+
+
+def regexp_user_supported(version: str | None) -> bool:
+    """Whether an Xray core of this version matches ``regexp:`` entries in a routing rule's ``user``."""
+    parsed = xray_version(version)
+    return parsed is not None and parsed >= REGEXP_USER_MIN_VERSION
+
+
+def set_tg_only_config(config: dict[str, Any], users: Sequence[str]) -> tuple[dict[str, Any], bool]:
+    """:func:`set_tg_only` for a whole Xray config, plus sniffing on its VLESS inbounds so domain rules can match.
+
+    ``users`` are the exact ``user`` entries to match (none: remove the rules). Returns ``(new_config, changed)``.
+    """
+    result, changed = set_tg_only(config, users)
+    if users:
+        for inbound in result.get("inbounds") or []:
+            if isinstance(inbound, dict) and inbound.get("protocol") == "vless":
+                sniffing = sniffing_update(inbound.get("sniffing"))
+                if sniffing is not None:
+                    inbound["sniffing"] = sniffing
+                    changed = True
+    return result, changed

@@ -69,7 +69,7 @@ What differs per system:
   CentOS repository on AlmaLinux and Rocky, which are binary compatible with it). The repository codename is read
   from `/etc/os-release`.
 - Firewall: `ufw` on Debian and Ubuntu, `firewalld` on AlmaLinux and Rocky. SSH ports found in the sshd
-  configuration (and the one you are connected through) always stay open, together with 80, 443 and the SOCKS5 port.
+  configuration (and the one you are connected through) always stay open, together with 80, 443 and, only if you asked for the legacy SOCKS5 proxy, its port.
   Containers must reach the panel (3x-ui, host network) and the Reality backend port on the host: with ufw the range
   `172.16.0.0/12` is allowed to those two ports only; with firewalld that range is put into the `trusted` zone (it is
   matched by source address, so it works whichever zone Docker places its bridges in), and Docker is restarted after
@@ -80,7 +80,7 @@ What differs per system:
 ### Managing the installation
 
 ```bash
-netoryx status | logs [service] | update | backup | admin-link | restart [service] | uninstall [--purge]
+netoryx status | logs [service] | update | backup | admin-link | tg-link | restart [service] | uninstall [--purge]
 ```
 
 `netoryx update` fetches the new release and rebuilds only the application, so VPN connections are not interrupted.
@@ -174,7 +174,7 @@ plane database, payment services or the full application backend.
 only public TLS port, 443. HAProxy reads the server name of each TLS connection and passes it on untouched:
 
 - names listed in `deploy/haproxy/sni.map` go to the VPN (`reality`, the panel's Reality inbound on `REALITY_PORT`) or
-  to the Telegram proxy (`tgproxy`);
+  to the legacy Telegram proxy (`tgproxy`);
 - every other name goes to Caddy, which serves the web admin, the Mini App and subscription links.
 
 Keeping everything on 443 matters: some networks drop or slow down traffic on non-standard ports. Open only 22, 80 and 443 in the
@@ -182,7 +182,7 @@ firewall; panel ports stay closed and are reached through the Docker network or 
 
 Copy `deploy/haproxy/sni.map.example` to `deploy/haproxy/sni.map` first (the installer writes this per-server file for
 you). Optional services are enabled with profiles: `--profile xui` (3x-ui on the host network) and `--profile tgproxy`
-(telemt). Set `DOMAIN`, `SECRET_KEY` and `POSTGRES_PASSWORD` in `.env`; without a domain, `<ip-with-dashes>.sslip.io`
+(telemt, legacy). Set `DOMAIN`, `SECRET_KEY` and `POSTGRES_PASSWORD` in `.env`; without a domain, `<ip-with-dashes>.sslip.io`
 works out of the box. The first certificate may take a minute or two to arrive.
 
 ### Reality on your own name
@@ -204,7 +204,11 @@ into one segment. A per-endpoint override in the admin still takes precedence.
 memory. Device limits for 3x-ui are counted by the bot from the HWID that client apps send (`XUI_DEVICE_LIMIT=hwid`),
 so the Xray access log, which would record IPs and visited sites, can stay off.
 
-### Telegram proxies
+### Telegram proxies (legacy)
+
+Legacy and optional: these proxies may not work in some countries and are not installed by default. The shared
+[Telegram access link](telegram-only.md) is the current way to give people access to Telegram; the installer prints its
+`/tg` page, link and QR code at the end (`netoryx tg-link` prints it again).
 
 - MTProto (`--profile tgproxy`, telemt): no public port of its own. List its `tls_domain` in
   `deploy/haproxy/sni.map` as `tgproxy` and keep `public_port = 443` in its config, so links point at 443.
@@ -250,7 +254,7 @@ sees the panel. Administrator login and password are in `/root/netoryx/<panel>-c
 `127.0.0.1` only (open it through `ssh -L`, or publish it as described below). Image tags are pinned; update them in
 `deploy/panels/<name>/compose.yml` on purpose.
 
-Limits with other panels: SOCKS5 for Telegram and Shadowsocks-2022 need 3x-ui and are skipped with a notice; ad
+Limits with other panels: the shared Telegram access link is 3x-ui only for now; the legacy SOCKS5 for Telegram and Shadowsocks-2022 need 3x-ui and are skipped with a notice; ad
 blocking and the YouTube exit rewrite the 3x-ui Xray template and are 3x-ui only; the MTProto proxy (telemt) works with
 any panel. The compact Reality client hello (`REALITY_COMPACT_HELLO`) is applied to 3x-ui links; for the other
 panels the installer sets the `firefox` fingerprint on the host it creates. Additional inbounds on other ports need a

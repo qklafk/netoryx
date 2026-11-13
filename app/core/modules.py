@@ -147,6 +147,7 @@ class BotCommandSpec:
     description_ru: str
     description_en: str
     admin: bool = False  # only in admins' command menus
+    when: Callable[[Settings], bool] | None = None  # shown only while this holds (default: always)
 
     def description(self, lang: str) -> str:
         return self.description_ru if ru_or_en(lang) == "ru" else self.description_en
@@ -246,6 +247,8 @@ class ModuleRegistry:
         for module in self.enabled(settings):
             for command in module.commands:
                 if (command.admin and not admin) or command.command in seen:
+                    continue
+                if command.when is not None and not command.when(settings):
                     continue
                 seen.add(command.command)
                 result.append(command)

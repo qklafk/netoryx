@@ -75,7 +75,7 @@ sudo bash install.sh --bot-token <токен> --admin-id <ваш telegram id> --
 
 Минимум: root-доступ, 2 vCPU / 2 ГБ ОЗУ / 20 ГБ диска, токен бота, открытые порты 80 и 443 (ещё один только при
 включённом SOCKS5). Домен желателен; без него используется `sslip.io`. Подробности, флаги и список изменений на
-сервере: [docs/installation.md](docs/installation.md).
+сервере: [docs/ru/installation.md](docs/ru/installation.md).
 
 ## Возможности
 
@@ -85,7 +85,7 @@ sudo bash install.sh --bot-token <токен> --admin-id <ваш telegram id> --
 
 **🧩 Панели**<br>
 3x-ui (2.x и 3.x), Remnawave 3.0+, Marzban, Marzneshin, PasarGuard, Hiddify, сколько угодно одновременно. Импорт
-существующих пользователей, оповещения о здоровье. [Документация](docs/panels.md)
+существующих пользователей, оповещения о здоровье. [Документация](docs/ru/panels.md)
 
 </td>
 <td width="33%" valign="top">
@@ -93,7 +93,7 @@ sudo bash install.sh --bot-token <токен> --admin-id <ваш telegram id> --
 **💳 Платежи, 28 способов**<br>
 Stars, 6 криптовариантов (CryptoBot, Heleket, NOWPayments, Plisio, прямые TON и USDT TRC-20), 17 российских шлюзов (включая RollyPay, cisPay, TabPay),
 Stripe, PayPal, ручной перевод по карте/СБП, универсальный HTTP-шлюз. Зачисление ровно один раз.
-[Документация](docs/payments.md)
+[Документация](docs/ru/payments.md)
 
 </td>
 <td width="33%" valign="top">
@@ -116,7 +116,7 @@ Stripe, PayPal, ручной перевод по карте/СБП, универ
 
 **🔒 Приватность**<br>
 По умолчанию нет IP клиентов ни в журналах, ни в базе, HWID хранятся только как хеш с ключом, журнал доступа Xray
-выключен. [Документация](docs/privacy.md)
+выключен. [Документация](docs/ru/privacy.md)
 
 </td>
 <td valign="top">
@@ -154,7 +154,7 @@ Stripe, PayPal, ручной перевод по карте/СБП, универ
 
 Ещё: многоуровневые рефералы с выводом, скидки для возврата ушедших, правила доступности тарифов, рассылки по
 сегментам, тикеты, переопределение текстов (white-label), редактор главного меню, журнал аудита, шифрованные резервные
-копии, исходящие вебхуки ([docs/webhooks.md](docs/webhooks.md)), публичные API-ключи, чеки «Мой налог» для самозанятых.
+копии, исходящие вебхуки ([docs/ru/webhooks.md](docs/ru/webhooks.md)), публичные API-ключи, чеки «Мой налог» для самозанятых.
 
 ## Скриншоты
 
@@ -205,7 +205,7 @@ flowchart LR
 
 Для старта хватит небольшого VPS: 2 vCPU, 2 ГБ ОЗУ, 20 ГБ диска, Ubuntu 24.04 (проверенная система). Цены зависят от
 провайдера; самому VPN обычно важнее ширина канала, чем процессор. VPN-узел размещайте в стране, которая подходит
-вашим клиентам; про роли control-plane и vpn-node см. [docs/installation.md](docs/installation.md).
+вашим клиентам; про роли control-plane и vpn-node см. [docs/ru/installation.md](docs/ru/installation.md).
 
 </details>
 
@@ -214,7 +214,7 @@ flowchart LR
 
 Иностранные IP там часто недоступны. Netoryx умеет релей-эндпоинты и отдельный профиль «LTE», который можно
 направить на релей-сервер внутри страны. Гарантировать доступ нельзя: всё зависит от того, что разрешает оператор.
-См. [docs/panels.md](docs/panels.md).
+См. [docs/ru/panels.md](docs/ru/panels.md).
 
 </details>
 
@@ -239,11 +239,10 @@ YouTube. Необязательный «выход для YouTube» (`YOUTUBE_EX
 
 | Тема | Страницы |
 |---|---|
-| Начало работы | [Руководство для новичков](docs/ru/beginners.md), [Установка](docs/installation.md), [Настройка](docs/configuration.md), [FAQ](docs/faq.md), [Решение проблем](docs/troubleshooting.md) |
-| Эксплуатация | [Обновление](docs/upgrading.md), [Резервные копии](docs/backups.md), [Приватность](docs/privacy.md) |
-| Интеграции | [Панели](docs/panels.md), [Платежи](docs/payments.md), [Исходящие вебхуки](docs/webhooks.md) |
+| Начало работы | [Руководство для новичков](docs/ru/beginners.md), [Установка](docs/ru/installation.md), [Настройка](docs/ru/configuration.md), [Форматы подписки](docs/ru/subscriptions.md), [FAQ](docs/ru/faq.md), [Решение проблем](docs/ru/troubleshooting.md) |
+| Эксплуатация | [Обновление](docs/ru/upgrading.md), [Резервные копии](docs/ru/backups.md), [Приватность](docs/ru/privacy.md) |
+| Интеграции | [Панели](docs/ru/panels.md), [Платежи](docs/ru/payments.md), [Исходящие вебхуки](docs/ru/webhooks.md) |
 | Клиенты | [Доступ к Telegram](docs/ru/telegram-only.md), [Веб-кабинет](docs/ru/web-cabinet.md), [Чеки «Мой налог»](docs/ru/npd-receipts.md) |
-| По-русски | [Быстрый старт и FAQ](docs/ru/faq.md), [Решение проблем](docs/ru/troubleshooting.md) |
 | Проект | [Участие в проекте](CONTRIBUTING.ru.md), [Безопасность](SECURITY.ru.md), [Список изменений](CHANGELOG.md) |
 
 ## Правовая информация
@@ -260,7 +259,7 @@ sudo netoryx update
 ```
 
 `netoryx update` скачивает новый релиз и пересобирает только контейнер приложения, поэтому активные VPN-сессии не
-обрываются. Сначала прочитайте [docs/upgrading.md](docs/upgrading.md) и список изменений.
+обрываются. Сначала прочитайте [docs/ru/upgrading.md](docs/ru/upgrading.md) и список изменений.
 
 ## Поддержать проект
 
