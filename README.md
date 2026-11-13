@@ -62,9 +62,11 @@ sudo bash install.sh --bot-token <токен> --admin-id <ваш telegram id> --
 - одноразовую ссылку в веб-админку;
 - имя бота и домен подписок;
 - общую ссылку «только Telegram» (её можно публиковать): адрес страницы `/tg` и ссылку подписки для Happ / v2RayTun
-  с QR-кодом в терминале (через VPN идёт только Telegram, остальное напрямую; нужен сервер 3x-ui);
+  с QR-кодом в терминале (через VPN идёт только Telegram, остальное напрямую; любая панель, кроме Hiddify);
 - всё в `/opt/netoryx`, управление командой `netoryx`:
-  `netoryx status | logs [сервис] | update | backup | admin-link | restart | uninstall`.
+  `netoryx status | logs [сервис] | update | backup [--full] | restore | admin-link | tg-link | restart | uninstall`;
+  `netoryx backup --full` сохраняет весь сервер одним архивом, а `netoryx restore` переносит его на новый
+  ([резервные копии](docs/ru/backups.md)).
 
 | Система | x86_64 | ARM64 | Статус |
 |---|---|---|---|

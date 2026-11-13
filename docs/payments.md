@@ -76,6 +76,14 @@ address; the Docker stack already passes it through Caddy.
 - **Webhook-less gateways** (TON, USDT, Stars, manual) rely on the reconciler and the bot, so make sure the app is
   running continuously.
 
+## Refunds and chargebacks
+
+When a provider reports a refund or a chargeback (or Telegram reports a refunded Stars payment), the payment becomes
+`refunded` and the bot takes back what it gave: the days of the plan bought with it (the subscription may end right
+away), what is left of its money on the balance, and the referral commissions paid from it. Nothing goes below zero and a
+repeated notification changes nothing. A refund an admin makes from the bot or the web admin keeps its own choice
+("debit the balance").
+
 ## Saved cards and auto-renewal
 
 Auto-renewal normally takes the price from the wallet. With `SAVED_CARDS_ENABLED=true`, a customer can opt in at checkout

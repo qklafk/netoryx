@@ -62,9 +62,11 @@ offered.
 - a one-time link to the web admin;
 - the bot's username and your subscription domain;
 - a shared Telegram-only link you can publish: the `/tg` page address and the subscription link for Happ / v2RayTun
-  with a QR code in the terminal (only Telegram goes through the VPN, the rest is direct; needs a 3x-ui server);
+  with a QR code in the terminal (only Telegram goes through the VPN, the rest is direct; any panel except Hiddify);
 - everything in `/opt/netoryx`, managed by the `netoryx` command:
-  `netoryx status | logs [service] | update | backup | admin-link | restart | uninstall`.
+  `netoryx status | logs [service] | update | backup [--full] | restore | admin-link | tg-link | restart | uninstall`;
+  `netoryx backup --full` saves the whole server in one archive and `netoryx restore` moves it to a new one
+  ([backups](docs/backups.md)).
 
 | System | x86_64 | ARM64 | Status |
 |---|---|---|---|

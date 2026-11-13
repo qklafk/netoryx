@@ -120,7 +120,7 @@ export const features: T<{ title: string; items: { title: string; text: string }
       { title: 'Доступ к Telegram', text: 'Одна общая ссылка и страница, которой можно делиться: через VPN идёт только Telegram, остальное напрямую, а сервер не пускает этого клиента никуда ещё.' },
       { title: 'Приватность по умолчанию', text: 'IP клиентов не пишутся в логи и базу, HWID хранится только как хеш с ключом, журнал доступа Xray выключен.' },
       { title: 'Подписки и устройства', text: 'Несколько подписок на пользователя, лимит устройств, дополнения, подарки, промокоды, трёхрежимная реферальная программа, автопродление.' },
-      { title: 'Одна команда', text: 'Ubuntu 22.04/24.04/26.04, Debian 12/13, AlmaLinux и Rocky 9, x86_64 и ARM64.' },
+      { title: 'Одна команда', text: 'Установка, обновление, полная копия сервера и переезд. Ubuntu 22.04/24.04/26.04, Debian 12/13, AlmaLinux и Rocky 9, x86_64 и ARM64.' },
     ],
   },
   en: {
@@ -133,7 +133,7 @@ export const features: T<{ title: string; items: { title: string; text: string }
       { title: 'Telegram access', text: 'One shared link and a page you can share: only Telegram goes through the VPN, the rest is direct, and the server lets that client reach nothing else.' },
       { title: 'Privacy by default', text: 'No customer IPs in logs or the database, HWIDs stored only as a keyed hash, Xray access log off.' },
       { title: 'Subscriptions and devices', text: 'Several subscriptions per user, device limit, add-ons, gifts, promo codes, three-mode referrals, auto-renew.' },
-      { title: 'One command', text: 'Ubuntu 22.04/24.04/26.04, Debian 12/13, AlmaLinux and Rocky 9, x86_64 and ARM64.' },
+      { title: 'One command', text: 'Install, update, a full server backup and moving to a new server. Ubuntu 22.04/24.04/26.04, Debian 12/13, AlmaLinux and Rocky 9, x86_64 and ARM64.' },
     ],
   },
 };

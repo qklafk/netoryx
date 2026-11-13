@@ -47,6 +47,8 @@ The restriction is on the server, not only in the client config, so the link can
   `app/services/tg_only_data.py`; there is no runtime download). The rules are tagged `tg-only-*`; the bot touches only
   those, keeps them first even next to ad blocking and the YouTube exit, and rewrites the template only when something
   changed (Xray restarts once).
+- Sniffing on the inbound overrides the destination (`routeOnly` off): a connection that shows a Telegram name in its TLS
+  handshake really goes to Telegram, so the client cannot reach another host by faking that name.
 - Order of operations: the rules are put in place first and the client is created afterwards, and a server is added to
   the subscription only after both succeeded. A panel that cannot be updated is not offered.
 - When a server stops being eligible (country excluded, panel disabled, feature switched off) the client is deleted

@@ -96,6 +96,16 @@ Full guide: [telegram-proxy.md](telegram-proxy.md).
 `REFERRAL_REWARD_MODE` (`days`, `balance`, `partner`), `REFERRAL_LEVELS_PERCENT` (`10` or `10,5,2` for several levels),
 `WITHDRAWALS_ENABLED`, `GIFTS_ENABLED`, `WINBACK_ENABLED`, `REQUIRED_CHANNEL_ID` (force subscription to a channel),
 `BRAND_NAME`, `SUPPORT_URL`, `CHANNEL_URL`, `TERMS_URL`, `PRIVACY_URL`, `LEGAL_CONSENT_REQUIRED`.
+The links accept `https://` and `tg://` addresses; one written without a scheme (`t.me/name`, `@name`) gets `https://`.
+
+Referral bonuses wait for the invited user's first full payment of at least `MIN_TOPUP_RUB`: the inviter's
+(`REFERRAL_INVITER_REQUIRES_PAYMENT`) and the invited user's own bonus in rubles (`REFERRAL_INVITEE_REQUIRES_PAYMENT`),
+both on by default, so new accounts cannot collect money they never paid for. With `WINBACK_USAGE=once` (default) a
+win-back offer discounts one purchase, even when several invoices were created while it was active.
+
+Admin roles: `owner` (everything), `admin` (everything except admins, backup restore and secrets), `support` (users,
+tickets, payments view; no free days, expiry or limit changes: that is the `subs_grant` permission of admins) and
+`viewer` (read-only).
 Plans, prices and texts are edited in the admin (**Plans**, **Texts**); the first start creates a sample plan.
 
 ### Terms of service and privacy policy
