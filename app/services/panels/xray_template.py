@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import copy
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Final
+
+from app.services.tg_only_data import TELEGRAM_CIDRS, TELEGRAM_DOMAINS
 
 BLOCK_TAG: Final = "blocked"
 ADS_GEOSITE: Final = "geosite:category-ads-all"
@@ -15,6 +18,10 @@ YOUTUBE_BALANCER_TAG: Final = "youtube-balancer"
 DIRECT_TAG: Final = "direct"
 PROBE_URL: Final = "https://www.google.com/generate_204"
 PROBE_INTERVAL: Final = "1m"
+TG_ONLY_IP_TAG: Final = "tg-only-ip"
+TG_ONLY_DOMAIN_TAG: Final = "tg-only-domain"
+TG_ONLY_BLOCK_TAG: Final = "tg-only-block"
+TG_ONLY_RULE_TAGS: Final = frozenset({TG_ONLY_IP_TAG, TG_ONLY_DOMAIN_TAG, TG_ONLY_BLOCK_TAG})
 
 
 @dataclass(frozen=True, slots=True)
@@ -87,12 +94,25 @@ def ad_blocking_enabled(template: dict[str, Any]) -> bool:
     return any(r == rule for r in _routing_rules(template)) and has_blackhole(template)
 
 
-def _insert_index(rules: list[Any]) -> int:
-    """Right after the last panel API rule so the rule precedes every operator rule (first match wins)."""
+def _api_index(rules: list[Any]) -> int:
+    """Right after the last panel API rule: the earliest place an operator rule may take."""
     index = 0
     for i, rule in enumerate(rules):
         if isinstance(rule, dict) and rule.get("outboundTag") == API_TAG:
             index = i + 1
+    return index
+
+
+def _is_tg_only(rule: Any) -> bool:
+    return isinstance(rule, dict) and rule.get("ruleTag") in TG_ONLY_RULE_TAGS
+
+
+def _insert_index(rules: list[Any]) -> int:
+    """Where the ad and YouTube rules go: after the API rules and after the Telegram-only block, which stays first
+    so nothing can let the Telegram-only client out (first match wins)."""
+    index = _api_index(rules)
+    while index < len(rules) and _is_tg_only(rules[index]):
+        index += 1
     return index
 
 
@@ -266,3 +286,62 @@ def apply_extras(template: dict[str, Any], *, ads: bool, youtube: YoutubeExit | 
     first, changed_ads = set_ad_blocking(template, ads)
     second, changed_yt = set_youtube_exit(first, youtube)
     return second, changed_ads or changed_yt
+
+
+# ---------------------------------------------------------------------------------------------
+# Telegram-only clients
+# ---------------------------------------------------------------------------------------------
+def tg_only_rules(emails: Sequence[str], direct_tag: str) -> list[dict[str, Any]]:
+    """The three rules that confine the clients ``emails`` to Telegram: its addresses, its domains, then a block."""
+    users = list(emails)
+    return [
+        {
+            "type": "field",
+            "ruleTag": TG_ONLY_IP_TAG,
+            "user": users,
+            "ip": list(TELEGRAM_CIDRS),
+            "outboundTag": direct_tag,
+        },
+        {
+            "type": "field",
+            "ruleTag": TG_ONLY_DOMAIN_TAG,
+            "user": users,
+            "domain": list(TELEGRAM_DOMAINS),
+            "outboundTag": direct_tag,
+        },
+        {"type": "field", "ruleTag": TG_ONLY_BLOCK_TAG, "user": users, "outboundTag": BLOCK_TAG},
+    ]
+
+
+def set_tg_only(template: dict[str, Any], emails: Sequence[str]) -> tuple[dict[str, Any], bool]:
+    """Return ``(new_template, changed)``. Only rules tagged ``tg-only-*`` are touched; no emails removes them.
+
+    The block goes right after the panel API rules, ahead of every other rule, and the ``blocked`` blackhole
+    outbound is created when missing. Safe to repeat: the result is identical when nothing changes.
+    """
+    routing = template.get("routing")
+    present = isinstance(routing, dict) and any(_is_tg_only(r) for r in routing.get("rules") or [])
+    if not emails and not present:
+        return copy.deepcopy(template), False
+    result = copy.deepcopy(template)
+    rules = _routing_rules(result)
+    kept = [r for r in rules if not _is_tg_only(r)]
+    if emails:
+        direct = _direct_tag(result)
+        if direct is None:
+            raise TemplateError("the template has no 'freedom' outbound to let Telegram traffic out")
+        outbounds = _outbounds(result)
+        tagged = [o for o in outbounds if isinstance(o, dict) and o.get("tag") == BLOCK_TAG]
+        if not tagged:
+            outbounds.append({"tag": BLOCK_TAG, "protocol": "blackhole", "settings": {}})
+        elif tagged[0].get("protocol") != "blackhole":
+            raise TemplateError(f"outbound '{BLOCK_TAG}' exists but is not a blackhole")
+        at = _api_index(kept)
+        kept[at:at] = tg_only_rules(sorted(set(emails)), direct)
+    rules[:] = kept
+    return result, result != template
+
+
+def tg_only_enabled(template: dict[str, Any], emails: Sequence[str]) -> bool:
+    """True when the template already holds exactly the rules ``emails`` ask for."""
+    return not set_tg_only(template, emails)[1]

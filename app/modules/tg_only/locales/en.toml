@@ -1,0 +1,39 @@
+# Shared Telegram link: only Telegram goes through the VPN
+
+[tg_only]
+title = "Telegram access"
+off = "✈️ <b>Telegram access</b>\n\nThe feature is off (setting TG_ONLY_ENABLED)."
+home_head = "✈️ <b>Telegram access</b>\n\nOne shared link for everyone: only Telegram goes through the VPN, everything else connects directly. The server itself lets this client reach nothing but Telegram. You can publish and forward it so people can open Telegram (and your bot).\n\n📄 <b>Page for people (share this one):</b>\n<code>{page}</code>\n\n🔗 <b>Subscription link (for Happ / v2RayTun):</b>\n<code>{url}</code>"
+no_servers = "No suitable server yet. You need a 3x-ui server with a VLESS inbound (Reality or TLS) in a country where Telegram works."
+skipped_head = "<b>Not offered:</b>"
+howto = "The page explains how to install Happ and add the subscription. By hand: Happ or v2RayTun → \"Add subscription by URL\". Other apps do not support this subscription."
+qr = "📷 QR code of the Telegram subscription. Scan it in Happ or v2RayTun."
+rotate_confirm = "🔄 <b>Issue a new link?</b>\n\nThe old subscription link and the old connection keys stop working. The page address does not change: it always shows the current link. Do this when the link has spread too far."
+rotated = "Done: a new link was issued ✅"
+web_text = "This is the Telegram subscription: only Telegram goes through the VPN, everything else works as usual. It is understood by the Happ and v2RayTun apps: add the link as a subscription (Add subscription by URL). Other apps are not supported: the server lets only Telegram through, so a general VPN client would have nothing to show."
+first_notice = "✈️ <b>Telegram access</b>\n\nThe shared Telegram link is ready: only Telegram goes through the VPN, everything else connects directly. You can publish and forward it.\n\n📄 Page for people:\n<code>{page}</code>\n\n🔗 Subscription link (Happ / v2RayTun):\n<code>{url}</code>\n\nWe recommend sharing the page address: it never changes, and the subscription link on it is always current. If the link spreads too far, issue a new one: admin menu → \"Telegram access\"."
+traffic_alert = "⚠️ <b>Telegram link:</b> {gb} GB went through it in the last day (threshold {limit} GB). If that looks excessive, issue a new link or set a monthly limit (TG_ONLY_MONTHLY_LIMIT_GB)."
+
+[tg_only.btn]
+qr = "📷 QR code"
+rotate = "🔄 New link"
+rotate_ok = "Yes, issue a new one"
+
+[tg_only.skipped]
+country = "country {country} is on the exclusion list"
+unknown_country = "the location has no country flag"
+no_inbound = "no suitable VLESS inbound (Reality or TLS)"
+no_endpoint = "no active endpoints"
+
+[tg_only.page]
+title = "{brand}: Telegram"
+text = "Telegram will work through this connection; other apps and sites work as usual."
+step1 = "1. Install Happ"
+download = "Download Happ · {store}"
+other_platforms = "Other devices"
+step2 = "2. Add the connection"
+add = "Add to Happ"
+manual = "Or by hand"
+manual_hint = "In Happ choose \"Add subscription by URL\" and paste this address (or scan the QR code), then turn the connection on."
+note = "Only Telegram opens through this connection. If it stops working, open this page again: the link is refreshed."
+unavailable = "The connection is being set up. Please open this page again a little later."

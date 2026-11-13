@@ -21,6 +21,9 @@ def make_settings(**overrides: Any) -> Settings:
         "secret_key": "test-secret-key-0123456789abcdef",
         "brand_name": "TestVPN",
         "backup_enabled": False,
+        # The Telegram proxies are off by default; the tests of their code turn them on explicitly.
+        "tg_proxy_access": "everyone",
+        "tg_socks_enabled": True,
     }
     base.update(overrides)
     return Settings(_env_file=None, **base)

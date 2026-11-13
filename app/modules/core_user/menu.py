@@ -191,4 +191,4 @@ def _gifts_or_promo(modules: ModuleRegistry, settings: Settings) -> bool:
 def _tg_proxy_on(modules: ModuleRegistry, settings: Settings, is_admin: bool) -> bool:
     if not name_on(modules, settings, TG_PROXY):
         return False
-    return is_admin or settings.tg_proxy_access != "off"
+    return settings.tg_proxy_access != "off"

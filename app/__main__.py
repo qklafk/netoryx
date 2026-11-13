@@ -8,6 +8,7 @@ python -m app create-admin-link    one-time login link for the web admin
 python -m app backup               create a backup now (in BACKUP_DIR, encrypted with BACKUP_PASSWORD if set)
 python -m app restore FILE --yes   restore a backup (replaces all data)
 python -m app reality-config ...   print an Xray config with a new Reality inbound (installer)
+python -m app tg-only-link         print the shared Telegram-only subscription link
 python -m app bootstrap-local ...  register the servers installed next to the app (used by the installer)
 """
 
@@ -45,6 +46,7 @@ def build_parser() -> argparse.ArgumentParser:
     check.add_argument("--offline", action="store_true", help="skip the Telegram API check")
     link = sub.add_parser("create-admin-link", help="print a one-time web admin login link")
     link.add_argument("--tg-id", type=int, help="admin Telegram id (default: first of ADMIN_IDS)")
+    sub.add_parser("tg-only-link", help="apply the Telegram-only rules on the servers and print the link (a secret)")
     sub.add_parser("backup", help="create a backup now")
     restore = sub.add_parser("restore", help="restore a backup file")
     restore.add_argument("file")
@@ -57,6 +59,10 @@ def build_parser() -> argparse.ArgumentParser:
     local = sub.add_parser("bootstrap-local", help="register the local 3x-ui / Telegram proxy (idempotent)")
     local.add_argument("--location-name", default="Main")
     local.add_argument("--location-flag", default="🌍")
+    local.add_argument(
+        "--location-country",
+        help="two-letter country code of this server; sets the location flag (overrides --location-flag)",
+    )
     local.add_argument("--xui-url", help="3x-ui URL including the web base path")
     local.add_argument("--xui-user")
     local.add_argument("--xui-pass-file", help="file holding the 3x-ui password")
@@ -191,6 +197,32 @@ async def cmd_create_admin_link(settings: Settings, tg_id: int | None) -> int:
         return 2
     auth = importlib.import_module("app.web.auth")
     link = await _with_services(settings, lambda deps: _call_with(auth.create_login_link, {**deps, "tg_id": target}))
+    print(link)
+    return 0
+
+
+async def cmd_tg_only_link(settings: Settings) -> int:
+    """Make the servers ready and print the link on stdout only (it is a secret: nothing else is printed there)."""
+    from app.services import tg_only
+    from app.services.panels.registry import PanelRegistry
+
+    async def run(deps: dict[str, Any]) -> tuple[str | None, str]:
+        registry = PanelRegistry(deps["session_factory"], deps["settings"], deps["secret_box"])
+        try:
+            await tg_only.reconcile(deps["session_factory"], registry, deps["settings"])
+            view = await tg_only.admin_view(deps["session_factory"], deps["settings"])
+        finally:
+            await registry.close()
+        if not view.enabled:
+            return None, "the Telegram-only subscription is turned off (TG_ONLY_ENABLED)"
+        if not view.ready:
+            return None, "no server is ready for the Telegram-only subscription yet"
+        return view.url, ""
+
+    link, reason = await _with_services(settings, run)
+    if link is None:
+        print(reason, file=sys.stderr)
+        return 3
     print(link)
     return 0
 
@@ -330,7 +362,12 @@ def build_local_setup(args: argparse.Namespace) -> Any:
         )
     if xui is None and telemt is None and panel is None:
         raise SystemExit("nothing to do: pass --xui-url, --panel-kind and/or --telemt-url")
-    return LocalSetup(args.location_name, args.location_flag, xui, telemt, panel)
+    flag = args.location_flag
+    if args.location_country:
+        from app.services.tg_only import flag_of_country
+
+        flag = flag_of_country(args.location_country) or flag
+    return LocalSetup(args.location_name, flag, xui, telemt, panel)
 
 
 async def cmd_bootstrap_local(settings: Settings, setup: Any) -> int:
@@ -374,6 +411,8 @@ async def dispatch(args: argparse.Namespace) -> int:
         return await cmd_check(settings, offline=args.offline)
     if command == "create-admin-link":
         return await cmd_create_admin_link(settings, args.tg_id)
+    if command == "tg-only-link":
+        return await cmd_tg_only_link(settings)
     if command == "backup":
         return await cmd_backup(settings)
     if command == "bootstrap-local":

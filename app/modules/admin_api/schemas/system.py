@@ -64,6 +64,22 @@ class VersionOut(BaseModel):
     check_error: str | None = None
 
 
+class TlsHostOut(BaseModel):
+    host: str
+    checked_at: str | None
+    expires_at: str | None
+    days_left: int | None
+    ok: bool
+    problem: str | None  # warn | urgent | unreachable
+    error: str | None
+
+
+class TlsOut(BaseModel):
+    enabled: bool
+    warn_days: int
+    hosts: list[TlsHostOut]
+
+
 class LogsOut(BaseModel):
     available: bool
     lines: list[str]

@@ -54,13 +54,15 @@ sudo bash install.sh --bot-token <токен> --admin-id <ваш telegram id> --
 
 Без `--domain` берётся `<ip-через-дефисы>.sslip.io`: настоящий HTTPS-сертификат без настройки DNS (первый сертификат
 может выпускаться минуту-две). Необязательные флаги: `--with-xui` (поставить панель 3x-ui рядом с ботом),
-`--with-tgproxy` (MTProto-прокси для Telegram), `--with-socks` и `--socks-port 2080` (SOCKS5 для Telegram).
+Устаревшие `--with-tgproxy` и `--with-socks` (прокси для Telegram; в некоторых странах не работают) больше не
+предлагаются.
 
 **Что вы получите в конце:**
 
 - одноразовую ссылку в веб-админку;
 - имя бота и домен подписок;
-- если включено, ваши ссылки на Telegram-прокси с QR-кодом в терминале;
+- общую ссылку «только Telegram» (её можно публиковать): адрес страницы `/tg` и ссылку подписки для Happ / v2RayTun
+  с QR-кодом в терминале (через VPN идёт только Telegram, остальное напрямую; нужен сервер 3x-ui);
 - всё в `/opt/netoryx`, управление командой `netoryx`:
   `netoryx status | logs [сервис] | update | backup | admin-link | restart | uninstall`.
 
@@ -105,9 +107,9 @@ Stripe, PayPal, ручной перевод по карте/СБП, универ
 <tr>
 <td valign="top">
 
-**✈️ Прокси для Telegram**<br>
-Личный MTProto-прокси (telemt или 3x-ui) и личный SOCKS5-аккаунт на каждого пользователя, с правилами доступа.
-[Документация](docs/ru/telegram-proxy.md)
+**✈️ Доступ к Telegram**<br>
+Одна общая ссылка и страница `/tg`, которой можно делиться: через VPN идёт только Telegram, и сервер не пускает этого клиента никуда ещё. Помогает людям попасть в Telegram и к вашему боту.
+[Документация](docs/ru/telegram-only.md)
 
 </td>
 <td valign="top">
@@ -178,10 +180,8 @@ Stripe, PayPal, ручной перевод по карте/СБП, универ
 ```mermaid
 flowchart LR
     C[Клиентские приложения<br/>Happ, INCY, v2RayTun, Hiddify] -->|":443"| E[HAProxy edge<br/>маршрут по имени TLS]
-    T[Пользователи Telegram] -->|":443"| E
     E --> W[Caddy<br/>автоматический HTTPS]
     E --> X[Xray Reality]
-    E --> M[telemt<br/>MTProto-прокси]
     W --> A[Приложение Netoryx<br/>бот, веб-админка, Mini App, /sub]
     A --> P[Панели<br/>3x-ui, Remnawave, Marzban, ...]
     A --> D[(PostgreSQL)]
@@ -242,7 +242,7 @@ YouTube. Необязательный «выход для YouTube» (`YOUTUBE_EX
 | Начало работы | [Руководство для новичков](docs/ru/beginners.md), [Установка](docs/installation.md), [Настройка](docs/configuration.md), [FAQ](docs/faq.md), [Решение проблем](docs/troubleshooting.md) |
 | Эксплуатация | [Обновление](docs/upgrading.md), [Резервные копии](docs/backups.md), [Приватность](docs/privacy.md) |
 | Интеграции | [Панели](docs/panels.md), [Платежи](docs/payments.md), [Исходящие вебхуки](docs/webhooks.md) |
-| Клиенты | [Прокси для Telegram](docs/ru/telegram-proxy.md), [Веб-кабинет](docs/ru/web-cabinet.md), [Чеки «Мой налог»](docs/ru/npd-receipts.md) |
+| Клиенты | [Доступ к Telegram](docs/ru/telegram-only.md), [Веб-кабинет](docs/ru/web-cabinet.md), [Чеки «Мой налог»](docs/ru/npd-receipts.md) |
 | По-русски | [Быстрый старт и FAQ](docs/ru/faq.md), [Решение проблем](docs/ru/troubleshooting.md) |
 | Проект | [Участие в проекте](CONTRIBUTING.ru.md), [Безопасность](SECURITY.ru.md), [Список изменений](CHANGELOG.md) |
 

@@ -17,7 +17,7 @@ Optional capabilities are separate protocols checked with ``isinstance``: :class
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
@@ -202,6 +202,24 @@ class TemplateExtras(Protocol):
     async def ensure_sniffing(self) -> int:
         """Make VLESS inbounds sniff domains (needed for domain routing); returns the number of inbounds changed."""
         ...
+
+
+@runtime_checkable
+class TgOnlyRouting(Protocol):
+    """Optional backend capability: confine named clients to Telegram in the panel's Xray template (3x-ui)."""
+
+    async def apply_tg_only(self, emails: Sequence[str]) -> bool:
+        """Make the template route exactly ``emails`` as Telegram-only clients (none: remove the rules).
+
+        Returns True if the template changed (and the core was restarted).
+        """
+        ...
+
+    async def get_tg_only(self, emails: Sequence[str]) -> bool:
+        """Whether the template already holds the rules for ``emails``."""
+        ...
+
+    async def ensure_sniffing(self) -> int: ...
 
 
 @runtime_checkable

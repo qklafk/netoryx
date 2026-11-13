@@ -54,13 +54,15 @@ sudo bash install.sh --bot-token <token> --admin-id <your telegram id> --domain 
 
 Without `--domain` it uses `<ip-with-dashes>.sslip.io`, which gets a real HTTPS certificate with no DNS setup (the first
 certificate can take a minute or two). Optional flags: `--with-xui` (install a 3x-ui panel next to the bot),
-`--with-tgproxy` (Telegram MTProto proxy), `--with-socks` / `--socks-port 2080` (Telegram SOCKS5).
+The legacy `--with-tgproxy` and `--with-socks` (Telegram proxies, which do not work in some countries) are no longer
+offered.
 
 **What you get at the end:**
 
 - a one-time link to the web admin;
 - the bot's username and your subscription domain;
-- if enabled, your own Telegram proxy links with a QR code in the terminal;
+- a shared Telegram-only link you can publish: the `/tg` page address and the subscription link for Happ / v2RayTun
+  with a QR code in the terminal (only Telegram goes through the VPN, the rest is direct; needs a 3x-ui server);
 - everything in `/opt/netoryx`, managed by the `netoryx` command:
   `netoryx status | logs [service] | update | backup | admin-link | restart | uninstall`.
 
@@ -104,9 +106,9 @@ auto-renew.
 <tr>
 <td valign="top">
 
-**✈️ Telegram proxies**<br>
-A personal MTProto proxy (telemt or 3x-ui) and a personal SOCKS5 account per user, with access rules.
-[Docs](docs/telegram-proxy.md)
+**✈️ Telegram access**<br>
+One shared link and a `/tg` page you can share: only Telegram goes through the VPN, and the server lets that client reach nothing else. Helps people get into Telegram and to your bot.
+[Docs](docs/telegram-only.md)
 
 </td>
 <td valign="top">
@@ -176,10 +178,8 @@ tickets, text overrides (white-label), main-menu editor, audit log, encrypted ba
 ```mermaid
 flowchart LR
     C[Client apps<br/>Happ, INCY, v2RayTun, Hiddify] -->|":443"| E[HAProxy edge<br/>routes by TLS name]
-    T[Telegram users] -->|":443"| E
     E --> W[Caddy<br/>automatic HTTPS]
     E --> X[Xray Reality]
-    E --> M[telemt<br/>MTProto proxy]
     W --> A[Netoryx app<br/>bot, web admin, Mini App, /sub]
     A --> P[Panels<br/>3x-ui, Remnawave, Marzban, ...]
     A --> D[(PostgreSQL)]
@@ -240,8 +240,8 @@ runs on a real server, but it has little time in the field. Take a backup before
 | Getting started | [Beginner's guide](docs/beginners.md), [Installation](docs/installation.md), [Configuration](docs/configuration.md), [Subscription formats](docs/subscriptions.md), [FAQ](docs/faq.md), [Troubleshooting](docs/troubleshooting.md) |
 | Operating | [Upgrading](docs/upgrading.md), [Backups](docs/backups.md), [Privacy](docs/privacy.md) |
 | Integrations | [Panels](docs/panels.md), [Payments](docs/payments.md), [Outgoing webhooks](docs/webhooks.md) |
-| Customers | [Telegram proxy](docs/telegram-proxy.md), [Web cabinet](docs/web-cabinet.md), ["Мой налог" receipts](docs/npd-receipts.md) |
-| Russian | [FAQ and quick start](docs/ru/faq.md), [Troubleshooting](docs/ru/troubleshooting.md), [Subscription formats](docs/ru/subscriptions.md), [Telegram proxy](docs/ru/telegram-proxy.md), [Web cabinet](docs/ru/web-cabinet.md), [Receipts](docs/ru/npd-receipts.md) |
+| Customers | [Telegram access link](docs/telegram-only.md), [Web cabinet](docs/web-cabinet.md), ["Мой налог" receipts](docs/npd-receipts.md) |
+| Russian | [FAQ and quick start](docs/ru/faq.md), [Troubleshooting](docs/ru/troubleshooting.md), [Subscription formats](docs/ru/subscriptions.md), [Telegram-only](docs/ru/telegram-only.md), [Web cabinet](docs/ru/web-cabinet.md), [Receipts](docs/ru/npd-receipts.md) |
 | Project | [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md), [Legal notice](LEGAL.md), [Terms and privacy templates](docs/legal/privacy-policy-template.md), [Changelog](CHANGELOG.md) |
 
 ## Legal

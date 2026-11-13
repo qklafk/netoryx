@@ -110,12 +110,12 @@ async def test_proxy_section_follows_module_switch(env: Env, calls: dict[str, li
     assert resp.status_code == 404 and calls["view"] == []
 
 
-async def test_proxy_access_off_keeps_it_for_admins(env: Env, calls: dict[str, list[Any]]) -> None:
+async def test_proxy_access_off_hides_it_from_everyone(env: Env, calls: dict[str, list[Any]]) -> None:
     env.ctx.box.update(tg_proxy_access="off")
     assert (await env.get("/tg-proxy")).status_code == 404
     assert (await env.get("/me")).json()["features"]["tg_proxy"] is False
     await add_user(env.ctx.session_factory, env.settings, 1000)
-    assert (await env.get("/tg-proxy", user_id=1000)).status_code == 200
+    assert (await env.get("/tg-proxy", user_id=1000)).status_code == 404  # admins use the Telegram-only link
 
 
 async def test_personal_mode_strangers_get_no_proxy(env: Env, calls: dict[str, list[Any]]) -> None:

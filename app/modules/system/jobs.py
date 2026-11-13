@@ -13,6 +13,8 @@ from app.core.modules import JobSpec
 from app.db.models import User
 from app.db.session import read_session
 from app.modules.system.texts import t
+from app.services import tls_watch
+from app.services.notifications import AdminEvent, notify
 from app.services.notify import notify_admins, safe_send
 
 if TYPE_CHECKING:
@@ -86,6 +88,45 @@ async def notify_users_back(ctx: AppContext) -> int:
             await asyncio.sleep(SEND_INTERVAL_SEC)
 
 
+def tls_alert_text(ctx: AppContext, alert: tls_watch.Alert) -> str:
+    """Admin message for a certificate alert."""
+    lang = ctx.settings.default_language
+    esc = ctx.i18n.esc
+    host = esc(alert.host)
+    expires = _local(ctx, alert.expires_at) if alert.expires_at else "?"
+    days = alert.days_left if alert.days_left is not None else 0
+    error = esc(alert.error or "?")[:300]
+    if alert.kind == "recovered":
+        return t(ctx, "system.tls.recovered", lang, host=host, expires=expires)
+    if alert.kind == "unreachable":
+        return t(ctx, "system.tls.unreachable", lang, host=host, error=error)
+    if alert.kind == "warn":
+        return t(ctx, "system.tls.warn", lang, host=host, days=days, expires=expires)
+    if alert.days_left is not None and alert.days_left < 0:
+        state = t(ctx, "system.tls.state_expired", lang, expires=expires)
+    elif alert.error:
+        state = t(ctx, "system.tls.state_invalid", lang, error=error)
+    else:
+        state = t(ctx, "system.tls.state_days", lang, days=days, expires=expires)
+    return t(ctx, "system.tls.urgent", lang, host=host, state=state)
+
+
+async def tls_watch_job(ctx: AppContext) -> None:
+    """Check the public certificates and tell the admins about expiring or broken ones."""
+    alerts = await tls_watch.run_check(ctx.settings, ctx.session_factory)
+    for alert in alerts:
+        notify(ctx, AdminEvent.ALERTS, tls_alert_text(ctx, alert))
+
+
 JOBS = [
     JobSpec(id="system.maintenance", func=maintenance_tick, trigger="interval", kwargs={"seconds": 30}),
+    JobSpec(
+        id="system.tls_watch",
+        func=tls_watch_job,
+        trigger="interval",
+        kwargs={"hours": 12},
+        enabled=tls_watch.watch_enabled,
+        lock_ttl_sec=300,
+        run_on_start=True,
+    ),
 ]

@@ -121,7 +121,7 @@ async def feature_on(ctx: Any, name: str, user_id: int) -> bool:
     if not feature_configured(ctx, name):
         return False
     if name == TG_PROXY and ctx.settings.tg_proxy_access == "off":
-        return await is_staff(ctx, user_id)  # owners and admins keep their proxy in any mode
+        return False  # the legacy proxy is hidden everywhere until the owner turns it on
     maintenance = getattr(ctx, "maintenance", None)
     if maintenance is None:
         return True

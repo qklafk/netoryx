@@ -50,7 +50,7 @@ import json
 import logging
 import re
 import secrets
-from collections.abc import Awaitable, Callable, Collection, Mapping
+from collections.abc import Awaitable, Callable, Collection, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import StrEnum
@@ -82,6 +82,8 @@ from app.services.panels.xray_template import (
     apply_extras,
     parse_template,
     set_ad_blocking,
+    set_tg_only,
+    tg_only_enabled,
     youtube_exit_enabled,
 )
 
@@ -1800,6 +1802,21 @@ class XuiBackend:
         if changed:
             logger.info("3x-ui %s: xray template updated (ads=%s, youtube exit=%s)", self._t.base, ads, bool(youtube))
         return changed
+
+    async def apply_tg_only(self, emails: Sequence[str]) -> bool:
+        """Confine the clients ``emails`` to Telegram (none: remove the rules); one write, at most one restart."""
+        changed = await self._edit_template(lambda t: set_tg_only(t, emails))
+        if changed:
+            logger.info("3x-ui %s: Telegram-only rules for %d client(s) updated", self._t.base, len(emails))
+        return changed
+
+    async def get_tg_only(self, emails: Sequence[str]) -> bool:
+        """Whether the template already holds the Telegram-only rules for ``emails``."""
+        template, _ = await self._xray_template()
+        try:
+            return tg_only_enabled(template, emails)
+        except TemplateError as exc:
+            raise PanelError(f"3x-ui {self._t.base}: {exc}") from exc
 
     async def ensure_sniffing(self) -> int:
         """Make VLESS inbounds sniff http / tls / quic (domain routing needs it); returns how many were changed.

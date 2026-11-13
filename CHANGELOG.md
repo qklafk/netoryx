@@ -3,6 +3,21 @@
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+
+- Shared Telegram-only link (`/sub/tg/<token>`, Happ and v2RayTun) with a public landing page at `/tg`: only Telegram goes
+  through the VPN, everything else connects directly, and the 3x-ui server refuses that client anything but Telegram.
+  Optional monthly traffic limit and a daily traffic alert, a bot admin screen and a web admin page with "new link";
+  the installer prints the page and link instead of a proxy link. See `docs/telegram-only.md`.
+
+### Changed
+
+- The Telegram MTProto and SOCKS5 proxies are legacy and off by default (`TG_PROXY_ACCESS=off`, `TG_SOCKS_ENABLED=false`);
+  the installer no longer asks about them (`--with-tgproxy` and `--with-socks` still work) and the menu button and Mini App
+  screen stay hidden until they are turned on.
+
 ## [0.9.0-beta] - 2026-11-12
 
 First public beta.

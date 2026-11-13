@@ -69,8 +69,13 @@ cd /opt/netoryx && docker compose up -d --no-deps app
 
 | Настройка | По умолчанию | Значение |
 |---|---|---|
-| `TG_PROXY_ACCESS` | `everyone` | Кто получает личный прокси: `everyone`, `subscribers` или `off`. Владельцы и администраторы получают всегда. |
-| `TG_SOCKS_ENABLED` | `true` | Главный выключатель аккаунтов SOCKS5 (ничего не показывается, пока какой-либо `mixed`-инбаунд 3x-ui не помечен как инбаунд SOCKS5 для Telegram). |
+| `TG_PROXY_ACCESS` | `off` | Устаревшее. Кто получает личный прокси для Telegram: `everyone`, `subscribers` или `off` (см. [telegram-proxy.md](telegram-proxy.md)). |
+| `TG_ONLY_ENABLED` | `true` | Общая ссылка «только Telegram» и её страница `/tg` ([telegram-only.md](telegram-only.md)). |
+| `TG_ONLY_EXCLUDED_COUNTRIES` | `RU,BY,CN,IR,KP,TM,VN` | Серверы этих стран (по флагу локации) для неё не предлагаются. |
+| `TG_ONLY_ALLOW_UNKNOWN_COUNTRY` | `false` | Предлагать и серверы, у локации которых нет флага страны. |
+| `TG_ONLY_MONTHLY_LIMIT_GB` | `0` | Месячный лимит трафика общего клиента на сервер (0 - без лимита). |
+| `TG_ONLY_DAILY_ALERT_GB` | `50` | Оповещать администраторов при суточном трафике общего клиента выше этого (0 - выключено). |
+| `TG_SOCKS_ENABLED` | `false` | Устаревшее. Главный выключатель аккаунтов SOCKS5 (ничего не показывается, пока какой-либо `mixed`-инбаунд 3x-ui не помечен как инбаунд SOCKS5 для Telegram). |
 | `TG_PROXY_MAX_SERVERS` | `2` | Прокси-серверов на пользователя (основной плюс резервные). |
 | `TG_PROXY_ROTATE_COOLDOWN_MIN` | `60` | Как часто пользователь может получить новую ссылку прокси. |
 

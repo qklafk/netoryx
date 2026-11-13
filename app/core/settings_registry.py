@@ -102,7 +102,8 @@ GROUPS: dict[str, tuple[str, str]] = {
     "payments_manual": ("Ручной перевод", "Manual transfer"),
     "panels_sync": ("Серверы: синхронизация", "Servers: sync & health"),
     "monitoring": ("Мониторинг серверов", "Server monitoring"),
-    "tg_proxy": ("Прокси для Telegram", "Telegram proxy"),
+    "tg_only": ("Доступ к Telegram", "Telegram access"),
+    "tg_proxy": ("Прокси для Telegram (устаревшее)", "Telegram proxy (legacy)"),
     "channel_gate": ("Обязательный канал", "Required channel"),
     "backups": ("Резервные копии", "Backups"),
     "cost_sharing": ("Складчина за сервер", "Cost sharing"),
@@ -1175,6 +1176,30 @@ _SPECS: list[SettingSpec] = [
         max=100,
     ),
     _spec(
+        "tls_watch_hosts",
+        "monitoring",
+        "Проверка сертификатов: имена",
+        "Certificate watch: host names",
+        "Имена через запятую (vpn.example.com, panel.example.com). Адрес из PUBLIC_BASE_URL проверяется всегда.",
+        "Comma-separated names (vpn.example.com, panel.example.com). The PUBLIC_BASE_URL host is always checked.",
+    ),
+    _spec(
+        "tls_watch_connect",
+        "monitoring",
+        "Проверка сертификатов: адрес подключения",
+        "Certificate watch: connect to",
+        "host:port, куда подключаться вместо самого имени (например edge:443); SNI остаётся именем сайта.",
+        "host:port to connect to instead of the name itself (for example edge:443); SNI stays the watched name.",
+    ),
+    _spec(
+        "tls_warn_days",
+        "monitoring",
+        "Предупреждать за дней до окончания сертификата",
+        "Warn this many days before a certificate expires",
+        min=3,
+        max=60,
+    ),
+    _spec(
         "delete_orphan_clients",
         "panels_sync",
         "Удалять чужие аккаунты с панелей",
@@ -1230,6 +1255,59 @@ _SPECS: list[SettingSpec] = [
         "geosite:youtube by default. Add more such as domain:googlevideo.com. Domain routing needs sniffing on the "
         "VLESS inbounds (the bot switches it on).",
     ),
+    _spec(
+        "tg_only_enabled",
+        "tg_only",
+        "Публичная ссылка «Telegram»",
+        "Public Telegram link",
+        "Одна общая ссылка для всех: через VPN идёт только Telegram, остальное работает напрямую. Её можно "
+        "публиковать и пересылать, чтобы людям было как открыть Telegram (и бота). Сервер не пускает этого клиента "
+        "никуда, кроме Telegram. Работает на серверах 3x-ui.",
+        "One shared link for everyone: only Telegram goes through the VPN, the rest connects directly. You can "
+        "publish and forward it so people can reach Telegram (and your bot). The server lets that client reach "
+        "nothing but Telegram. Works on 3x-ui servers.",
+    ),
+    _spec(
+        "tg_only_excluded_countries",
+        "tg_only",
+        "Страны, не подходящие для ссылки «Telegram»",
+        "Countries not offered for the Telegram link",
+        "Коды стран через запятую (по флагу локации). Серверы в этих странах не попадают в подписку, потому что "
+        "там Telegram ограничен или заблокирован.",
+        "Comma-separated country codes (taken from the location flag). Servers there are left out because "
+        "Telegram is restricted or blocked in those countries.",
+    ),
+    _spec(
+        "tg_only_allow_unknown_country",
+        "tg_only",
+        "Серверы без флага страны тоже подходят",
+        "Also offer servers without a country flag",
+        "По умолчанию сервер, у локации которого нет флага страны, в подписку не попадает: неизвестно, работает ли "
+        "из его страны Telegram.",
+        "Off by default: a server whose location has no country flag is left out because it is unknown whether "
+        "Telegram works from there.",
+    ),
+    _spec(
+        "tg_only_monthly_limit_gb",
+        "tg_only",
+        "Лимит трафика ссылки «Telegram», ГБ в месяц",
+        "Telegram link traffic limit, GB per month",
+        "Общий трафик общего клиента на каждом сервере, сбрасывается раз в месяц. 0 - без лимита. Применяется без "
+        "перезапуска Xray.",
+        "Total traffic of the shared client on each server, reset once a month. 0 means unlimited. Applied without "
+        "restarting Xray.",
+        min=0,
+    ),
+    _spec(
+        "tg_only_daily_alert_gb",
+        "tg_only",
+        "Оповещение о трафике ссылки «Telegram», ГБ в сутки",
+        "Telegram link traffic alert, GB per day",
+        "Сообщить администраторам, если общий клиент за сутки передал больше этого объёма (не чаще раза в сутки). "
+        "0 - выключено.",
+        "Tell admins when the shared client moves more than this in a day (at most once a day). 0 turns it off.",
+        min=0,
+    ),
     # --- server monitoring
     _spec(
         "monitor_alerts_enabled",
@@ -1249,8 +1327,10 @@ _SPECS: list[SettingSpec] = [
         "tg_proxy",
         "Кому доступен прокси",
         "Who gets the proxy",
-        "everyone — всем; subscribers — подписчикам; off — выключен.",
-        "everyone; subscribers - users with a subscription; off.",
+        "everyone — всем; subscribers — подписчикам; off — выключен (по умолчанию: прокси MTProto не работают "
+        "в некоторых странах).",
+        "everyone; subscribers - users with a subscription; off (the default: MTProto proxies do not work in "
+        "some countries).",
     ),
     _spec(
         "tg_proxy_free_rate_limit_mbps",

@@ -31,12 +31,15 @@ from app.modules.admin_api.schemas.system import (
     ModulesIn,
     ModuleToggleIn,
     RunJobOut,
+    TlsHostOut,
+    TlsOut,
     VersionOut,
     WebhookOut,
     WindowIn,
     WindowOut,
 )
 from app.modules.admin_api.version import current_version, is_newer, latest_release
+from app.services import tls_watch
 from app.utils.time import utcnow
 from app.web.deps import Ctx, ReadDb
 
@@ -302,6 +305,21 @@ async def logs(actor: Sysadmin, lines: Annotated[int, Query(ge=1, le=MAX_LOG_LIN
     if buffer is None:
         return LogsOut(available=False, lines=[])
     return LogsOut(available=True, lines=list(buffer.lines(lines)))
+
+
+@router.get("/tls", response_model=TlsOut)
+async def tls_status(actor: Sysadmin) -> TlsOut:
+    """Expiry of the watched public certificates as of the last check."""
+    settings = actor.ctx.settings
+    names = tls_watch.watched_hosts(settings)
+    states = await tls_watch.load_states(actor.ctx.session_factory)
+    hosts = [
+        TlsHostOut(**states[h].public())
+        if h in states
+        else TlsHostOut(host=h, checked_at=None, expires_at=None, days_left=None, ok=True, problem=None, error=None)
+        for h in names
+    ]
+    return TlsOut(enabled=bool(names), warn_days=settings.tls_warn_days, hosts=hosts)
 
 
 @router.get("/webhook", response_model=WebhookOut)

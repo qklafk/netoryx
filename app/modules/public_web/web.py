@@ -25,7 +25,18 @@ from app.db.models import Plan, PromoKind, Subscription, User
 from app.db.session import read_session
 from app.modules.public_web import remnawave_hook
 from app.modules.public_web.html import esc, js_string, page
-from app.services import deeplinks, kv, promo, subscription_page, subscriptions, tg_proxy, users
+from app.services import (
+    deeplinks,
+    kv,
+    promo,
+    subscription_json,
+    subscription_page,
+    subscriptions,
+    tg_only,
+    tg_only_config,
+    tg_proxy,
+    users,
+)
 from app.services.panels.remnawave import SIGNATURE_HEADER, RemnawaveBackend, RemnawaveWebhookError
 from app.services.qr import make_qr_png_async
 from app.utils.time import utcnow
@@ -125,6 +136,104 @@ async def _load_user(ctx: Any, token: str) -> tuple[User, Subscription | None] |
 
 
 # --- subscription ----------------------------------------------------------------------------------------------------
+
+
+_PLATFORM_AGENTS = (
+    ("iphone", deeplinks.Platform.IOS),
+    ("ipad", deeplinks.Platform.IOS),
+    ("ipod", deeplinks.Platform.IOS),
+    ("android", deeplinks.Platform.ANDROID),
+    ("windows", deeplinks.Platform.WINDOWS),
+    ("macintosh", deeplinks.Platform.MACOS),
+    ("mac os", deeplinks.Platform.MACOS),
+    ("linux", deeplinks.Platform.LINUX),
+)
+
+
+def detect_platform(user_agent: str) -> deeplinks.Platform | None:
+    """The visitor's operating system from the User-Agent (phones first: Android UAs also say Linux)."""
+    agent = user_agent.lower()
+    for needle, platform in _PLATFORM_AGENTS:
+        if needle in agent:
+            return platform
+    return None
+
+
+@router.get("/tg")
+async def tg_only_page(request: Request, ctx: Ctx) -> Response:
+    """Public landing page of the shared Telegram link: what it is, the Happ download, one-tap import, QR, steps.
+
+    The address never changes; the page always shows the current subscription link, so rotating the token needs no
+    new announcement. 404 when the feature is off, a friendly 503 while no server is ready.
+    """
+    lang = pick_lang(ctx, request)
+    settings = ctx.settings
+    if not settings.tg_only_enabled:
+        return _not_found_page(ctx, lang)
+    brand = settings.brand_name.strip() or "VPN"
+    view = await tg_only.admin_view(ctx.session_factory, settings)
+    if not view.ready:
+        notice = f"<h1>{esc(brand)}</h1><p>{esc(_t(ctx, 'tg_only.page.unavailable', lang))}</p>"
+        return page(brand, notice, lang=lang, status_code=503)
+    sub_url = tg_only.subscription_url(settings, view.token, base_url(ctx, request))
+    happ = deeplinks.APPS["happ"]
+    link = await _deeplink(ctx, happ, sub_url, tg_only_config.remark(settings))
+    mine = detect_platform(request.headers.get("user-agent", ""))
+    own = happ.downloads_for(mine) if mine is not None else []
+    others = [d for d in happ.downloads if d not in own]
+    body = [f"<h1>{esc(_t(ctx, 'tg_only.page.title', lang, brand=brand))}</h1>"]
+    body.append(f"<p>{esc(_t(ctx, 'tg_only.page.text', lang))}</p>")
+    body.append(f"<h2>{esc(_t(ctx, 'tg_only.page.step1', lang))}</h2>")
+    for download in own:
+        label = _t(ctx, "tg_only.page.download", lang, store=download.label)
+        body.append(f'<a class="btn" href="{esc(download.url)}" rel="noopener">{esc(label)}</a>')
+    if others:
+        body.append(f"<details><summary>{esc(_t(ctx, 'tg_only.page.other_platforms', lang))}</summary>")
+        for download in others:
+            platform = _t(ctx, f"public_web.platform.{download.platform.value}", lang)
+            label = f"{platform} · {download.label}"
+            body.append(f'<a class="btn small" href="{esc(download.url)}" rel="noopener">{esc(label)}</a>')
+        body.append("</details>")
+    body.append(f"<h2>{esc(_t(ctx, 'tg_only.page.step2', lang))}</h2>")
+    body.append(f'<a class="btn main" href="{esc(link)}">{esc(_t(ctx, "tg_only.page.add", lang))}</a>')
+    body.append(f"<h2>{esc(_t(ctx, 'tg_only.page.manual', lang))}</h2>")
+    body.append(
+        f'<p class="muted">{esc(_t(ctx, "tg_only.page.manual_hint", lang))}</p><code id="url">{esc(sub_url)}</code>'
+    )
+    body.append(f'<button class="btn" id="copy" type="button">{esc(_t(ctx, "public_web.copy", lang))}</button>')
+    qr = await _qr_data_url(sub_url)
+    if qr:
+        body.append(f'<img class="qr" alt="QR" src="{qr}">')
+    body.append(f'<p class="muted">{esc(_t(ctx, "tg_only.page.note", lang))}</p>')
+    copied = _t(ctx, "public_web.copied", lang)
+    script = (
+        "document.getElementById('copy').addEventListener('click',function(){"
+        f"navigator.clipboard.writeText({js_string(sub_url)}).then(function(){{"
+        f"document.getElementById('copy').textContent={js_string(copied)};}});}});"
+    )
+    return page(_t(ctx, "tg_only.page.title", lang, brand=brand), "".join(body), lang=lang, script=script)
+
+
+@router.api_route("/sub/tg/{token}", methods=["GET", "HEAD"])
+async def tg_only_subscription(token: str, request: Request, ctx: Ctx) -> Response:
+    """The shared Telegram-only subscription (Xray JSON for Happ / v2RayTun only).
+
+    Other apps get an explanation instead of server links: those servers refuse everything but Telegram, so a
+    general-purpose client that imported them would simply lose its internet.
+    """
+    if not await tg_only.token_matches(ctx.session_factory, token):
+        return PlainTextResponse("Not found", status_code=404, headers=NO_STORE)
+    client = subscription_page.detect_client({k.lower(): v for k, v in request.headers.items()})
+    if client not in ("happ", "v2raytun") and request.query_params.get("format") != "json":
+        text = "\n\n".join(_t(ctx, "tg_only.web_text", lang) for lang in ("ru", "en"))
+        return PlainTextResponse(text, headers=NO_STORE)
+    rendered = await tg_only.render_configs(ctx.session_factory, ctx.settings, pick_lang(ctx, request))
+    if rendered is None:
+        headers = {**NO_STORE, "Retry-After": str(RETRY_AFTER_SEC)}
+        return PlainTextResponse("No server is ready yet", status_code=503, headers=headers)
+    body = subscription_json.render_body(rendered.configs)
+    headers = {**tg_only_config.response_headers(ctx.settings), **NO_STORE}
+    return Response(body, media_type=subscription_json.MEDIA_TYPE, headers=headers)
 
 
 @router.api_route("/sub/{token}", methods=["GET", "HEAD"])

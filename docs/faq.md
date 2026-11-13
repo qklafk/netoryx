@@ -48,8 +48,8 @@ send none are served unless `HWID_REQUIRED=true`.
 **Is anything logged about my customers' traffic?** No visited sites, no content, and by default no IP addresses. See
 [privacy.md](privacy.md).
 
-**What if Telegram is unavailable for my customers?** Enable the web cabinet ([web-cabinet.md](web-cabinet.md)) and give them
-the Telegram proxy ([telegram-proxy.md](telegram-proxy.md)).
+**What if Telegram is unavailable for my customers?** Enable the web cabinet ([web-cabinet.md](web-cabinet.md)) so they
+can reach their subscription without the bot. Publish the [Telegram access link](telegram-only.md) so people can reach Telegram and your bot.
 
 **What if my customers' mobile networks only allow approved hosts?** Use relay endpoints with the LTE profile
 ([panels.md](panels.md)).

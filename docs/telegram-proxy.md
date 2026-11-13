@@ -2,6 +2,10 @@
 
 Русская версия: [ru/telegram-proxy.md](ru/telegram-proxy.md).
 
+> **Legacy, optional.** MTProto and SOCKS5 proxies do not work in some countries and are off by default
+> (`TG_PROXY_ACCESS=off`, `TG_SOCKS_ENABLED=false`); the installer no longer installs them unless asked. To help people reach Telegram,
+> use the shared [Telegram access link](telegram-only.md) instead.
+
 The bot can give every user a personal proxy for Telegram. Two kinds are supported, and both can be enabled at once:
 
 | Kind | Where it runs | How it connects |

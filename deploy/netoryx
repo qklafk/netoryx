@@ -19,6 +19,7 @@ Usage: netoryx <command>
   update              fetch the latest version and restart only the application
   backup              create a database backup now
   admin-link          print a one-time login link for the web admin
+  tg-link             print the shared Telegram-only link
   restart [service]   restart everything or the named services
   uninstall [--purge] stop the stack (data volumes are kept; --purge deletes them, the code and secrets too)
   help                this text
@@ -63,6 +64,9 @@ case "$command" in
     ;;
   admin-link)
     docker compose exec -T app "$PY" -m app create-admin-link
+    ;;
+  tg-link)
+    docker compose exec -T app "$PY" -m app tg-only-link
     ;;
   restart)
     need_root

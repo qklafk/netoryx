@@ -23,9 +23,9 @@ sudo bash install.sh --bot-token <token> --admin-id <telegram id> [--domain <nam
 | --- | --- |
 | `--panel NAME` | VPN panel to install, default `xui`: `xui`, `remnawave`, `marzban`, `pasarguard`, `marzneshin` or `none` (see [Choosing a panel](#choosing-a-panel)). Each one gets random administrator credentials and a VLESS + Reality entry point that shares port 443 |
 | `--with-xui` | same as `--panel xui` |
-| `--with-tgproxy` | install the MTProto proxy for Telegram (telemt), also served on 443 |
+| `--with-tgproxy` | legacy: install the MTProto proxy for Telegram (telemt), also served on 443; it does not work in some countries and is not offered by default |
 | `--with-shadowsocks` | add a Shadowsocks-2022 VPN inbound on `--ss-port` (default 8388, tcp+udp); 3x-ui only. Shadowsocks is not TLS, so it cannot share 443 and needs a port of its own; treat it as a fallback protocol, because some networks filter fully encrypted traffic. Skipped with a notice if this version cannot create it |
-| `--with-socks` | create a SOCKS5 proxy for Telegram on `--socks-port` (default 2080); 3x-ui only |
+| `--with-socks` | legacy: create a SOCKS5 proxy for Telegram on `--socks-port` (default 2080); 3x-ui only; not offered by default |
 | `--tg-domain` | TLS name the MTProto proxy imitates (default `petrovich.ru`) |
 | `--brand-name` | name of your service shown to customers (default `VPN`) |
 | `--lang ru\|en` | language of the installer's messages |
@@ -47,11 +47,11 @@ in brackets; yes/no questions show `[Y/n]`.
 2. Your Telegram ID: the number @userinfobot replies with.
 3. Domain: press Enter to use the free `<ip-with-dashes>.sslip.io` address. A domain that does not point to this server is refused, with an offer to use sslip.io instead.
 4. Service name (`BRAND_NAME`, default `VPN`): the name your customers see in the bot, the Mini App and their apps. Change it later in the admin; `--brand-name` sets it without a question.
-5. Which VPN panel: a numbered list with a one-line description of each (Enter = 3x-ui, the last entry is "no panel, I connect my own later"). Then, for 3x-ui, add SOCKS5 for Telegram: yes/no. Then install the MTProto proxy: yes/no.
+5. Which VPN panel: a numbered list with a one-line description of each (Enter = 3x-ui, the last entry is "no panel, I connect my own later").
 
 The run is nine numbered steps, each ending with a check mark. If one fails, the installer names the step, the log
 (`/var/log/netoryx-install.log`) and the command to run again; repeating is always safe. At the end a summary lists
-the one-time admin link, the bot, the subscription address, where the credentials are stored (paths only), how to open
+the one-time admin link, the bot, the subscription address, the shared Telegram link (the `/tg` page and the subscription link, with a QR code) (3x-ui; see [telegram-only.md](telegram-only.md)), where the credentials are stored (paths only), how to open
 the panel through an SSH tunnel, the next steps and the `netoryx` commands. `--yes` turns every question off for
 automation (values then come from the flags).
 

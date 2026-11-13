@@ -109,6 +109,23 @@ See [payments.md](payments.md#testing-a-payment). In short: check the webhook UR
 in the admin, then `netoryx logs app`. The reconciler credits paid invoices within `PAYMENT_RECONCILE_INTERVAL_SEC`
 even if a webhook never arrives. An admin can also credit a payment manually; the action is idempotent.
 
+## Certificate expiry alerts
+
+Caddy renews the Let's Encrypt certificate by itself, but a closed port 80, a wrong DNS record or a rate limit can stop
+it unnoticed. Every 12 hours the app connects to the host of `PUBLIC_BASE_URL` (plus the names in `TLS_WATCH_HOSTS`, for
+example `vpn.example.com,panel.example.com`), reads the certificate and writes to the owner and admins chat:
+
+- a warning once a day when fewer than `TLS_WARN_DAYS` (default 14) days are left;
+- an urgent message when fewer than 3 days are left, the certificate has expired or does not pass verification
+  (wrong chain or name);
+- a warning when the name cannot be reached over HTTPS;
+- a short "recovered" message when the problem is gone.
+
+Check that port 80 is open and the domain points to this server, then run `netoryx logs caddy` and look for the
+renewal error. If the app cannot reach its own public address from inside Docker, set `TLS_WATCH_CONNECT=edge:443`: it
+connects there and still sends the watched name as SNI. The current status is in the admin under System, tab
+Certificates.
+
 ## Reading logs safely
 
 Logs contain no secrets and, with the default `CLIENT_IP_LOGGING=off`, no customer IP addresses. Set `LOG_LEVEL=DEBUG` in

@@ -49,6 +49,7 @@ MODULE_NAMES: tuple[str, ...] = (
     "members",
     "cost_sharing",
     "tg_proxy",
+    "tg_only",
     "tickets",
     "broadcasts",
     "servers_monitor",

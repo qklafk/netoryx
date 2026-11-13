@@ -67,8 +67,13 @@ Setting names are case-insensitive in `.env`; lists are comma-separated (`ADMIN_
 
 | Setting | Default | Meaning |
 |---|---|---|
-| `TG_PROXY_ACCESS` | `everyone` | Who gets a personal proxy: `everyone`, `subscribers` or `off`. Owners and admins always do. |
-| `TG_SOCKS_ENABLED` | `true` | Master switch for SOCKS5 accounts (nothing is shown until a 3x-ui `mixed` inbound is marked as the Telegram SOCKS5 inbound). |
+| `TG_PROXY_ACCESS` | `off` | Legacy. Who gets a personal Telegram proxy: `everyone`, `subscribers` or `off` (see [telegram-proxy.md](telegram-proxy.md)). |
+| `TG_ONLY_ENABLED` | `true` | The shared Telegram-only link and its `/tg` page ([telegram-only.md](telegram-only.md)). |
+| `TG_ONLY_EXCLUDED_COUNTRIES` | `RU,BY,CN,IR,KP,TM,VN` | Servers in these countries (from the location flag) are not offered for it. |
+| `TG_ONLY_ALLOW_UNKNOWN_COUNTRY` | `false` | Also offer servers whose location has no country flag. |
+| `TG_ONLY_MONTHLY_LIMIT_GB` | `0` | Monthly traffic limit of the shared client per server (0 = unlimited). |
+| `TG_ONLY_DAILY_ALERT_GB` | `50` | Alert admins above this daily traffic of the shared client (0 = off). |
+| `TG_SOCKS_ENABLED` | `false` | Legacy. Master switch for SOCKS5 accounts (nothing is shown until a 3x-ui `mixed` inbound is marked as the Telegram SOCKS5 inbound). |
 | `TG_PROXY_MAX_SERVERS` | `2` | Proxy servers per user (primary plus backups). |
 | `TG_PROXY_ROTATE_COOLDOWN_MIN` | `60` | How often a user may get a new proxy link. |
 

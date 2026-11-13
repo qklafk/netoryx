@@ -526,11 +526,25 @@ class Settings(BaseSettings):
     reconcile_interval_min: int = 5
     health_check_interval_min: int = 2
     health_failures_before_alert: int = 3
+    tls_watch_hosts: Annotated[list[str], NoDecode] = Field(default_factory=list)  # extra HTTPS names to watch
+    tls_watch_connect: str | None = None  # host:port to connect to instead of the watched name (SNI is kept)
+    tls_warn_days: int = 14  # alert when a certificate expires in fewer days
     delete_orphan_clients: bool = False
     adblock_enabled: bool = False  # block ad / tracker domains in the Xray routing of every 3x-ui panel
     youtube_exit_enabled: bool = False  # send YouTube through a separate exit server (3x-ui panels)
     youtube_exit_link: SecretStr | None = None  # vless:// / socks5:// / ss:// share link of the exit server
     youtube_exit_domains: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["geosite:youtube"])
+
+    # Shared Telegram-only link and its /tg page (3x-ui servers; see docs/telegram-only.md).
+    tg_only_enabled: bool = True
+    # Servers in these countries (ISO 3166-1 alpha-2, taken from the location flag) are not offered: Telegram is
+    # restricted or blocked there, so a Telegram-only exit would not work.
+    tg_only_excluded_countries: Annotated[list[str], NoDecode] = Field(
+        default_factory=lambda: ["RU", "BY", "CN", "IR", "KP", "TM", "VN"]
+    )
+    tg_only_allow_unknown_country: bool = False  # offer servers whose location has no recognisable flag
+    tg_only_monthly_limit_gb: int = 0  # total traffic of the shared client per month, reset monthly (0 = unlimited)
+    tg_only_daily_alert_gb: int = 50  # alert admins when the shared client moves more than this in a day (0 = off)
 
     # --- Server monitoring --------------------------------------------------------------------------
     monitor_alerts_enabled: bool = True  # alert admins on high load, stopped Xray, offline nodes
@@ -549,8 +563,8 @@ class Settings(BaseSettings):
     # --- Telegram MTProto proxy for users -------------------------------------------------------
     # everyone    - every user gets a personal proxy (non-subscribers optionally with limits/ad tag below)
     # subscribers - only users with an active subscription whose plan includes it (Plan.includes_tg_proxy)
-    # off         - feature hidden (owners/admins still get one)
-    tg_proxy_access: Literal["everyone", "subscribers", "off"] = "everyone"
+    # off         - feature hidden (the default: MTProto proxies are blocked in some countries)
+    tg_proxy_access: Literal["everyone", "subscribers", "off"] = "off"
     tg_proxy_free_rate_limit_mbps: int = 0  # speed cap for users without a subscription (0 = none)
     tg_proxy_free_ad_tag: str | None = None  # sponsored channel tag (@MTProxybot) for users without a subscription
     tg_proxy_max_unique_ips: int = 3  # per-user simultaneous IPs before the link is considered shared (0 = no cap)
@@ -564,7 +578,7 @@ class Settings(BaseSettings):
     tg_proxy_scan_interval_min: int = 5  # usage / drift / sharing scan of the proxy servers
     # Personal SOCKS5 proxy (3x-ui mixed inbound with password auth) offered next to the MTProto proxy; the same
     # access policy, server count and link cooldown apply. Without a selected inbound nothing is shown.
-    tg_socks_enabled: bool = True
+    tg_socks_enabled: bool = False
 
     # --- Required channel subscription --------------------------------------------------------------
     required_channel_id: int | None = None  # e.g. -1001234567890; the bot must be an admin there
@@ -646,6 +660,7 @@ class Settings(BaseSettings):
         "enabled_languages",
         "npd_providers",
         "youtube_exit_domains",
+        "tls_watch_hosts",
         mode="before",
     )
     @classmethod
@@ -659,6 +674,15 @@ class Settings(BaseSettings):
     def _split_domains(cls, v: object) -> object:
         if isinstance(v, str):
             return [x for x in re.split(r"[\s,;]+", v) if x]
+        return v
+
+    @field_validator("tg_only_excluded_countries", mode="before")
+    @classmethod
+    def _split_countries(cls, v: object) -> object:
+        if isinstance(v, str):
+            return [x.upper() for x in re.split(r"[\s,;]+", v) if x]
+        if isinstance(v, list):
+            return [str(x).strip().upper() for x in v if str(x).strip()]
         return v
 
     @field_validator("blacklist_urls", mode="before")
@@ -727,6 +751,12 @@ class Settings(BaseSettings):
             except LinkError as exc:
                 raise ValueError(f"YOUTUBE_EXIT_LINK: {exc}") from None
         validate_domains(self.youtube_exit_domains)
+        need(
+            all(re.fullmatch(r"[A-Z]{2}", c) for c in self.tg_only_excluded_countries),
+            "TG_ONLY_EXCLUDED_COUNTRIES: use two-letter country codes such as RU,BY",
+        )
+        need(self.tg_only_monthly_limit_gb >= 0, "TG_ONLY_MONTHLY_LIMIT_GB must not be negative")
+        need(self.tg_only_daily_alert_gb >= 0, "TG_ONLY_DAILY_ALERT_GB must not be negative")
         need(0 < self.min_topup_rub <= self.max_topup_rub, "invalid MIN_TOPUP_RUB / MAX_TOPUP_RUB")
         need(self.stars_rub_per_star > 0, "STARS_RUB_PER_STAR must be positive")
         need(self.shutdown_timeout_sec > 0, "SHUTDOWN_TIMEOUT_SEC must be positive")

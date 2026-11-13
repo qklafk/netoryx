@@ -129,6 +129,13 @@ def _after_change(actor: Actor, key: str) -> None:
     """Apply settings that live outside this process's memory (panels) without waiting for the next job run."""
     if key in ("adblock_enabled", "youtube_exit_enabled", "youtube_exit_link", "youtube_exit_domains"):
         kick_jobs(actor.ctx, "ad_blocking.converge")
+    if key in (
+        "tg_only_enabled",
+        "tg_only_excluded_countries",
+        "tg_only_allow_unknown_country",
+        "tg_only_monthly_limit_gb",
+    ):
+        kick_jobs(actor.ctx, "tg_only.reconcile")
 
 
 @router.get("/{key}", response_model=SettingOut)

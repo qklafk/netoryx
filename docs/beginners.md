@@ -155,7 +155,7 @@ address instead?" Answer `Y` (default) to use the sslip.io address.
 
 > Which VPN management panel to install? The bot creates and renews your customers' access through it.
 >
-> 1. 3x-ui: simple and light, proven in practice (recommended; the only one that supports SOCKS5 and Shadowsocks)
+> 1. 3x-ui: simple and light, proven in practice (recommended; the only one that supports the Telegram link and Shadowsocks)
 > 2. Remnawave: panel for several servers and nodes (beta)
 > 3. Marzban: popular Xray panel (beta)
 > 4. PasarGuard: Marzban's successor (beta)
@@ -165,19 +165,6 @@ address instead?" Answer `Y` (default) to use the sslip.io address.
 > `Panel number [1]:`
 
 As a beginner: press Enter (3x-ui).
-
-**SOCKS5 proxy for Telegram** (3x-ui only)
-
-> Add a SOCKS5 proxy for Telegram? It needs a port of its own; users get personal logins. `[y/N]`
-
-The default is no. You can answer `n` and enable it later.
-
-**MTProto proxy for Telegram**
-
-> Install the MTProto proxy for Telegram? It shares port 443 with the website. `[Y/n]`
-
-The default is yes. It is a proxy that helps people use Telegram itself; its link appears at the end of the
-installation.
 
 With `--yes` and the `--bot-token` / `--admin-id` flags there are no questions at all (all flags are listed in the
 [installation guide](installation.md)).
@@ -191,7 +178,8 @@ The installer prints a summary "Netoryx is installed" with these blocks:
 - **Web admin**: a one-time login link (valid for a few minutes). If it expires, run `netoryx admin-link` for a new one.
 - **Logins and passwords**: the file they are stored in (usually under `/root/netoryx/`, for example
   `xui-credentials`). Read with `sudo cat <file>`. Never share them.
-- **Your Telegram proxy**: a link and a QR code: scan it or tap the link in Telegram.
+- **Your shared Telegram link** (3x-ui): a page address (`/tg`) you can publish and a subscription link with a QR code.
+  People open the page, install Happ and tap "Add to Happ": only Telegram will go through the VPN ([details](telegram-only.md)).
 - The installer log: `/var/log/netoryx-install.log`.
 
 ### First steps

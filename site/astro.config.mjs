@@ -47,7 +47,8 @@ const sidebar = [
     label: 'Для клиентов',
     translations: { en: 'For customers' },
     items: [
-      item('telegram-proxy', 'Прокси для Telegram', 'Telegram proxies'),
+      item('telegram-only', 'Доступ к Telegram', 'Telegram access'),
+      item('telegram-proxy', 'Прокси для Telegram (устар.)', 'Telegram proxies (legacy)'),
       item('web-cabinet', 'Веб-кабинет', 'Web cabinet'),
       item('npd-receipts', 'Чеки «Мой налог»', '"Мой налог" receipts'),
     ],

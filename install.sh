@@ -3,11 +3,11 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/qklafk/netoryx/main/install.sh | sudo bash
 #   sudo bash install.sh --bot-token <token> --admin-id <telegram id> [--domain <name>]
-#        [--panel xui|remnawave|marzban|pasarguard|marzneshin|none] [--with-tgproxy] [--with-socks]
-#        [--socks-port 2080] [--yes]
+#        [--panel xui|remnawave|marzban|pasarguard|marzneshin|none] [--yes]
 #
-# Installs Docker, the Netoryx stack (app, PostgreSQL, Caddy, HAProxy edge), a VPN panel (3x-ui by default) and,
-# optionally, the Telegram proxies into /opt/netoryx. Every step is safe to repeat: run the script again to upgrade or to resume after an
+# Installs Docker, the Netoryx stack (app, PostgreSQL, Caddy, HAProxy edge) and a VPN panel (3x-ui by default) into
+# /opt/netoryx. On 3x-ui it also prepares a Telegram-only subscription for the owner (only Telegram uses the VPN).
+# The legacy Telegram proxies (--with-tgproxy, --with-socks) are still available but are no longer offered. Every step is safe to repeat: run the script again to upgrade or to resume after an
 # error. Secrets are generated once and never printed.
 #
 # Options (see --help for the full list); useful environment variables:
@@ -124,7 +124,7 @@ load_messages() {
     M_P_BRAND="Название сервиса"
     M_E_BRAND="Название должно быть от 1 до 40 символов, без кавычек и переводов строки."
     M_P_PANEL_HELP="Какую панель управления VPN установить? Бот создаёт и продлевает доступы клиентов через неё.
-  1) 3x-ui       - простая и лёгкая, проверена на практике (рекомендуется; только с ней работают SOCKS5 и Shadowsocks)
+  1) 3x-ui       - простая и лёгкая, проверена на практике (рекомендуется; только с ней работают подписка «только Telegram» и Shadowsocks)
   2) Remnawave   - панель для нескольких серверов и узлов (бета)
   3) Marzban     - популярная панель на Xray (бета)
   4) PasarGuard  - преемник Marzban (бета)
@@ -132,14 +132,12 @@ load_messages() {
   6) Без панели  - панель у вас уже есть на другом сервере: подключите её позже в веб-админке (Hiddify тоже подключается так)"
     M_P_PANEL="Номер панели"
     M_E_PANEL="Введите число от 1 до 6 (или нажмите Enter для 3x-ui)."
-    M_W_PANEL_FEATURES="SOCKS5 и Shadowsocks работают только с панелью 3x-ui: с панелью %s они пропущены."
+    M_W_PANEL_FEATURES="SOCKS5 и Shadowsocks работают только с панелью 3x-ui: с панелью %s они пропущены. Подписка «только Telegram» тоже пока доступна только на 3x-ui."
     M_I_ADBLOCK_XUI="Блокировка рекламы работает только с панелью 3x-ui; с другими панелями её можно настроить в самой панели."
     M_X_PANEL_ADMIN="Панель %s: логин и пароль администратора - в файле %s"
     M_X_PANEL_UI="Панель доступна только с сервера. Откройте её через SSH-туннель:"
     M_X_PANEL_UI2="затем в браузере: http://127.0.0.1:%s%s"
     M_Q_XUI="Установить VPN (панель 3x-ui и Reality на порту 443)? Это сам VPN для ваших клиентов."
-    M_Q_SOCKS="Добавить SOCKS5-прокси для Telegram? Нужен отдельный порт; пользователи получат личные логины."
-    M_Q_TGPROXY="Установить MTProto-прокси для Telegram? Он работает на порту 443 вместе с сайтом."
     M_I_DOMAIN="Домен"
     M_I_COMPONENTS="Состав"
     # Summary
@@ -155,6 +153,10 @@ load_messages() {
     M_X_CREDS="Логины и пароли хранятся в"
     M_X_CREDS_NOTE="(только владелец, посмотреть: sudo cat <файл>; никому не показывайте)"
     M_X_TGPROXY="Ваш прокси для Telegram (порт 443)"
+    M_X_TGONLY="Общая ссылка «только Telegram»: через VPN идёт только Telegram, остальное - напрямую (её можно публиковать)"
+    M_X_TGONLY_HOWTO="Делитесь адресом страницы: на ней подсказка для людей, а ссылка подписки всегда актуальна. Вручную: Happ или v2RayTun -> «Добавить подписку по ссылке» (или QR)."
+    M_X_TGONLY_NONE="Подписка «только Telegram» пока не готова (нужен сервер 3x-ui в стране, где Telegram работает). Ссылка: netoryx tg-link"
+    M_X_TGONLY_PAGE="Страница для людей (делитесь ей)"
     M_X_SOCKS="SOCKS5 для Telegram: порт %s; личные логины выдаёт бот (раздел Прокси)."
     M_X_NEXT="Что дальше"
     M_X_NEXT1="1) Откройте веб-админку по ссылке выше и создайте тариф (Тарифы)."
@@ -296,7 +298,7 @@ load_messages() {
     M_P_BRAND="Service name"
     M_E_BRAND="The name must be 1 to 40 characters, without quotes or line breaks."
     M_P_PANEL_HELP="Which VPN management panel to install? The bot creates and renews your customers' access through it.
-  1) 3x-ui       - simple and light, proven in practice (recommended; the only one that supports SOCKS5 and Shadowsocks)
+  1) 3x-ui       - simple and light, proven in practice (recommended; the only one that supports the Telegram-only subscription and Shadowsocks)
   2) Remnawave   - panel for several servers and nodes (beta)
   3) Marzban     - popular Xray panel (beta)
   4) PasarGuard  - Marzban's successor (beta)
@@ -304,14 +306,12 @@ load_messages() {
   6) No panel    - you already run a panel on another server: connect it later in the web admin (Hiddify is connected this way too)"
     M_P_PANEL="Panel number"
     M_E_PANEL="Enter a number from 1 to 6 (or press Enter for 3x-ui)."
-    M_W_PANEL_FEATURES="SOCKS5 and Shadowsocks work with the 3x-ui panel only: they are skipped with %s."
+    M_W_PANEL_FEATURES="SOCKS5 and Shadowsocks work with the 3x-ui panel only: they are skipped with %s. The Telegram-only subscription is 3x-ui only for now as well."
     M_I_ADBLOCK_XUI="Ad blocking works with the 3x-ui panel only; with other panels configure it in the panel itself."
     M_X_PANEL_ADMIN="%s panel: administrator login and password are in %s"
     M_X_PANEL_UI="The panel is reachable from the server only. Open it through an SSH tunnel:"
     M_X_PANEL_UI2="then in a browser: http://127.0.0.1:%s%s"
     M_Q_XUI="Install the VPN (3x-ui panel and Reality on port 443)? This is the VPN itself for your clients."
-    M_Q_SOCKS="Add a SOCKS5 proxy for Telegram? It needs a port of its own; users get personal logins."
-    M_Q_TGPROXY="Install the MTProto proxy for Telegram? It shares port 443 with the website."
     M_I_DOMAIN="Domain"
     M_I_COMPONENTS="Components"
     M_X_TITLE="Netoryx is installed"
@@ -326,6 +326,10 @@ load_messages() {
     M_X_CREDS="Logins and passwords are stored in"
     M_X_CREDS_NOTE="(owner only; read with: sudo cat <file>; never share them)"
     M_X_TGPROXY="Your Telegram proxy (port 443)"
+    M_X_TGONLY="Your shared Telegram-only subscription: only Telegram uses the VPN, everything else connects directly (you can publish it)"
+    M_X_TGONLY_HOWTO="Share the page address: it guides people, and the subscription link on it is always current. By hand: Happ or v2RayTun -> \"Add subscription by URL\" (or the QR)."
+    M_X_TGONLY_NONE="The Telegram-only subscription is not ready yet (it needs a 3x-ui server in a country where Telegram works). Link: netoryx tg-link"
+    M_X_TGONLY_PAGE="Page for people (share this one)"
     M_X_SOCKS="SOCKS5 for Telegram: port %s; personal logins are issued by the bot (Proxy section)."
     M_X_NEXT="Next steps"
     M_X_NEXT1="1) Open the web admin with the link above and create a plan (Plans)."
@@ -525,8 +529,8 @@ Usage: install.sh [options]
   --panel NAME          VPN panel to install: xui (default), remnawave, marzban, pasarguard, marzneshin or none
                         (none: connect an existing external panel later in the web admin; Hiddify is connected this way)
   --with-xui            same as --panel xui
-  --with-tgproxy        install the Telegram MTProto proxy (telemt, also served on 443)
-  --with-socks          create a SOCKS5 proxy for Telegram (3x-ui only)
+  --with-tgproxy        legacy: install the Telegram MTProto proxy (telemt); it may not work in some countries
+  --with-socks          legacy: create a SOCKS5 proxy for Telegram (3x-ui only); may not work in some countries
   --socks-port PORT     public port of the SOCKS5 proxy (default 2080)
   --with-shadowsocks    add a Shadowsocks-2022 VPN inbound (fallback protocol, own port; 3x-ui only)
   --ss-port PORT        public port of the Shadowsocks inbound (default 8388)
@@ -742,6 +746,19 @@ detect_public_ip() {
     ip="$(curl -fsS4 --max-time 8 "$url" 2>/dev/null | tr -d '[:space:]' || true)"
     if printf '%s' "$ip" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$'; then
       printf '%s' "$ip"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Two-letter country code of this server (for the location flag); empty when it cannot be found.
+detect_country() {
+  local ip="$1" url code
+  for url in "https://ipinfo.io/$ip/country" "https://ipapi.co/$ip/country/"; do
+    code="$(curl -fsS --max-time 6 "$url" 2>/dev/null | tr -d '[:space:]' | tr 'a-z' 'A-Z' || true)"
+    if printf '%s' "$code" | grep -Eq '^[A-Z]{2}$'; then
+      printf '%s' "$code"
       return 0
     fi
   done
@@ -989,8 +1006,6 @@ collect_settings() {
       PANEL="$(panel_from_choice "$choice")"
     fi
     PANEL="${PANEL:-xui}"
-    if [ "$PANEL" = xui ] && [ -z "$WITH_SOCKS" ]; then ask_yes_no WITH_SOCKS "$M_Q_SOCKS" 0; fi
-    if [ -z "$WITH_TGPROXY" ]; then ask_yes_no WITH_TGPROXY "$M_Q_TGPROXY" 1; fi
   else
     # Re-running keeps what is installed; flags can only add components.
     local profiles
@@ -1731,6 +1746,9 @@ bootstrap_servers() {
   reality_port="$(env_get REALITY_PORT)"
   reality_port="${reality_port:-$REALITY_PORT_DEFAULT}"
   local args=(bootstrap-local --endpoint-address "$SERVER_IP")
+  local country=""
+  [ "$DRY" = 1 ] || country="$(detect_country "$SERVER_IP" || true)"
+  [ -n "$country" ] && args+=(--location-country "$country")
   if [ "$WITH_XUI" = 1 ]; then
     local creds="$SECRETS_DIR/xui-credentials"
     local xui_base xui_user
@@ -1846,6 +1864,7 @@ summary() {
   rule
   if [ "$DRY" = 1 ]; then
     printf '  %s\n' "$M_X_DRY"
+    if [ "$HAS_PANEL" = 1 ]; then printf '  %s\n  %s\n' "$M_X_TGONLY" "$M_X_TGONLY_HOWTO"; fi
     return 0
   fi
   local link
@@ -1882,6 +1901,16 @@ summary() {
     printf "    $M_X_PANEL_UI2\n" "$ui_port" "$ui_path"
   fi
   printf '\n  %s: %s/\n  %s\n' "$M_X_CREDS" "$SECRETS_DIR" "$M_X_CREDS_NOTE"
+  if [ "$HAS_PANEL" = 1 ]; then
+    local tg_link
+    tg_link="$(dc exec -T app /app/.venv/bin/python -m app tg-only-link 2>/dev/null | tail -n 1 || true)"
+    if printf '%s' "$tg_link" | grep -Eq '^https://'; then
+      printf '\n  %s:\n  %s: https://%s/tg\n  %s: %s\n  %s\n' "$M_X_TGONLY" "$M_X_TGONLY_PAGE" "$DOMAIN" "URL" "$tg_link" "$M_X_TGONLY_HOWTO"
+      show_qr "$tg_link"
+    else
+      printf '\n  %s\n' "$M_X_TGONLY_NONE"
+    fi
+  fi
   if [ "$WITH_TGPROXY" = 1 ]; then
     local creds="$SECRETS_DIR/telemt-credentials" secret tls_hex proxy_link
     secret="$(cred_get "$creds" OWNER_SECRET)"
