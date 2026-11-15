@@ -238,8 +238,10 @@ _SPECS: list[SettingSpec] = [
         "mode",
         "Режим",
         "Mode",
-        "shop — продажа подписок; personal — личный VPN по приглашениям, без платежей.",
-        "shop - sell subscriptions; personal - private VPN by invitation, no payments.",
+        "Магазин — продажа подписок; личный VPN — доступ по приглашениям, без платежей. "
+        "Удобнее переключать в разделе «Режим работы».",
+        "Shop sells subscriptions; personal VPN gives access by invitation, without payments. "
+        "Easier to switch in Product mode.",
         owner_only=True,
     ),
     # --- branding

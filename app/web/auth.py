@@ -475,9 +475,12 @@ def _me(principal: AdminPrincipal, token: str, settings: Settings) -> AdminMe:
 
 
 def _version() -> str:
+    import re
+
     from app.core import __version__  # local: keeps this module's import light
 
-    return str(__version__)
+    # 0.9.1b0 -> 0.9.1-beta, as releases are named
+    return re.sub(r"b0$", "-beta", re.sub(r"rc(\d+)$", r"-rc\1", str(__version__)))
 
 
 def _login_bucket(ip: str) -> str:

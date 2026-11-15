@@ -20,3 +20,4 @@
 .dashboard-grid.personal > .panel:first-child { display: none; }
 
 .settings-menu .settings-folder { font-weight: 650; margin-top: 10px; }
+.dashboard-grid.personal{grid-template-columns:minmax(0,1fr) minmax(265px,1fr)}
