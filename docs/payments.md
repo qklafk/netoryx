@@ -34,7 +34,7 @@ a rate you set or, for TON and USDT, optionally an automatic rate (`CRYPTO_RATE_
 | Plisio | `plisio` | `PLISIO_API_KEY`, optional `PLISIO_CURRENCY` | automatic |
 | TON (direct) | `ton` | `TON_WALLET_ADDRESS`, optional `TON_API_KEY`, `TON_RATE_RUB` | none (polls the blockchain) |
 | USDT TRC-20 (direct) | `usdt_trc20` | `USDT_TRC20_ADDRESS`, optional `USDT_TRC20_API_KEY`, `USDT_TRC20_RATE_RUB` | none (polls TronGrid) |
-| YooKassa | `yookassa` | `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY`, optional 54-FZ receipts (`YOOKASSA_RECEIPT_*`, `YOOKASSA_VAT_CODE`) | cabinet; checked by source IP (`YOOKASSA_CHECK_IP`) |
+| YooKassa | `yookassa` | `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY`, optional 54-FZ receipts (`YOOKASSA_RECEIPT_*`, `YOOKASSA_VAT_CODE`) | cabinet (events `payment.succeeded`, `payment.canceled`, `refund.succeeded`); checked by source IP (`YOOKASSA_CHECK_IP`) |
 | YooMoney | `yoomoney` | `YOOMONEY_WALLET`, `YOOMONEY_NOTIFICATION_SECRET`, `YOOMONEY_PAYMENT_TYPE` (`AC` card, `PC` wallet) | cabinet (HTTP notifications) |
 | FreeKassa | `freekassa` | `FREEKASSA_SHOP_ID`, `FREEKASSA_SECRET1`, `FREEKASSA_SECRET2`, optional `FREEKASSA_API_KEY` | cabinet; the notification method (GET or POST) is a shop setting there, both are accepted |
 | Robokassa | `robokassa` | `ROBOKASSA_MERCHANT_LOGIN`, `ROBOKASSA_PASSWORD1`, `ROBOKASSA_PASSWORD2`, `ROBOKASSA_HASH_ALGORITHM` (`md5` or `sha256`, must match the cabinet), `ROBOKASSA_TEST_MODE` | cabinet (ResultURL) |

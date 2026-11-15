@@ -103,6 +103,9 @@ BACKOFF_BASE: Final = timedelta(seconds=30)
 BACKOFF_MAX: Final = timedelta(minutes=30)
 RECONCILE_BATCH_SIZE: Final = 500
 PANEL_ABORT_AFTER_FAILURES: Final = 3
+# Removing the accounts of a switched-off proxy server that no longer answers is given up after this many tries: the
+# server is gone, and retrying forever only fills the log.
+DRAIN_GIVE_UP_ATTEMPTS: Final = 12
 MAX_ERROR_LENGTH: Final = 500
 # Defaults of the TG_PROXY_ABUSE_* settings.
 ABUSE_DEFAULT_UNIQUE_IPS: Final = 10  # threshold when accounts have no unique-IP limit
@@ -969,6 +972,14 @@ async def _store(
                 continue
             if outcome.error is not None:
                 row = await session.get(TgProxyAccess, job.access_id)
+                if row is not None and _give_up_drain(job, row.attempts or 0):
+                    log.info(
+                        "tg proxy access %s: panel %s is switched off and unreachable, forgetting the account",
+                        job.access_id,
+                        job.target.panel_id,
+                    )
+                    await session.delete(row)
+                    continue
                 if row is not None:
                     row.attempts = (row.attempts or 0) + 1
                     row.last_error = outcome.error
@@ -998,6 +1009,11 @@ async def _store(
                 values["links_cache"] = _Cache(key=key, spec=job.spec_hash, links=links).dump(codec)
                 values["used_bytes"] = max(0, account.used_bytes)
             await session.execute(update(TgProxyAccess).where(current, same_revision).values(**values))
+
+
+def _give_up_drain(job: _Job, attempts: int) -> bool:
+    """A failed removal from a switched-off server, tried long enough."""
+    return job.desired == ProvisionState.ABSENT and not job.target.active and attempts + 1 >= DRAIN_GIVE_UP_ATTEMPTS
 
 
 @dataclass(slots=True)

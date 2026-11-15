@@ -546,12 +546,26 @@ async def test_yookassa_webhook_ip_check_disabled_and_other_events(closing: list
     gw = _yookassa(None, closing, check_ip=False)
     assert (await gw.parse_webhook(YK_EVENT, {}, "1.2.3.4")).provider_ids == [YK_PAYMENT["id"]]
     refund = json.dumps({"event": "refund.succeeded", "object": {"id": "r1", "payment_id": "p1"}}).encode()
-    assert (await gw.parse_webhook(refund, {}, None)).provider_ids == []
+    # a refund makes the bot fetch the payment again (it then reports REFUNDED, see the test below)
+    assert (await gw.parse_webhook(refund, {}, None)).provider_ids == ["p1"]
+    payout = json.dumps({"event": "payout.succeeded", "object": {"id": "o1"}}).encode()
+    assert (await gw.parse_webhook(payout, {}, None)).provider_ids == []
     no_meta = json.dumps({"event": "payment.canceled", "object": {"id": "p2"}}).encode()
     result = await gw.parse_webhook(no_meta, {}, None)
     assert (result.payment_ids, result.provider_ids) == ([], ["p2"])
     with pytest.raises(WebhookRejected):
         await gw.parse_webhook(b"<html>", {}, None)
+
+
+def test_yookassa_full_refund_is_reported_as_refunded() -> None:
+    from app.services.payments.yookassa import payment_status
+
+    paid = {"id": "p1", "status": "succeeded", "amount": {"value": "1000.00", "currency": "RUB"}}
+    assert payment_status(paid).status is PaymentStatus.SUCCEEDED
+    full = {**paid, "refunded_amount": {"value": "1000.00", "currency": "RUB"}}
+    assert payment_status(full).status is PaymentStatus.REFUNDED
+    partial = {**paid, "refunded_amount": {"value": "300.00", "currency": "RUB"}}
+    assert payment_status(partial).status is PaymentStatus.SUCCEEDED  # a partial refund keeps the purchase
 
 
 # ---------------------------------------------------------------------------------------------

@@ -2,7 +2,8 @@
 
 * Auth: HTTP Basic ``shopId:secretKey``; ``Idempotence-Key`` (our payment id) on every POST, so creating
   a payment can be retried safely.
-* Status: ``GET /v3/payments/{id}`` (``pending`` / ``waiting_for_capture`` / ``succeeded`` / ``canceled``).
+* Status: ``GET /v3/payments/{id}`` (``pending`` / ``waiting_for_capture`` / ``succeeded`` / ``canceled``); a fully
+  refunded payment is ``succeeded`` with ``refunded_amount``, reported as REFUNDED (``refund.succeeded`` triggers that).
 * Webhooks are unsigned: the source IP is checked against YooKassa's allowlist and the payment is
   always re-fetched from the API.
 * Autopayments: with the payer's consent the first payment asks to keep the method
@@ -185,8 +186,11 @@ class YooKassaGateway(HttpGateway):
         data = json_body(raw)
         event = str(data.get("event", ""))
         obj = data.get("object")
+        if event == "refund.succeeded" and isinstance(obj, dict) and obj.get("payment_id"):
+            # the payment is fetched again: a full refund shows up there as REFUNDED
+            return WebhookResult(provider_ids=[str(obj["payment_id"])])
         if not event.startswith("payment.") or not isinstance(obj, dict) or not obj.get("id"):
-            return WebhookResult()  # refunds, payouts, ... are not ours to handle here
+            return WebhookResult()  # payouts and the like are not ours to handle here
         metadata = obj.get("metadata")
         our_id = metadata.get("payment_id") if isinstance(metadata, dict) else None
         return WebhookResult(
@@ -208,8 +212,21 @@ def payment_status(data: Any) -> ProviderStatus:
             paid = amount_to_kop(amount.get("value", ""))
         except ValueError:
             paid = None
+    if status is PaymentStatus.SUCCEEDED and paid is not None and _refunded_kop(data) >= paid > 0:
+        # a fully refunded payment stays "succeeded" at YooKassa, with the refund in refunded_amount
+        return ProviderStatus(PaymentStatus.REFUNDED, paid, str(data.get("id")) if data.get("id") else None)
     saved = _saved_method(data) if status is PaymentStatus.SUCCEEDED else None
     return ProviderStatus(status, paid, str(data.get("id")) if data.get("id") else None, saved)
+
+
+def _refunded_kop(data: Any) -> int:
+    refunded = data.get("refunded_amount") if isinstance(data, dict) else None
+    if not isinstance(refunded, dict) or refunded.get("currency") != "RUB":
+        return 0
+    try:
+        return amount_to_kop(refunded.get("value", ""))
+    except ValueError:
+        return 0
 
 
 def _saved_method(data: dict[str, Any]) -> SavedMethod | None:

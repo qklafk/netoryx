@@ -36,7 +36,7 @@ CoinGecko, кэшируется на `CRYPTO_RATE_CACHE_SEC`, запасной �
 | Plisio | `plisio` | `PLISIO_API_KEY`, необязательно `PLISIO_CURRENCY` | automatic |
 | TON (напрямую) | `ton` | `TON_WALLET_ADDRESS`, необязательно `TON_API_KEY`, `TON_RATE_RUB` | нет (опрашивает блокчейн) |
 | USDT TRC-20 (напрямую) | `usdt_trc20` | `USDT_TRC20_ADDRESS`, необязательно `USDT_TRC20_API_KEY`, `USDT_TRC20_RATE_RUB` | нет (опрашивает TronGrid) |
-| YooKassa | `yookassa` | `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY`, необязательно чеки 54-ФЗ (`YOOKASSA_RECEIPT_*`, `YOOKASSA_VAT_CODE`) | cabinet; проверка по IP источника (`YOOKASSA_CHECK_IP`) |
+| YooKassa | `yookassa` | `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY`, необязательно чеки 54-ФЗ (`YOOKASSA_RECEIPT_*`, `YOOKASSA_VAT_CODE`) | cabinet (события `payment.succeeded`, `payment.canceled`, `refund.succeeded`); проверка по IP источника (`YOOKASSA_CHECK_IP`) |
 | YooMoney | `yoomoney` | `YOOMONEY_WALLET`, `YOOMONEY_NOTIFICATION_SECRET`, `YOOMONEY_PAYMENT_TYPE` (`AC` карта, `PC` кошелёк) | cabinet (HTTP-уведомления) |
 | FreeKassa | `freekassa` | `FREEKASSA_SHOP_ID`, `FREEKASSA_SECRET1`, `FREEKASSA_SECRET2`, необязательно `FREEKASSA_API_KEY` | cabinet; метод уведомления (GET или POST) задаётся в настройках магазина там же, принимаются оба |
 | Robokassa | `robokassa` | `ROBOKASSA_MERCHANT_LOGIN`, `ROBOKASSA_PASSWORD1`, `ROBOKASSA_PASSWORD2`, `ROBOKASSA_HASH_ALGORITHM` (`md5` или `sha256`, должен совпадать с кабинетом), `ROBOKASSA_TEST_MODE` | cabinet (ResultURL) |

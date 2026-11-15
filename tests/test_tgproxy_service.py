@@ -452,6 +452,30 @@ async def test_deactivated_target_is_drained(world: World) -> None:
     assert len(view.entries) == 2 and view.entries[1].panel_id == world.xui_id
 
 
+async def test_a_switched_off_server_that_never_answers_is_given_up(world: World) -> None:
+    # the server was removed: retrying the removal of its accounts forever only fills the log
+    await world.open(1)
+    await world.execute(update(Panel).where(Panel.id == world.backup_id).values(is_active=False))
+    world.backup.fail_next = 10_000
+    moment = NOW
+    for _ in range(tg_proxy.DRAIN_GIVE_UP_ATTEMPTS - 1):
+        await world.reconcile(moment)
+        moment += timedelta(days=1)
+    assert world.backup_id in [r.panel_id for r in await world.rows(1)]  # still trying
+    await world.reconcile(moment)
+    assert [r.panel_id for r in await world.rows(1)] == [world.telemt_id]
+
+
+async def test_a_running_server_that_fails_is_never_given_up(world: World) -> None:
+    await tg_proxy.ensure_access(world.session_factory, world.settings, BOX, 1, max_targets=1, now=NOW)
+    world.telemt.fail_next = 10_000
+    moment = NOW
+    for _ in range(tg_proxy.DRAIN_GIVE_UP_ATTEMPTS + 3):
+        await world.reconcile(moment)
+        moment += timedelta(days=1)
+    assert len(await world.rows(1)) == 1
+
+
 async def test_deselected_xui_inbound_is_drained(world: World) -> None:
     await world.execute(update(Panel).where(Panel.kind == PanelKind.TELEMT).values(is_active=False))
     await world.open(1)

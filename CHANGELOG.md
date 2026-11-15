@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- YooKassa refunds were not noticed: the `refund.succeeded` notification is now handled and a fully refunded payment
+  is recognised, so the refund takes back what the payment gave.
+- The accounts of a switched-off Telegram proxy server that no longer answers are no longer retried forever.
+
 ### Added
 
 - "VPN does not work" check on the subscription card: the bot looks for an ended or suspended subscription, used-up
