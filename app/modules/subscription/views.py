@@ -20,6 +20,7 @@ from app.modules.subscription.callbacks import (
     BUY,
     CONNECT,
     DEVICES,
+    DIAG,
     LINKS,
     QR,
     SUB,
@@ -30,6 +31,7 @@ from app.modules.subscription.callbacks import (
     CheckCb,
     ConnCb,
     DevCb,
+    DiagCb,
     PayCb,
     PlanCb,
     ServerCb,
@@ -40,6 +42,7 @@ from app.modules.subscription.urls import open_url, subscription_url, whitelist_
 from app.services.addons import AddonKind, Offer
 from app.services.deeplinks import APPS, ClientApp, Platform, apps_for_platform
 from app.services.devices import DeviceInfo, PanelDevices
+from app.services.diagnostics import Diagnosis, Problem
 from app.services.payments import onchain
 from app.services.payments.base import PaymentGateway
 from app.utils.bytes import GIB
@@ -285,6 +288,7 @@ def sub_card(
                 Button.cb(_("subscription.btn.rotate"), SubAct(act="rot", s=sub.id)),
             ]
         )
+        rows.append([nav(_("subscription.diag.open"), DIAG, sub.id)])
         if shop and (
             settings.traffic_pack_price_kop > 0
             or settings.traffic_reset_price_kop > 0
@@ -298,6 +302,53 @@ def sub_card(
     if shop:
         rows.append([nav(_("subscription.multi.new_button"), BUY, -1)])
     rows.append([nav(_("nav.refresh"), SUB, sub.id), to_menu(_)])
+    return Screen("\n".join(lines), kb(rows))
+
+
+def diag_screen(
+    _: Translator,
+    settings: Settings,
+    state: SubState,
+    diagnosis: Diagnosis,
+    *,
+    resynced: bool,
+    lte: bool,
+    support: bool,
+) -> Screen:
+    """Result of the connection check: what was found and how to fix it, else a checklist; support as the last step."""
+    sub = state.sub
+    sid = sub.id if sub is not None else 0
+    shop = settings.app_mode == "shop"
+    lines = [_("subscription.diag.title"), ""]
+    rows: Rows = []
+    for problem in diagnosis.problems:
+        if problem == Problem.NO_SUBSCRIPTION:
+            continue
+        if problem == Problem.NOT_SYNCED:
+            lines.append(_("subscription.diag.synced" if resynced else "subscription.diag.not_synced"))
+        elif problem == Problem.DEVICES:
+            lines.append(_("subscription.diag.devices", devices=diagnosis.devices, limit=diagnosis.device_limit))
+            rows.append([nav(_("subscription.btn.devices"), DEVICES, sid)])
+        elif problem == Problem.SERVERS_DOWN:
+            lines.append(_("subscription.diag.servers_down", down=diagnosis.servers_down, total=diagnosis.servers))
+        else:
+            lines.append(_(f"subscription.diag.{problem.value}"))
+        if problem == Problem.EXPIRED and shop and not state.complimentary:
+            rows.append([nav(_("subscription.btn.renew"), BUY, sid)])
+        if problem == Problem.TRAFFIC and shop:
+            rows.append([nav(_("subscription.btn.addons"), ADDONS, sid)])
+    if diagnosis.ok:
+        lines += [_("subscription.diag.ok"), "", _("subscription.diag.checklist")]
+        if lte:
+            lines.append(_("subscription.diag.lte"))
+    if support:
+        lines += ["", _("subscription.diag.still")]
+        rows.append([Button.cb(_("subscription.diag.btn_support"), DiagCb(a="t", s=sid))])
+    elif settings.support_url:
+        rows.append([Button.url(_("subscription.btn.support"), settings.support_url)])
+    if state.status == Status.ACTIVE:
+        rows.append([nav(_("subscription.btn.connect"), CONNECT, sid)])
+    rows.append([nav(_("subscription.diag.btn_again"), DIAG, sid), back(SUB, _, sid)])
     return Screen("\n".join(lines), kb(rows))
 
 

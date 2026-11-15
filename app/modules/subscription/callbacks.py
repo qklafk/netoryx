@@ -16,10 +16,18 @@ ADDONS = "addons"
 TRIAL = "trial"
 QR = "qr"
 LINKS = "my_links"
+DIAG = "diag"  # "the VPN does not work" check
 
 # Nav targets of other modules this module links to.
 WALLET = "wallet"
 SUPPORT = "tickets"
+
+
+class DiagCb(CallbackData, prefix="sbdiag"):
+    """Connection check: ``t`` = send the result to support as a ticket, for subscription ``s``."""
+
+    a: str
+    s: int = 0
 
 
 class SubAct(CallbackData, prefix="sbact"):

@@ -15,11 +15,35 @@ from app.core.i18n import Translator
 from app.core.ui import Screen, answer_callback, render
 from app.keyboards import Nav
 from app.modules.subscription import views
-from app.modules.subscription.callbacks import CONNECT, DEVICES, LINKS, QR, SUB, TRIAL, ConnCb, DevCb, ServerCb, SubAct
+from app.modules.subscription.callbacks import (
+    CONNECT,
+    DEVICES,
+    DIAG,
+    LINKS,
+    QR,
+    SUB,
+    TRIAL,
+    ConnCb,
+    DevCb,
+    DiagCb,
+    ServerCb,
+    SubAct,
+)
 from app.modules.subscription.stars_renewal import cancel_stars_renewal
 from app.modules.subscription.state import Status, SubState, has_lte_endpoints, load_state, select_subscription
 from app.modules.subscription.urls import subscription_url
-from app.services import connection_links, deeplinks, devices, events, notifications, provisioning, subscriptions, users
+from app.services import (
+    connection_links,
+    deeplinks,
+    devices,
+    diagnostics,
+    events,
+    notifications,
+    provisioning,
+    subscriptions,
+    tickets,
+    users,
+)
 from app.services.qr import make_qr_png_async
 from app.services.subscription_page import usage
 from app.services.subscriptions import SubErrorCode, SubscriptionError
@@ -275,6 +299,63 @@ async def send_qr(
 
 
 # --- devices ----------------------------------------------------------------------------------------------------------
+@router.callback_query(Nav.filter(F.to == DIAG))
+async def open_diagnosis(
+    callback: CallbackQuery, ctx: AppContext, settings: Settings, _: Translator, callback_data: Nav
+) -> None:
+    """ "The VPN does not work": check the usual reasons, push the settings again if a panel lags behind."""
+    sid = int(callback_data.arg) if callback_data.arg.isdecimal() else None
+    state = await require_state(callback, ctx, _, sid)
+    if state is None or state.sub is None:
+        return
+    user_id, sub_id = state.user.tg_id, state.sub.id
+    found = await diagnostics.diagnose(ctx.session_factory, settings, user_id, sub_id)
+    resynced = False
+    if found.has(diagnostics.Problem.NOT_SYNCED):
+        resynced = await sync_now(ctx, settings, sub_id)
+        if resynced:
+            found = await diagnostics.diagnose(ctx.session_factory, settings, user_id, sub_id)
+            if not found.has(diagnostics.Problem.NOT_SYNCED):
+                found = diagnostics.Diagnosis(
+                    problems=(*found.problems, diagnostics.Problem.NOT_SYNCED),
+                    devices=found.devices,
+                    device_limit=found.device_limit,
+                    servers=found.servers,
+                    servers_down=found.servers_down,
+                )
+    lte = await has_lte_endpoints(ctx.session_factory)
+    support = "tickets" in ctx.modules and ctx.modules.is_enabled("tickets", settings)
+    screen = views.diag_screen(_, settings, state, found, resynced=resynced, lte=lte, support=support)
+    await render(callback, screen)
+
+
+@router.callback_query(DiagCb.filter(F.a == "t"))
+async def diagnosis_to_support(
+    callback: CallbackQuery, ctx: AppContext, settings: Settings, _: Translator, callback_data: DiagCb
+) -> None:
+    """Open a support ticket that already carries the check result."""
+    user = callback.from_user
+    if "tickets" not in ctx.modules or not ctx.modules.is_enabled("tickets", settings):
+        await answer_callback(callback, _("error.unavailable"), alert=True)
+        return
+    found = await diagnostics.diagnose(ctx.session_factory, settings, user.id, callback_data.s)
+    if found.has(diagnostics.Problem.NO_SUBSCRIPTION):
+        await answer_callback(callback, _("error.unavailable"), alert=True)
+        return
+    text = f"{_('subscription.diag.ticket')}\n\n#{callback_data.s}: {found.summary()}"
+    try:
+        async with ctx.session_factory.begin() as session:
+            ticket = await tickets.create(session, user.id, text)
+            ticket_id = ticket.id
+    except tickets.TicketError as exc:
+        await answer_callback(callback, _(f"tickets.error.{exc.code.value}"), alert=True)
+        return
+    from app.modules.tickets.bot import notify_support  # local: the tickets module is optional
+
+    notify_support(ctx, "tickets.notify.new", ticket_id, user, text, False)
+    await answer_callback(callback, _("subscription.diag.ticket_sent", id=ticket_id), alert=True)
+
+
 @router.callback_query(Nav.filter(F.to == DEVICES))
 async def open_devices(
     callback: CallbackQuery, ctx: AppContext, settings: Settings, _: Translator, callback_data: Nav | None = None

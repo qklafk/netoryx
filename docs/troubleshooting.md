@@ -2,6 +2,14 @@
 
 Russian version: [ru/troubleshooting.md](ru/troubleshooting.md).
 
+## Customers' own check
+
+The subscription card in the bot has a **"VPN does not work"** button. It checks the usual reasons on the service side:
+an ended or suspended subscription, used-up traffic, full device slots, settings that have not reached a panel (it pushes
+them again) and unreachable servers. It shows the fix for what it found, or a short checklist. **"Did not help"** opens a
+support ticket with the check result attached (`problems=...; devices=...; servers=...; down=...; unsynced=...`), so the
+first look below often starts from that line.
+
 ## First look
 
 ```bash

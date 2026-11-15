@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- "VPN does not work" check on the subscription card: the bot looks for an ended or suspended subscription, used-up
+  traffic, full device slots, settings that did not reach a panel (and pushes them again) or unreachable servers, shows the
+  fix or a checklist, and "Did not help" opens a support ticket with the result.
+
 ## [0.9.1-beta] - 2026-11-13
 
 ### Added

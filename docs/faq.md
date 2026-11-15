@@ -41,6 +41,9 @@ Happ, INCY, v2RayTun or Hiddify and imports the subscription. The same link work
 subscription with an Auto entry that picks the fastest server and Russian sites going direct
 ([subscriptions.md](subscriptions.md)).
 
+**A customer says the VPN does not work.** The **"VPN does not work"** button on their subscription card checks the
+usual reasons and shows the fix; if that does not help, it opens a ticket with the result ([troubleshooting.md](troubleshooting.md)).
+
 **The VPN "connects" but there is no internet.** Most often the network drops a large TLS hello. Netoryx gives out links
 with a compact hello by default (`REALITY_COMPACT_HELLO`); refresh the subscription in the app. Other causes and checks:
 [troubleshooting.md](troubleshooting.md).
