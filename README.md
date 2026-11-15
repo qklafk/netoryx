@@ -27,7 +27,16 @@
   <a href="https://qklafk.github.io/netoryx/">Сайт</a>
 </p>
 
-<p align="center"><img src="docs/images/demo-bot.ru.gif" width="300" alt="Бот в работе"></p>
+<table align="center">
+  <tr>
+    <td align="center"><b>1. Одна команда на сервере</b></td>
+    <td align="center"><b>2. Готовый бот</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/demo-install.ru.gif" width="520" alt="Установка одной командой"></td>
+    <td><img src="docs/images/demo-bot.ru.gif" width="240" alt="Бот в работе"></td>
+  </tr>
+</table>
 
 **Netoryx** это self-hosted Telegram-бот, веб-админка и Mini App для продажи или раздачи доступа к VPN.
 

@@ -109,7 +109,7 @@ The installation takes about **5-10 minutes**; the first build is the longest. T
    automatically.
 5. **Configuring the firewall**: only the needed ports are opened, SSH stays available.
 6. **Building and starting the services**: the longest step, a few minutes.
-7. **Setting up the VPN and proxies**: the panel, the Reality entry point, registering the servers in the bot.
+7. **Setting up the VPN**: the panel, the Reality entry point, registering the servers in the bot.
 8. **Waiting for the HTTPS certificate**: up to 1-2 minutes.
 9. **Finishing**: the final summary.
 

@@ -104,7 +104,7 @@ load_messages() {
     M_S_CODE="Загружаю Netoryx и пишу конфигурацию"
     M_S_FIREWALL="Настраиваю файрвол"
     M_S_START="Собираю и запускаю сервисы (первая сборка занимает несколько минут)"
-    M_S_VPN="Настраиваю VPN и прокси"
+    M_S_VPN="Настраиваю VPN"
     M_S_HTTPS="Жду HTTPS-сертификат (до 1-2 минут)"
     M_S_FINISH="Завершаю установку"
     M_S_UPD_CHECK="Проверяю систему"
@@ -175,6 +175,7 @@ load_messages() {
     M_X_NEXT3="3) Установите Happ (или v2RayTun), в боте нажмите «Моя подписка» и импортируйте ссылку."
     M_X_CHEAT="Команды"
     M_X_LOG="Журнал установки"
+    M_X_STAR="Нравится Netoryx? Звезда на GitHub помогает проекту: https://github.com/qklafk/netoryx"
     M_I_OS="Система: %s %s (%s) -> менеджер пакетов %s, репозиторий Docker %s, файрвол %s"
     M_D_SYSTEMD="нужен systemd"
     M_W_RAM="всего %s МБ оперативной памяти (рекомендуется не меньше 2 ГБ)"
@@ -293,7 +294,7 @@ load_messages() {
     M_S_CODE="Downloading Netoryx and writing the configuration"
     M_S_FIREWALL="Configuring the firewall"
     M_S_START="Building and starting the services (the first build takes a few minutes)"
-    M_S_VPN="Setting up the VPN and proxies"
+    M_S_VPN="Setting up the VPN"
     M_S_HTTPS="Waiting for the HTTPS certificate (up to 1-2 minutes)"
     M_S_FINISH="Finishing"
     M_S_UPD_CHECK="Checking the system"
@@ -362,6 +363,7 @@ load_messages() {
     M_X_NEXT3="3) Install Happ (or v2RayTun), press \"My subscription\" in the bot and import the link."
     M_X_CHEAT="Commands"
     M_X_LOG="Installer log"
+    M_X_STAR="Like Netoryx? A star on GitHub helps the project: https://github.com/qklafk/netoryx"
     M_I_OS="OS: %s %s (%s) -> package manager %s, Docker repository %s, firewall %s"
     M_D_SYSTEMD="systemd is required"
     M_W_RAM="only %s MB of RAM (at least 2 GB recommended)"
@@ -1976,8 +1978,9 @@ summary() {
   fi
   printf '\n  %s:\n    %s\n    %s\n    %s\n' "$M_X_NEXT" "$M_X_NEXT1" "$M_X_NEXT2" "$M_X_NEXT3"
   printf '\n  %s:\n' "$M_X_CHEAT"
-  printf '    netoryx status | logs [service] | update | backup | admin-link | restart | uninstall\n'
+  printf '    netoryx status | logs [service] | update | backup [--full] | restore | admin-link | tg-link | node-token\n'
   printf '\n  %s: %s\n' "$M_X_LOG" "$LOG_FILE"
+  printf '\n  %s\n' "$M_X_STAR"
   rule
 }
 
@@ -2195,6 +2198,7 @@ node_main() {
   say "$(printf "$M_X_NODE_DONE" "$NODE_LOCATION")"
   say "$M_X_NODE_NEXT"
   say "$(printf "$M_X_NODE_FILES" "$NODE_DIR" "$SECRETS_DIR/xui-credentials")"
+  say "$M_X_STAR"
 }
 
 main() {
