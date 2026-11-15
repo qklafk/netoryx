@@ -26,6 +26,7 @@ Usage: netoryx <command>
   restore <file>      put a full backup back (on this server, or on a new one installed with the same panel)
   admin-link          print a one-time login link for the web admin
   tg-link             print the shared Telegram-only link
+  node-token          print the command that adds another server as a VPN server of this installation
   restart [service]   restart everything or the named services
   uninstall [--purge] stop the stack (data volumes are kept; --purge deletes them, the code and secrets too)
   help                this text
@@ -226,6 +227,15 @@ case "$command" in
     ;;
   tg-link)
     docker compose exec -T app "$PY" -m app tg-only-link
+    ;;
+  node-token)
+    join="$(docker compose exec -T app "$PY" -m app node-token | tr -d '\r')"
+    [ -n "$join" ] || exit 1
+    echo "On the new server, as root (the code works once, for an hour):"
+    echo
+    echo "  curl -fsSL https://raw.githubusercontent.com/qklafk/netoryx/main/install.sh | sudo bash -s -- --node --join $join"
+    echo
+    echo "Optional: --location \"Germany\" (default: the country code), --reality-sni <site> (default www.samsung.com)."
     ;;
   restart)
     need_root

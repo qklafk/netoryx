@@ -19,6 +19,9 @@ Remnawave, Marzban, PasarGuard and Marzneshin are also installed by one command 
 server; a few features are 3x-ui only ([installation.md](installation.md#choosing-a-panel)). A panel that already runs on
 another server is added in the admin (**Servers**), see [panels.md](panels.md).
 
+**How do I add a second server?** `sudo netoryx node-token` on the main server prints one command for the new VPS;
+it installs 3x-ui there and adds the server to the bot ([panels.md](panels.md#adding-a-server-with-one-command)).
+
 **Can it share a server with an existing 3x-ui?** Yes: add that panel in **Servers** by its URL. Keep the panel port closed
 to the internet.
 

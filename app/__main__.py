@@ -47,6 +47,7 @@ def build_parser() -> argparse.ArgumentParser:
     link = sub.add_parser("create-admin-link", help="print a one-time web admin login link")
     link.add_argument("--tg-id", type=int, help="admin Telegram id (default: first of ADMIN_IDS)")
     sub.add_parser("tg-only-link", help="apply the Telegram-only rules on the servers and print the link (a secret)")
+    sub.add_parser("node-token", help="print a one-time code that lets a new server join (valid for an hour)")
     sub.add_parser("backup", help="create a backup now")
     restore = sub.add_parser("restore", help="restore a backup file")
     restore.add_argument("file")
@@ -198,6 +199,21 @@ async def cmd_create_admin_link(settings: Settings, tg_id: int | None) -> int:
     auth = importlib.import_module("app.web.auth")
     link = await _with_services(settings, lambda deps: _call_with(auth.create_login_link, {**deps, "tg_id": target}))
     print(link)
+    return 0
+
+
+async def cmd_node_token(settings: Settings) -> int:
+    """Print ``<domain>/<code>`` for ``install.sh --node --join`` on the new server (stdout only: it is a secret)."""
+    from urllib.parse import urlsplit
+
+    from app.services import nodes
+
+    domain = urlsplit(settings.public_base_url or "").hostname
+    if not domain or not (settings.public_base_url or "").startswith("https://"):
+        print("PUBLIC_BASE_URL must be an https:// address the new server can reach", file=sys.stderr)
+        return 2
+    token = await _with_services(settings, lambda deps: nodes.issue_token(deps["session_factory"]))
+    print(nodes.join_string(domain, token))
     return 0
 
 
@@ -413,6 +429,8 @@ async def dispatch(args: argparse.Namespace) -> int:
         return await cmd_create_admin_link(settings, args.tg_id)
     if command == "tg-only-link":
         return await cmd_tg_only_link(settings)
+    if command == "node-token":
+        return await cmd_node_token(settings)
     if command == "backup":
         return await cmd_backup(settings)
     if command == "bootstrap-local":

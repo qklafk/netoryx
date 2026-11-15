@@ -68,6 +68,7 @@ class XuiSetup:
     socks_host: str | None = None  # public address of the SOCKS5 proxy (defaults to the endpoint address)
     ss_port: int | None = None  # optional Shadowsocks-2022 inbound (not TLS: it needs a port of its own)
     tls_verify: bool = False
+    panel_name: str = XUI_PANEL_NAME  # the record is found by this name: one per server
 
 
 @dataclass(frozen=True, slots=True)
@@ -259,7 +260,7 @@ async def _setup_xui(
         session_factory,
         secret_box,
         kind=PanelKind.XUI,
-        name=XUI_PANEL_NAME,
+        name=xui.panel_name,
         url=xui.url,
         username=xui.username,
         password=xui.password,

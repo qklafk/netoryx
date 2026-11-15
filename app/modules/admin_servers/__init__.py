@@ -8,6 +8,7 @@ from app.modules.admin_servers.admin_bot import router as panels_router
 from app.modules.admin_servers.callbacks import SrvCb
 from app.modules.admin_servers.endpoints import router as endpoints_router
 from app.modules.admin_servers.locations import router as locations_router
+from app.modules.admin_servers.node_join import router as node_join_router
 
 module = FeatureModule(
     name="admin_servers",
@@ -15,6 +16,7 @@ module = FeatureModule(
     title_en="Servers",
     required=True,
     admin_bot_routers=[panels_router, locations_router, endpoints_router],
+    web_routers=[node_join_router],  # a new server registers itself with a one-time join code
     admin_menu=[
         AdminMenuItem(
             key="servers",

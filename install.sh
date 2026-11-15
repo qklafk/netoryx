@@ -25,6 +25,8 @@ readonly XUI_PORT=2053
 readonly TELEMT_INTERNAL_PORT=993
 readonly SUPPORTED_PANELS="xui remnawave marzban pasarguard marzneshin none"
 readonly DOCKER_RANGE="172.16.0.0/12"
+readonly NODE_PANEL_PORT=2096  # HTTPS port of a node's panel, open to the main server only
+readonly XUI_IMAGE="ghcr.io/mhsanaei/3x-ui:v3.11.0"
 
 INSTALL_DIR="${NETORYX_DIR:-/opt/netoryx}"
 SECRETS_DIR="${NETORYX_SECRETS_DIR:-/root/netoryx}"
@@ -33,6 +35,7 @@ REPO_REF="${NETORYX_REF:-main}"
 SOURCE_DIR="${NETORYX_SOURCE:-}"
 OS_RELEASE_FILE="${NETORYX_OS_RELEASE:-/etc/os-release}"
 LOG_FILE="${NETORYX_LOG:-/var/log/netoryx-install.log}"
+NODE_DIR="${NETORYX_NODE_DIR:-/opt/netoryx-node}"
 
 DRY=0
 ASSUME_YES=0
@@ -55,6 +58,14 @@ BRAND="VPN"
 SOCKS_PORT=2080
 REALITY_PORT_DEFAULT=8445
 TG_DOMAIN="petrovich.ru"
+NODE=0            # 1: this server joins an existing installation as one more VPN server
+JOIN=""          # <main domain>/<one-time code> from `netoryx node-token`
+MAIN_DOMAIN=""
+MAIN_IP=""
+LOCATION_ARG=""
+NODE_SNI="www.samsung.com"
+MIN_RAM_MB=1400
+MIN_DISK_MB=8000
 
 OS_ID=""
 OS_VERSION=""
@@ -261,6 +272,20 @@ load_messages() {
     M_U_CHANGED3="Изменения в контейнерах панели применяются командой:"
     M_X_DRYRUN="пробный запуск"
     M_L_XUI="панель 3x-ui"
+    M_N_HEADER="Новый VPN-сервер для установки на %s"
+    M_S_NODE_PANEL="Запускаю 3x-ui и HTTPS для панели"
+    M_S_NODE_JOIN="Подключаю сервер к главному"
+    M_D_JOIN_FORMAT="--join ожидает <домен главного сервера>/<код>; код выдаёт команда netoryx node-token на главном сервере"
+    M_D_MAIN_UNRESOLVED="не удалось найти адрес главного сервера %s"
+    M_D_NODE_SAME="это главный сервер: --node ставится на другой сервер"
+    M_I_NODE_FW="панель открыта только для главного сервера (%s), порт %s"
+    M_I_NODE_TLS="жду HTTPS-сертификат для панели на %s (до 2 минут)"
+    M_D_NODE_TLS="панель не получила HTTPS-сертификат: проверьте, что порт 80 открыт, и запустите установку снова"
+    M_D_JOIN_FAILED="главный сервер не принял подключение: %s"
+    M_D_LOCATION="название локации: латиница, цифры, пробел, точка, дефис (до 40 символов)"
+    M_X_NODE_DONE="Готово: сервер добавлен в бота как локация «%s»."
+    M_X_NODE_NEXT="Клиенты увидят новый сервер после обновления подписки в приложении; в Happ и v2RayTun «Авто» сам выберет самый быстрый."
+    M_X_NODE_FILES="Файлы: %s, учётные данные панели: %s (только root)."
   else
     M_S_CHECK="Checking the system"
     M_S_SETTINGS="Collecting settings"
@@ -434,6 +459,20 @@ load_messages() {
     M_U_CHANGED3="Changes to the panel containers apply with:"
     M_X_DRYRUN="dry run"
     M_L_XUI="the 3x-ui panel"
+    M_N_HEADER="New VPN server for the installation at %s"
+    M_S_NODE_PANEL="Starting 3x-ui and HTTPS for its panel"
+    M_S_NODE_JOIN="Joining the main server"
+    M_D_JOIN_FORMAT="--join expects <main server domain>/<code>; run netoryx node-token on the main server to get it"
+    M_D_MAIN_UNRESOLVED="cannot resolve the main server %s"
+    M_D_NODE_SAME="this is the main server: --node goes on another server"
+    M_I_NODE_FW="the panel is open to the main server only (%s), port %s"
+    M_I_NODE_TLS="waiting for the HTTPS certificate of the panel on %s (up to 2 minutes)"
+    M_D_NODE_TLS="the panel got no HTTPS certificate: make sure port 80 is open and run the installer again"
+    M_D_JOIN_FAILED="the main server refused the join: %s"
+    M_D_LOCATION="location name: Latin letters, digits, space, dot, hyphen (up to 40 characters)"
+    M_X_NODE_DONE="Done: the server was added to the bot as the location \"%s\"."
+    M_X_NODE_NEXT="Customers get the new server after refreshing the subscription in the app; Auto in Happ and v2RayTun picks the fastest."
+    M_X_NODE_FILES="Files: %s, panel credentials: %s (root only)."
   fi
 }
 
@@ -542,6 +581,10 @@ Usage: install.sh [options]
   --no-firewall         do not touch the firewall (open 80, 443 and the SOCKS port yourself)
   --force-os            try an operating system that is not on the supported list
   --dry-run             print what would be done and change nothing
+  --node --join D/CODE  add this server as one more VPN server of the installation at D (the code comes from
+                        `netoryx node-token` on that server); installs only 3x-ui, no bot
+  --location NAME       location name of the new server (default: its country code)
+  --reality-sni NAME    site the new server's Reality inbound borrows (default www.samsung.com)
   --help                this text
 
 Supported systems: Ubuntu 22.04 / 24.04 / 26.04, Debian 12 / 13, AlmaLinux 9, Rocky Linux 9; x86_64 and aarch64.
@@ -581,6 +624,13 @@ parse_args() {
       --no-firewall) NO_FIREWALL=1; shift ;;
       --force-os) FORCE_OS=1; shift ;;
       --dry-run) DRY=1; shift ;;
+      --node) NODE=1; shift ;;
+      --join) JOIN="${2:?--join needs a value}"; shift 2 ;;
+      --join=*) JOIN="${1#*=}"; shift ;;
+      --location) LOCATION_ARG="${2:?--location needs a value}"; shift 2 ;;
+      --location=*) LOCATION_ARG="${1#*=}"; shift ;;
+      --reality-sni) NODE_SNI="${2:?--reality-sni needs a value}"; shift 2 ;;
+      --reality-sni=*) NODE_SNI="${1#*=}"; shift ;;
       -h | --help) usage; exit 0 ;;
       *) die "unknown option: $1 (see --help)" ;;
     esac
@@ -719,14 +769,14 @@ preflight() {
   local ram disk
   ram="$(mem_total_mb)"
   disk="$(free_disk_mb "$INSTALL_DIR")"
-  if [ "$ram" -gt 0 ] && [ "$ram" -lt 1400 ]; then
+  if [ "$ram" -gt 0 ] && [ "$ram" -lt "$MIN_RAM_MB" ]; then
     if [ "$DRY" = 1 ] || [ "$FORCE_OS" = 1 ]; then
       warn "$(printf "$M_W_RAM" "$ram")"
     else
       die "$(printf "$M_D_RAM" "$ram")"
     fi
   fi
-  if [ -n "$disk" ] && [ "$disk" -lt 8000 ]; then
+  if [ -n "$disk" ] && [ "$disk" -lt "$MIN_DISK_MB" ]; then
     if [ "$DRY" = 1 ]; then warn "$(printf "$M_W_DISK" "$disk")"; else
       die "$(printf "$M_D_DISK" "$disk")"; fi
   fi
@@ -1967,6 +2017,186 @@ do_update() {
 }
 
 # --------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
+# One more VPN server for an existing installation (--node --join <main domain>/<code>)
+# --------------------------------------------------------------------------------------------------------------
+node_parse_join() {
+  MAIN_DOMAIN="${JOIN%%/*}"
+  NODE_TOKEN="${JOIN#*/}"
+  valid_domain "$MAIN_DOMAIN" || die "$M_D_JOIN_FORMAT"
+  printf '%s' "$NODE_TOKEN" | grep -Eq '^[A-Za-z0-9_-]{16,128}$' || die "$M_D_JOIN_FORMAT"
+  valid_domain "$NODE_SNI" || die "--reality-sni: $NODE_SNI"
+  if [ -n "$LOCATION_ARG" ]; then
+    printf '%s' "$LOCATION_ARG" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9 ._-]{0,39}$' || die "$M_D_LOCATION"
+  fi
+}
+
+node_settings() {
+  if [ "$DRY" = 1 ]; then
+    SERVER_IP="${NETORYX_PUBLIC_IP:-203.0.113.10}"
+    MAIN_IP="198.51.100.1"
+  else
+    SERVER_IP="$(detect_public_ip)" || die "$M_D_NO_IP"
+    MAIN_IP="$(getent ahostsv4 "$MAIN_DOMAIN" 2>/dev/null | awk 'NR == 1 { print $1 }')"
+    [ -n "$MAIN_IP" ] || die "$(printf "$M_D_MAIN_UNRESOLVED" "$MAIN_DOMAIN")"
+    [ "$MAIN_IP" != "$SERVER_IP" ] || die "$M_D_NODE_SAME"
+  fi
+  DOMAIN="${DOMAIN_ARG:-$(sslip_name)}"
+  NODE_COUNTRY=""
+  [ "$DRY" = 1 ] || NODE_COUNTRY="$(detect_country "$SERVER_IP" || true)"
+  NODE_LOCATION="${LOCATION_ARG:-${NODE_COUNTRY:-Node $SERVER_IP}}"
+  info "IP: $SERVER_IP, $DOMAIN, $NODE_LOCATION"
+}
+
+node_write_files() {
+  if [ "$DRY" = 1 ]; then
+    info "would write $NODE_DIR/docker-compose.yml and $NODE_DIR/Caddyfile"
+    return 0
+  fi
+  mkdir -p "$NODE_DIR" "$SECRETS_DIR"
+  chmod 700 "$SECRETS_DIR"
+  cat >"$NODE_DIR/docker-compose.yml" <<EOF
+# A VPN server of a Netoryx installation: 3x-ui (VLESS Reality on port 443) and Caddy, which gives the panel
+# a real HTTPS certificate on port $NODE_PANEL_PORT. The firewall opens that port to the main server only.
+x-logging: &logging
+  driver: json-file
+  options: {max-size: 10m, max-file: "3"}
+services:
+  xui:
+    image: \${XUI_IMAGE:-$XUI_IMAGE}
+    network_mode: host
+    logging: *logging
+    environment:
+      XRAY_VMESS_AEAD_FORCED: "false"
+    restart: unless-stopped
+    volumes:
+      - xui-db:/etc/x-ui
+      - xui-cert:/root/cert
+  caddy:
+    image: caddy:2-alpine
+    network_mode: host
+    logging: *logging
+    environment:
+      NODE_DOMAIN: $DOMAIN
+    restart: unless-stopped
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro,z
+      - caddy-data:/data
+      - caddy-config:/config
+volumes:
+  xui-db:
+  xui-cert:
+  caddy-data:
+  caddy-config:
+EOF
+  cat >"$NODE_DIR/Caddyfile" <<EOF
+{
+	admin off
+}
+
+{\$NODE_DOMAIN}:$NODE_PANEL_PORT {
+	tls {
+		# port 443 belongs to the VPN: the certificate is issued over port 80
+		issuer acme {
+			disable_tlsalpn_challenge
+		}
+	}
+	reverse_proxy 127.0.0.1:$XUI_PORT
+}
+EOF
+}
+
+node_firewall() {
+  if [ "$FIREWALL" = none ]; then
+    warn "$(printf "$M_W_FIREWALL_SKIPPED" "" "$MAIN_IP" "$NODE_PANEL_PORT")"
+    return 0
+  fi
+  local ports port
+  ports="$(ssh_ports)"
+  if [ "$FIREWALL" = ufw ]; then
+    for port in $ports; do run ufw allow "$port/tcp"; done
+    run ufw allow 80/tcp
+    run ufw allow 443/tcp
+    run ufw allow from "$MAIN_IP" to any port "$NODE_PANEL_PORT" proto tcp
+    run ufw default deny incoming
+    run ufw default allow outgoing
+    run ufw --force enable
+  else
+    run systemctl enable --now firewalld
+    for port in $ports 80 443; do run firewall-cmd --permanent --add-port="$port/tcp"; done
+    run firewall-cmd --permanent \
+      --add-rich-rule="rule family=ipv4 source address=$MAIN_IP port port=$NODE_PANEL_PORT protocol=tcp accept"
+    run firewall-cmd --reload
+  fi
+  info "$(printf "$M_I_NODE_FW" "$MAIN_IP" "$NODE_PANEL_PORT")"
+}
+
+node_start() {
+  INSTALL_DIR="$NODE_DIR"
+  WITH_XUI=1
+  run dc up -d
+  configure_xui
+  local base
+  base="$(cred_get "$SECRETS_DIR/xui-credentials" XUI_BASE)"
+  [ "$DRY" = 1 ] && return 0
+  info "$(printf "$M_I_NODE_TLS" "$DOMAIN")"
+  wait_for "HTTPS" 24 5 curl -fsS -o /dev/null --max-time 8 "https://$DOMAIN:$NODE_PANEL_PORT/$base/" \
+    || die "$M_D_NODE_TLS"
+}
+
+node_join() {
+  local creds="$SECRETS_DIR/xui-credentials" user pass base body answer code
+  if [ "$DRY" = 1 ]; then
+    run curl -fsS -X POST "https://$MAIN_DOMAIN/api/node/join"
+    return 0
+  fi
+  user="$(cred_get "$creds" XUI_USER)"
+  pass="$(cred_get "$creds" XUI_PASS)"
+  base="$(cred_get "$creds" XUI_BASE)"
+  TMP_DIR="${TMP_DIR:-$(mktemp -d)}"
+  body="$TMP_DIR/join.json"
+  # every value is checked above or generated here, so plain printf builds valid JSON; the file is private
+  (umask 077; printf '{"token":"%s","panel_url":"https://%s:%s/%s","username":"%s","password":"%s","address":"%s","reality_sni":"%s","location_name":"%s","country":"%s"}' \
+    "$NODE_TOKEN" "$DOMAIN" "$NODE_PANEL_PORT" "$base" "$user" "$pass" "$SERVER_IP" "$NODE_SNI" "$NODE_LOCATION" \
+    "$NODE_COUNTRY" >"$body")
+  code="$(curl -sS -o "$TMP_DIR/join.out" -w '%{http_code}' --max-time 120 -H 'Content-Type: application/json' \
+    --data-binary "@$body" "https://$MAIN_DOMAIN/api/node/join" || true)"
+  rm -f "$body"
+  answer="$(cat "$TMP_DIR/join.out" 2>/dev/null || true)"
+  log_line "join answer ($code): $answer"
+  if [ "$code" != 200 ]; then
+    answer="$(printf '%s' "$answer" | sed -n 's/.*"message": *"\([^"]*\)".*/\1/p')"
+    die "$(printf "$M_D_JOIN_FAILED" "${answer:-HTTP $code}")"
+  fi
+}
+
+node_main() {
+  STEPS_TOTAL=5
+  MIN_RAM_MB=900
+  MIN_DISK_MB=4000
+  node_parse_join
+  say "$(printf "$M_N_HEADER" "$MAIN_DOMAIN")"
+  step "$M_S_CHECK"
+  preflight
+  node_settings
+  step "$M_S_DOCKER"
+  install_packages
+  install_docker
+  setup_swap
+  step "$M_S_FIREWALL"
+  node_write_files
+  node_firewall
+  step "$M_S_NODE_PANEL"
+  node_start
+  step "$M_S_NODE_JOIN"
+  node_join
+  step_ok
+  say ""
+  say "$(printf "$M_X_NODE_DONE" "$NODE_LOCATION")"
+  say "$M_X_NODE_NEXT"
+  say "$(printf "$M_X_NODE_FILES" "$NODE_DIR" "$SECRETS_DIR/xui-credentials")"
+}
+
 main() {
   trap 'on_error $LINENO' ERR
   trap cleanup EXIT
@@ -1982,6 +2212,10 @@ main() {
   if [ "$UPDATE_ONLY" = 1 ]; then
     detect_arch
     do_update
+    return 0
+  fi
+  if [ "$NODE" = 1 ]; then
+    node_main
     return 0
   fi
   step "$M_S_CHECK"

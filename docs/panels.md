@@ -97,6 +97,27 @@ Add each server's panel, put its inbounds in a location, and every plan can use 
 carries one entry per active endpoint (the combined link), and the bot also offers per-server profiles and
 per-server subscription URLs (`SUB_SHOW_SERVER_PROFILES`, `SUB_SHOW_SERVER_SUBSCRIPTIONS`).
 
+### Adding a server with one command
+
+On the main server:
+
+```bash
+sudo netoryx node-token
+```
+
+It prints a command with a one-time code (valid for an hour). Run it as root on a fresh second VPS:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/qklafk/netoryx/main/install.sh | sudo bash -s -- --node --join <main domain>/<code>
+```
+
+The new server gets only 3x-ui: VLESS Reality on its port 443 (borrowing `www.samsung.com`, change with
+`--reality-sni`), and Caddy that gives the panel a real HTTPS certificate on port 2096. The firewall opens that port to
+the main server only, so the panel password never travels in clear text and the panel is not public. The installer then
+reports to the main server, which adds the panel, the location (named after the country, or `--location "Germany"`)
+and the endpoint. Customers get the new server with the next subscription refresh; Auto in Happ and v2RayTun picks the
+fastest one. The node needs ports 80 and 443 free, 1 GB of RAM is enough.
+
 ## Restarts
 
 Restarting `edge`, `caddy` or the 3x-ui container drops open connections. Most clients reconnect on their own, some need

@@ -10,6 +10,9 @@ All notable changes to this project are documented here. The format follows
 - "VPN does not work" check on the subscription card: the bot looks for an ended or suspended subscription, used-up
   traffic, full device slots, settings that did not reach a panel (and pushes them again) or unreachable servers, shows the
   fix or a checklist, and "Did not help" opens a support ticket with the result.
+- Another VPN server with one command: `netoryx node-token` on the main server prints `install.sh --node --join ...` for
+  the new VPS, which installs 3x-ui (panel behind its own HTTPS, open to the main server only) and registers itself:
+  panel, location and endpoint appear in the bot.
 
 ## [0.9.1-beta] - 2026-11-13
 
