@@ -13,6 +13,9 @@ All notable changes to this project are documented here. The format follows
 - Another VPN server with one command: `netoryx node-token` on the main server prints `install.sh --node --join ...` for
   the new VPS, which installs 3x-ui (panel behind its own HTTPS, open to the main server only) and registers itself:
   panel, location and endpoint appear in the bot.
+- Moving over from Bedolaga: `netoryx import-bedolaga <backup>` reads its backup (pg_dump, JSON or SQLite) and imports
+  users, balances, referrals and subscriptions; with the Remnawave panel connected, customers keep their links. See
+  `docs/migrating.md`.
 
 ## [0.9.1-beta] - 2026-11-13
 

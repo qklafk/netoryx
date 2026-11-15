@@ -32,6 +32,7 @@ const sidebar = [
     items: [
       item('upgrading', 'Обновление', 'Upgrading'),
       item('backups', 'Резервные копии', 'Backups'),
+      item('migrating', 'Переезд с другого бота', 'Moving from another bot'),
       item('privacy', 'Приватность', 'Privacy'),
     ],
   },

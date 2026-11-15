@@ -607,6 +607,20 @@ class RemnawaveBackend:
         account = await self.get_account(target, email)
         return account.used_bytes if account is not None else None
 
+    async def all_accounts(self) -> list[RemoteAccount]:
+        """Every user of the panel, whoever created it (for moving customers over from another bot)."""
+        await self._ensure_supported()
+        accounts: list[RemoteAccount] = []
+        start = 0
+        while True:
+            page = await self._request("GET", "/api/users", params={"start": start, "size": self.page_size})
+            users = page.get("users", []) if isinstance(page, Mapping) else []
+            accounts.extend(_to_account(user) for user in users if isinstance(user, Mapping) and user.get("username"))
+            start += len(users)
+            total = int(page.get("total", 0)) if isinstance(page, Mapping) else 0
+            if not users or len(users) < self.page_size or start >= total:
+                return accounts
+
     async def list_accounts(self, target: int | None) -> list[RemoteAccount]:
         """Users whose username starts with ``username_prefix`` (i.e. created by this bot)."""
         _check_target(target)

@@ -27,6 +27,8 @@ Usage: netoryx <command>
   admin-link          print a one-time login link for the web admin
   tg-link             print the shared Telegram-only link
   node-token          print the command that adds another server as a VPN server of this installation
+  import-bedolaga <file> [--panel-id N] [--apply]
+                      move users and subscriptions over from a Bedolaga backup (without --apply: only count)
   restart [service]   restart everything or the named services
   uninstall [--purge] stop the stack (data volumes are kept; --purge deletes them, the code and secrets too)
   help                this text
@@ -227,6 +229,26 @@ case "$command" in
     ;;
   tg-link)
     docker compose exec -T app "$PY" -m app tg-only-link
+    ;;
+  import-bedolaga)
+    need_root
+    file="${1:-}"
+    [ -f "$file" ] || { echo "usage: netoryx import-bedolaga <backup file> [--panel-id N] [--apply]" >&2; exit 2; }
+    shift
+    case "$file" in
+      *.tar.gz | *.tgz) target=/tmp/import-backup.tar.gz ;;
+      *.tar) target=/tmp/import-backup.tar ;;
+      *.sql) target=/tmp/import-backup.sql ;;
+      *.json) target=/tmp/import-backup.json ;;
+      *.sqlite | *.db) target=/tmp/import-backup.sqlite ;;
+      *) echo "netoryx: expected a .tar.gz backup or a .sql / .json / .sqlite file" >&2; exit 2 ;;
+    esac
+    # streamed in, so the file belongs to the application's own user inside the container
+    docker compose exec -T app sh -c "umask 077; cat > $target" <"$file"
+    status=0
+    docker compose exec -T app "$PY" -m app import-bedolaga "$target" "$@" || status=$?
+    docker compose exec -T app rm -f "$target" || true
+    exit "$status"
     ;;
   node-token)
     join="$(docker compose exec -T app "$PY" -m app node-token | tr -d '\r')"

@@ -48,6 +48,10 @@ def build_parser() -> argparse.ArgumentParser:
     link.add_argument("--tg-id", type=int, help="admin Telegram id (default: first of ADMIN_IDS)")
     sub.add_parser("tg-only-link", help="apply the Telegram-only rules on the servers and print the link (a secret)")
     sub.add_parser("node-token", help="print a one-time code that lets a new server join (valid for an hour)")
+    bedolaga = sub.add_parser("import-bedolaga", help="move users and subscriptions over from a Bedolaga backup")
+    bedolaga.add_argument("file", help="the backup (.tar.gz) or its database.sql / database.json / database.sqlite")
+    bedolaga.add_argument("--panel-id", type=int, help="the connected Remnawave panel those customers use")
+    bedolaga.add_argument("--apply", action="store_true", help="write the changes (default: only count)")
     sub.add_parser("backup", help="create a backup now")
     restore = sub.add_parser("restore", help="restore a backup file")
     restore.add_argument("file")
@@ -214,6 +218,42 @@ async def cmd_node_token(settings: Settings) -> int:
         return 2
     token = await _with_services(settings, lambda deps: nodes.issue_token(deps["session_factory"]))
     print(nodes.join_string(domain, token))
+    return 0
+
+
+async def cmd_import_bedolaga(settings: Settings, file: str, panel_id: int | None, apply: bool) -> int:
+    from pathlib import Path
+
+    from app.services import bot_imports
+    from app.services.panels.base import PanelError
+    from app.services.panels.registry import PanelRegistry
+
+    try:
+        data = await asyncio.to_thread(bot_imports.read_bedolaga, Path(file))
+    except (bot_imports.BotImportError, OSError) as exc:
+        print(f"cannot read {file}: {exc}", file=sys.stderr)
+        return 2
+
+    async def run(deps: dict[str, Any]) -> Any:
+        accounts = None
+        if panel_id is not None:
+            registry = PanelRegistry(deps["session_factory"], deps["settings"], deps["secret_box"])
+            try:
+                accounts = await bot_imports.panel_accounts(registry, panel_id)
+            finally:
+                await registry.close()
+        return await bot_imports.import_bedolaga(
+            deps["session_factory"], deps["settings"], data, panel_id=panel_id, accounts=accounts, apply=apply
+        )
+
+    try:
+        report = await _with_services(settings, run)
+    except (bot_imports.BotImportError, PanelError, LookupError) as exc:
+        print(f"import failed: {exc}", file=sys.stderr)
+        return 1
+    print(json.dumps(report.as_dict(), indent=2, sort_keys=True))
+    if not apply:
+        print("nothing was changed: repeat with --apply to import", file=sys.stderr)
     return 0
 
 
@@ -431,6 +471,8 @@ async def dispatch(args: argparse.Namespace) -> int:
         return await cmd_tg_only_link(settings)
     if command == "node-token":
         return await cmd_node_token(settings)
+    if command == "import-bedolaga":
+        return await cmd_import_bedolaga(settings, args.file, args.panel_id, args.apply)
     if command == "backup":
         return await cmd_backup(settings)
     if command == "bootstrap-local":
