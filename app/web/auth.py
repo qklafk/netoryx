@@ -449,6 +449,8 @@ class AdminMe(BaseModel):
     csrf_token: str
     session_id: int
     expires_at: datetime
+    app_mode: str = "shop"  # the admin shows only what the current product mode uses
+    version: str = ""
 
 
 class Ok(BaseModel):
@@ -459,7 +461,7 @@ def _limiter(request: Request) -> RateLimiter:
     return request.app.state.rate_limiter
 
 
-def _me(principal: AdminPrincipal, token: str) -> AdminMe:
+def _me(principal: AdminPrincipal, token: str, settings: Settings) -> AdminMe:
     return AdminMe(
         tg_id=principal.tg_id,
         role=str(principal.role),
@@ -467,7 +469,15 @@ def _me(principal: AdminPrincipal, token: str) -> AdminMe:
         csrf_token=csrf_token_for(token),
         session_id=principal.session_id,
         expires_at=principal.expires_at,
+        app_mode=settings.app_mode,
+        version=_version(),
     )
+
+
+def _version() -> str:
+    from app.core import __version__  # local: keeps this module's import light
+
+    return str(__version__)
 
 
 def _login_bucket(ip: str) -> str:
@@ -527,14 +537,14 @@ async def magic_login(body: MagicLoginIn, request: Request, response: Response, 
         permissions=permissions_of(role),
         expires_at=row.expires_at,
     )
-    return _me(principal, token)
+    return _me(principal, token, ctx.settings)
 
 
 @router.get("/me", response_model=AdminMe)
 async def me(principal: CurrentAdmin, request: Request, ctx: Ctx) -> AdminMe:
     """The current admin, their permissions and the CSRF token for mutating requests."""
     token = session_token_from(request, ctx.settings) or ""
-    return _me(principal, token)
+    return _me(principal, token, ctx.settings)
 
 
 @router.post("/logout", response_model=Ok)

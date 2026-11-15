@@ -3,9 +3,47 @@ import { AlertCircle, Check, ChevronLeft, ChevronRight, LoaderCircle, RefreshCw,
 import { ApiError, mutate, resultProblem, type Scope } from '../shared/api';
 
 export type Row = Record<string, any>;
-export type Principal = { tg_id: number; role: string; permissions: string[]; csrf_token: string };
+export type Principal = { tg_id: number; role: string; permissions: string[]; csrf_token: string; app_mode?: string; version?: string };
 type AdminContextValue = { me: Principal; locale: string; tr: (ru: string, en: string) => string; can: (permission: string) => boolean; flash: (text: string, bad?: boolean) => void };
 export const AdminContext = createContext<AdminContextValue>(null!);
+type Tr = (ru: string, en: string) => string;
+// Human names for values the API sends as identifiers.
+const CHECK_LABELS: Record<string, [string, string]> = {
+  plans: ['Есть хотя бы один платный тариф', 'At least one paid plan'],
+  payment_provider: ['Подключена платёжная система', 'A payment provider is connected'],
+  test_payment: ['Проведён тестовый платёж', 'A test payment went through'],
+  support: ['Указана ссылка на поддержку', 'A support link is set'],
+  terms: ['Указана ссылка на условия использования', 'A terms of service link is set'],
+  privacy: ['Указана ссылка на политику конфиденциальности', 'A privacy policy link is set'],
+  domain: ['Постоянный домен', 'A permanent domain'],
+  trial: ['Пробный период', 'Trial period'],
+  referral: ['Реферальная программа', 'Referral program'],
+  channel: ['Канал проекта', 'Project channel'],
+  pending_payments: ['Нет неоплаченных счетов (отмените их в «Платежах»)', 'No unpaid invoices (cancel them in Payments)'],
+};
+const CHOICE_LABELS: Record<string, [string, string]> = {
+  shop: ['Магазин (продажа подписок)', 'Shop (selling subscriptions)'],
+  personal: ['Личный VPN (по приглашениям)', 'Personal VPN (by invitation)'],
+  hwid: ['По устройствам (HWID)', 'By device (HWID)'],
+  ip: ['По IP-адресам', 'By IP address'],
+  days: ['Днями подписки', 'Subscription days'],
+  balance: ['На баланс', 'To the balance'],
+  partner: ['На партнёрский счёт', 'To a partner account'],
+  once: ['Один раз', 'Once'],
+  period: ['Весь срок предложения', 'For the whole offer period'],
+  off: ['Выключено', 'Off'],
+  everyone: ['Всем', 'Everyone'],
+  subscribers: ['Только подписчикам', 'Subscribers only'],
+  masked: ['Частично (маска)', 'Masked'],
+  full: ['Полностью', 'Full'],
+  direct: ['Напрямую', 'Direct'],
+  relay: ['Через промежуточный сервер', 'Through a relay'],
+  cdn: ['Через CDN', 'Through a CDN'],
+  standard: ['Обычный', 'Standard'],
+  whitelist: ['Для мобильных «белых списков» (LTE)', 'For mobile allow-lists (LTE)'],
+};
+export const checkLabel = (tr: Tr, key: string) => (CHECK_LABELS[key] ? tr(...CHECK_LABELS[key]) : key);
+export const choiceLabel = (tr: Tr, value: string) => (CHOICE_LABELS[value] ? tr(...CHOICE_LABELS[value]) : value);
 export const useAdmin = () => useContext(AdminContext);
 export const titleOf = (row: Row) => row.username ? `@${row.username}` : row.first_name || String(row.tg_id || row.user_id || '—');
 export const itemsOf = (data: any): Row[] => Array.isArray(data) ? data : data?.items || [];
